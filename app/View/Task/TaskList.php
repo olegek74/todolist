@@ -8,10 +8,6 @@ class TaskList {
     private $allowadd = null;
     public function tasklist($list){
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
-        ?>
-        <h1 class="display-4">List of Tasks</h1>
-        <br>
-        <?php
         $paginator = $this->pagination();
         $sort = $this->sort();
         $messages = \App\Controllers\TaskController::$messages;

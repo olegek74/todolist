@@ -1,4 +1,6 @@
 <?php defined('ROOTPATH') or die('access denied'); ?>
+    <h1 class="display-6">List of Tasks</h1>
+    <br>
 <?php
 if(!empty($list)){ ?>
     <div class="table-responsive">
