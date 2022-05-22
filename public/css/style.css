@@ -1,0 +1,18 @@
+.sys-messages {
+     display: block;
+     font-size: 22px;
+     background: #eaeaea;
+     line-height: 50px;
+     padding: 0 20px;
+}
+.sys-messages.success {
+     color: limegreen;
+
+}
+.sys-messages.error {
+     color:red;
+}
+span.closer {
+     float: right;
+     cursor:pointer;
+}
