@@ -18,7 +18,7 @@ class taskEdit {
     }
 
     public function task_add($userlist){
-        $allow_add = $this->allow_add();
+        $allow_add = $this->allowAdd();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
