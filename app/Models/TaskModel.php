@@ -33,7 +33,7 @@ class TaskModel extends Objects
 
         $select = 'SELECT t.*, `u`.`email` FROM `tasks` AS `t` LEFT JOIN `users` AS `u` ON `t`.`user_id` = `u`.`id`';
         if($sort == 'asc' || $sort == 'desc'){
-            $select .= ' ORDER BY `t`.`status` '.strtoupper($sort);
+            $select .= ' ORDER BY `t`.`status` '.strtoupper($sort).', `t`.`id` ASC';
         }
         else {
             $select .= ' ORDER BY `t`.`id` ASC';
