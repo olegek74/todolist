@@ -39,9 +39,9 @@ class MenuController extends Objects {
             if(count($_link) > 0){
                 $path = [];
                 foreach($_link as $part){
-                    list($name, $value) = explode('=', $part);
-                    if(!$value) continue;
-                    $path[$name] = $value;
+                    $parts = explode('=', $part);
+                    if(!isset($parts[1]) || !$parts[1]) continue;
+                    $path[$parts[0]] = $parts[1];
                 }
                 if(isset($path['ctrl'])){
                     if($path['ctrl'] == $this->ctrl){
