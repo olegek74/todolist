@@ -3,26 +3,36 @@ namespace App\Controllers;
 
 use App\Models\UserModel as Model;
 
+use \App\Main;
+
 defined('ROOTPATH') or die('access denied');
 
 class UserController {
 
     public static $messages = [];
+
+    private $main;
+
+    public function __construct()
+    {
+        $this->main = new Main;
+    }
+
     public function login(){
         if($this->auth()){
-            $_SESSION['message'] = 'success|Welcome!';
+            $this->main->setSess('message', 'success|Welcome!');
             header('location: index.php');
         }
         else {
-            $_SESSION['message'] = 'error|Incorrect login or password';
+            $this->main->setSess('message', 'error|Incorrect login or password');
             header('location: index.php?ctrl=user&task=viewauth');
         }
         die;
     }
 
     public function unlogin(){
-        $_SESSION['password'] = null;
-        $_SESSION['login'] = null;
+        $this->main->setSess('password', null);
+        $this->main->setSess('login', null);
         setcookie('login', '', time()-3600, '/');
         setcookie('password', '', time()-3600, '/');
         header('location: index.php?ctrl=user&task=viewauth');
@@ -32,20 +42,21 @@ class UserController {
     public function auth(){
 
         $auth = false;
-        $login = '';
-        $password = '';
-        if(!isset($_COOKIE['login']) || !isset($_COOKIE['password'])){
-            if(isset($_GET['login'])) $login = $_GET['login'];
-            if(isset($_GET['password'])) $password = md5(trim($_GET['password']));
-        }
-        else {
-            $login = trim($_COOKIE['login']);
-            $password = trim($_COOKIE['password']);
+
+        $login = $this->main->getCookie('login', false);
+        $password = $this->main->getCookie('password', false);
+
+        if(!$login || !$password){
+            $login = $this->main->get('login', false);
+            $password = $this->main->get('password', false);
+            if($password) $password = md5($password);
         }
 
         if($login != "" && $password != "") {
-            if(isset($_SESSION['login']) && isset($_SESSION['password'])){
-                if($_SESSION['login'] == $login && $_SESSION['password'] == $password){
+            $_login = $this->main->getSess('login', false);
+            $_password = $this->main->getSess('password', false);
+            if($_login && $_password){
+                if($_login == $login && $_password == $password){
                     $auth = true;
                 }
             }
@@ -53,8 +64,8 @@ class UserController {
             if(!$auth){
                 $usermodel = new Model();
                 if($usermodel->getAuth($login, $password)){
-                    $_SESSION['password'] = md5($password);
-                    $_SESSION['login'] = $login;
+                    $this->main->setSess('password', md5($password));
+                    $this->main->setSess('login', $login);
                     setcookie('login', $login, time()+3600, '/');
                     setcookie('password', $password, time()+3600, '/');
                     $auth = true;
@@ -65,8 +76,8 @@ class UserController {
     }
 
     public function viewauth(){
-        if(isset($_SESSION['message'])) self::$messages[] = $_SESSION['message'];
-        $_SESSION['message'] = '';
+        self::$messages[] = $this->main->getSess('message', null);
+        $this->main->setSess('message', '');
         $view = new \App\View\User\User;
         $view->viewAuth($this->auth());
     }

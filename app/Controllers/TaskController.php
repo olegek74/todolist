@@ -2,10 +2,9 @@
 namespace App\Controllers;
 
 use \App\Models\TaskModel as Model;
-
 use \App\View\Task\TaskList as TList;
-
 use \App\View\Task\TaskEdit as Edit;
+use \App\Main;
 
 defined('ROOTPATH') or die('access denied');
 
@@ -13,24 +12,21 @@ class TaskController {
     public static $list_start;
     public static $sort = false;
     public static $messages = [];
+    private $main;
+    public function __construct()
+    {
+        $this->main = new Main;
+    }
+
     public function getList(){
+
+        self::$list_start = $this->main->get('list_start', 0);
+        self::$sort = $this->main->get('sort', false);
         $model = new Model;
-        $list_start = 0;
-        if(isset($_GET['list_start'])){
-            $list_start = intval($_GET['list_start']);
-        }
-        self::$list_start = $list_start;
-        $sort = false;
-        if(isset($_GET['sort'])){
-            $sort = $_GET['sort'];
-        }
-        self::$sort = $sort;
-        $list = $model->getList($list_start, $sort);
+        $list = $model->getList(self::$list_start, self::$sort);
         $view = new TList;
-        if(isset($_SESSION['message'])){
-            self::$messages[] = $_SESSION['message'];
-            $_SESSION['message'] = '';
-        }
+        self::$messages[] = $this->main->getSess('message', null);
+        $this->main->setSess('message', null);
         $view->tasklist($list);
     }
 
@@ -43,21 +39,22 @@ class TaskController {
 
         $err = false;
         $data = [];
-        if (!$data['task_id'] = $_GET['id']) {
+
+        if (!$data['task_id'] = $this->main->get('id', false)) {
             $err = true;
         }
-        if (!$data['description'] = $_GET['description']) {
+        if (!$data['description'] = $this->main->get('description', false)) {
             $err = true;
         }
-        if (!$data['status'] = $_GET['status']) {
-            $status = 0;
-        }
+
+        $data['status'] = $this->main->get('status', 0);
+
         if (!$err) {
             $model = new Model;
             $model->edit($data);
-            $_SESSION['message'] = 'success|Post edit successfully';
+            $this->main->setSess('message', 'success|Post edit successfully');
         }
-        else $_SESSION['message'] = 'error|Edit error';
+        else $this->main->setSess('message', 'error|Edit error');
         header('location:index.php');
     }
 
@@ -71,28 +68,29 @@ class TaskController {
         if($this->auth()) {
             $err = false;
             $data = [];
-            if (!$data['user_id'] = $_GET['user_id']) {
+
+            if (!$data['user_id'] = $this->main->get('user_id', false)) {
                 $err = true;
             }
-            if (!$data['description'] = $_GET['description']) {
+
+            if (!$data['description'] = $this->main->get('description', false)) {
                 $err = true;
             }
-            if (!$data['status'] = $_GET['status']) {
-                $data['status'] = 0;
-            }
+
+            $data['status'] = $this->main->get('status', 0);
 
             if (!$err) {
                 $model = new Model;
                 $model->addNew($data);
-                $_SESSION['message'] = 'success|Post added successfully';
+                $this->main->setSess('message', 'success|Post added successfully');
             }
-            else $_SESSION['message'] = 'error|Add error';
+            else $this->main->setSess('message', 'error|Add error');
         }
-        else $_SESSION['message'] = 'error|Add error.Authorization is required to add';
+        else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
         header('location:index.php');
     }
     public function viewedit(){
-        if($id = $_GET['id']){
+        if($id = $this->main->get('id', false)){
             $model = new Model;
             $task = $model->getOne($id);
             $view = new Edit;
