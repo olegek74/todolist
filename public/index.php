@@ -7,7 +7,7 @@ define('ROOTPATH', dirname(__DIR__));
 session_start();
 
 require_once ROOTPATH.DS.'vendor'.DS.'autoload.php';
-$route = new \App\Router;
+$route = \App\Router::instance();
 
 $controllerName = $route->controller;
 

@@ -21,6 +21,7 @@ class TaskList {
 
     public function tasklist($list){
         $allow_delete = $this->allowDelete();
+        $menu = \App\Controllers\MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $paginator = $this->pagination();
         $sort = $this->sort();

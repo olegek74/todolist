@@ -1,29 +1,38 @@
 <?php
 namespace App;
 
+use App\Main;
+
 defined('ROOTPATH') or die('access denied');
 
 class Router {
-    private $controller = 'App\Controllers\TaskController';
-    private $task = 'getList';
+    public $controller_default = 'App\Controllers\TaskController';
+    private $controller;
+    public $task_default = 'getList';
+    private $task;
+    private static $object;
     public function __construct(){
-        $ctrl = '';
-        if(isset($_GET['ctrl'])){
-            $ctrl = trim($_GET['ctrl']);
-            if($ctrl){
-                $this->controller = 'App\Controllers\\'.ucfirst($ctrl).'Controller';
-            }
+        $main = Main::instance();
+        $ctrl = $main->get('ctrl', false);
+        if($ctrl){
+            $this->controller = 'App\Controllers\\'.ucfirst($ctrl).'Controller';
         }
-        if(isset($_GET['task'])){
-            $task = trim($_GET['task']);
-            if($task){
-                $this->task = $task;
-            }
+        else $this->controller = $this->controller_default;
+        $task = $main->get('task', false);
+        if($task){
+            $this->task = $task;
         }
+        else $this->task = $this->task_default;
     }
     public function __get($name){
         if($name == 'controller') return $this->controller;
         if($name == 'task') return $this->task;
+    }
+    public static function instance(){
+        if(!self::$object){
+            self::$object = new self;
+        }
+        return self::$object;
     }
 }
 ?>

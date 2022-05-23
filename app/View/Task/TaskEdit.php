@@ -19,6 +19,7 @@ class taskEdit {
 
     public function task_add(){
         $allowass = $this->allowAdd();
+        $menu = \App\Controllers\MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         if($allowass){
             $userlist = \App\Models\UserModel::instance()->getList();
@@ -32,6 +33,7 @@ class taskEdit {
         if($this->allowAdd()) {
             $userlist = \App\Models\UserModel::instance()->getList();
         }
+        $menu = \App\Controllers\MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'task_edit.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';

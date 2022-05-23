@@ -9,6 +9,7 @@
 </head>
     <body>
     <div class="container">
+        <?php if($menu){ ?>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,17 +17,16 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
+                        <?php foreach($menu->items as $link => $title){ ?>
                         <li class="nav-item">
-                            <a class="nav-link active" href="index.php">Task list</a>
+                            <?php $active = '';
+                            if($menu->isActive($link)) $active = ' active';?>
+                            <a class="nav-link<?php echo $active;?>" href="<?php echo $link;?>"><?php echo $title;?></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php?ctrl=task&task=viewadd">Add Task</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php?ctrl=user&task=viewauth">Login</a>
-                        </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
         </nav>
+        <?php } ?>
         <br>

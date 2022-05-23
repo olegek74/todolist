@@ -5,6 +5,7 @@ defined('ROOTPATH') or die('access denied');
 
 class User {
     public function viewAuth($isauth){
+        $menu = \App\Controllers\MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $messages = \App\Controllers\UserController::$messages;
         if($isauth){
