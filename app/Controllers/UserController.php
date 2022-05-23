@@ -1,21 +1,23 @@
 <?php
 namespace App\Controllers;
 
+use App\Objects;
 use App\Models\UserModel as Model;
-
 use \App\Main;
 
 defined('ROOTPATH') or die('access denied');
 
-class UserController {
+class UserController extends Objects{
 
     public static $messages = [];
 
     private $main;
 
+    protected static $object;
+
     public function __construct()
     {
-        $this->main = new Main;
+        $this->main = Main::instance();
     }
 
     public function login(){
@@ -62,7 +64,7 @@ class UserController {
             }
 
             if(!$auth){
-                $usermodel = new Model();
+                $usermodel = Model::instance();
                 if($usermodel->getAuth($login, $password)){
                     $this->main->setSess('password', md5($password));
                     $this->main->setSess('login', $login);
@@ -80,6 +82,11 @@ class UserController {
         $this->main->setSess('message', '');
         $view = new \App\View\User\User;
         $view->viewAuth($this->auth());
+    }
+
+    public static function instance(){
+        self::$object = parent::_instance(__CLASS__);
+        return self::$object;
     }
 }
     ?>

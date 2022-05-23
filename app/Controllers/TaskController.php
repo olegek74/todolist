@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+use App\Objects;
 use \App\Models\TaskModel as Model;
 use \App\View\Task\TaskList as TList;
 use \App\View\Task\TaskEdit as Edit;
@@ -8,21 +9,22 @@ use \App\Main;
 
 defined('ROOTPATH') or die('access denied');
 
-class TaskController {
+class TaskController extends Objects {
     public static $list_start;
     public static $sort = false;
     public static $messages = [];
     private $main;
+    protected static $object;
     public function __construct()
     {
-        $this->main = new Main;
+        $this->main = Main::instance();
     }
 
     public function getList(){
 
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
-        $model = new Model;
+        $model = Model::instance();
         $list = $model->getList(self::$list_start, self::$sort);
         $view = new TList;
         self::$messages[] = $this->main->getSess('message', null);
@@ -31,7 +33,7 @@ class TaskController {
     }
 
     public function auth(){
-        $user = new \App\Controllers\UserController();
+        $user = \App\Controllers\UserController::instance();
         return $user->auth();
     }
 
@@ -50,7 +52,7 @@ class TaskController {
         $data['status'] = $this->main->getInt('status', 0);
 
         if (!$err) {
-            $model = new Model;
+            $model = Model::instance();
             $model->edit($data);
             $this->main->setSess('message', 'success|Post edit successfully');
         }
@@ -59,7 +61,7 @@ class TaskController {
     }
 
     public function viewadd() {
-        $user = new \App\Models\UserModel;
+        $user = \App\Models\UserModel::instance();
         $view = new Edit;
         $view->task_add($user->getList());
     }
@@ -80,7 +82,7 @@ class TaskController {
             $data['status'] = $this->main->getInt('status', 0);
 
             if (!$err) {
-                $model = new Model;
+                $model = Model::instance();
                 $model->addNew($data);
                 $this->main->setSess('message', 'success|Post added successfully');
             }
@@ -92,7 +94,7 @@ class TaskController {
     public function delete(){
         if($this->auth()) {
             if ($id = $this->main->getInt('id', false)) {
-                $model = new Model;
+                $model = Model::instance();
                 $model->delete($id);
                 $this->main->setSess('message', 'success|Task #' . $id . ' has been deleted');
             }
@@ -101,11 +103,16 @@ class TaskController {
     }
     public function viewedit(){
         if($id = $this->main->getInt('id', false)){
-            $model = new Model;
+            $model = Model::instance();
             $task = $model->getOne($id);
             $view = new Edit;
             $view->task_edit($task);
         }
+    }
+
+    public static function instance(){
+        self::$object = parent::_instance(__CLASS__);
+        return self::$object;
     }
 }
 

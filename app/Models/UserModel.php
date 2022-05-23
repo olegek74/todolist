@@ -2,9 +2,13 @@
 
 namespace App\Models;
 use App\DB;
+use App\Objects;
 
-class UserModel
+class UserModel extends Objects
 {
+
+    protected static $object;
+
     public function __construct()
     {
         DB::instance();
@@ -36,6 +40,11 @@ class UserModel
             $list[] = $row;
         }
         return $list;
+    }
+
+    public static function instance(){
+        self::$object = parent::_instance(__CLASS__);
+        return self::$object;
     }
 
 }

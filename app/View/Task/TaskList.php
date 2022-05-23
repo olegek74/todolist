@@ -3,6 +3,8 @@
 namespace App\View\Task;
 
 use App\Controllers\UserController as User;
+use App\Models\TaskModel;
+use App\Controllers\TaskController;
 
 defined('ROOTPATH') or die('access denied');
 
@@ -11,7 +13,7 @@ class TaskList {
 
     private function allowDelete(){
         if(is_null($this->allow_delete)){
-            $user = new User();
+            $user = User::instance();
             $this->allow_delete = $user->auth();
         }
         return $this->allow_delete;
@@ -22,12 +24,12 @@ class TaskList {
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $paginator = $this->pagination();
         $sort = $this->sort();
-        $messages = \App\Controllers\TaskController::$messages;
+        $messages = TaskController::$messages;
         require_once ROOTPATH.DS.'html'.DS.'task'. DS .'tasks_list.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
     private function sort(){
-        $sort = \App\Controllers\TaskController::$sort;
+        $sort = TaskController::$sort;
         if(!$sort || $sort == 'desc') {
             $sort = 'asc';
             $icon = '&uarr;';
@@ -39,9 +41,9 @@ class TaskList {
         return '<a href="index.php?sort='.$sort.'">&nbsp;'.$icon.'&nbsp;</a>';
     }
     private function pagination(){
-        $count = \App\Models\TaskModel::getTotal();
-        $list_start = \App\Controllers\TaskController::$list_start;
-        $sort = \App\Controllers\TaskController::$sort;
+        $count = TaskModel::getTotal();
+        $list_start = TaskController::$list_start;
+        $sort = TaskController::$sort;
         $append = '';
         if($sort == 'asc' || $sort == 'desc'){
             $append = '&sort='.$sort;

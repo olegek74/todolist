@@ -9,9 +9,9 @@ session_start();
 require_once ROOTPATH.DS.'vendor'.DS.'autoload.php';
 $route = new \App\Router;
 
-$controller = $route->controller;
+$controllerName = $route->controller;
 
-$controller = new $controller;
+$controller = $controllerName::instance();
 $task = $route->task;
 $controller->$task();
 ?>

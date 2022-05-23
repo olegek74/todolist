@@ -2,9 +2,12 @@
 
 namespace App\Models;
 use App\DB;
+use App\Objects;
 
-class TaskModel
+class TaskModel extends Objects
 {
+
+    protected static $object;
 
     public function __construct()
     {
@@ -59,6 +62,11 @@ class TaskModel
     public function delete($id){
         $query = 'DELETE FROM `tasks` WHERE `id` = '.$id.'';
         $res = DB::query($query);
+    }
+
+    public static function instance(){
+        self::$object = parent::_instance(__CLASS__);
+        return self::$object;
     }
 }
 ?>

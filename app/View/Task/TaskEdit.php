@@ -11,7 +11,7 @@ class taskEdit {
     private $allow_add;
     private function allowAdd(){
         if(is_null($this->allow_add)){
-            $user = new User();
+            $user = User::instance();
             $this->allow_add = $user->auth();
         }
         return $this->allow_add;

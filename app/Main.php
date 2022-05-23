@@ -5,6 +5,8 @@
 
  class Main
  {
+     private static $object;
+
      public function handle($array, $name){
          if(isset($array[$name])){
              $value = trim($array[$name]);
@@ -49,6 +51,13 @@
              $value = $values[1];
              $_SESSION[$name] = $value;
          }
+     }
+
+     public static function instance(){
+         if(!self::$object){
+             self::$object = new self;
+         }
+         return self::$object;
      }
  }
 ?>

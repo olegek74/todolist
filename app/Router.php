@@ -4,8 +4,8 @@ namespace App;
 defined('ROOTPATH') or die('access denied');
 
 class Router {
-    public $controller = 'App\Controllers\TaskController';
-    public $task = 'getList';
+    private $controller = 'App\Controllers\TaskController';
+    private $task = 'getList';
     public function __construct(){
         $ctrl = '';
         if(isset($_GET['ctrl'])){
