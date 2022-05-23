@@ -50,10 +50,15 @@ class TaskModel
     }
 
     public function getOne($id){
-        $query = 'SELECT * FROM `tasks` WHERE `id` = '.intval($id).'';
+        $query = 'SELECT * FROM `tasks` WHERE `id` = '.$id.'';
         $res = DB::query($query);
         $return  = mysqli_fetch_assoc($res);
         return $return;
+    }
+
+    public function delete($id){
+        $query = 'DELETE FROM `tasks` WHERE `id` = '.$id.'';
+        $res = DB::query($query);
     }
 }
 ?>

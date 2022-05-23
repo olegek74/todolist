@@ -15,6 +15,12 @@
          return false;
      }
 
+     public function getInt($name, $default = 0){
+         $value = $this->get($name, $default);
+         if($value !== false) return intval($value);
+         return $default;
+     }
+
      public function get($name, $default = ''){
          if($value = $this->handle($_GET, $name)) return $value;
          return $default;

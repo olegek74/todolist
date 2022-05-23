@@ -2,11 +2,23 @@
 
 namespace App\View\Task;
 
+use App\Controllers\UserController as User;
+
 defined('ROOTPATH') or die('access denied');
 
 class TaskList {
-    private $allowadd = null;
+    private $allow_delete = null;
+
+    private function allowDelete(){
+        if(is_null($this->allow_delete)){
+            $user = new User();
+            $this->allow_delete = $user->auth();
+        }
+        return $this->allow_delete;
+    }
+
     public function tasklist($list){
+        $allow_delete = $this->allowDelete();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $paginator = $this->pagination();
         $sort = $this->sort();

@@ -20,7 +20,7 @@ class TaskController {
 
     public function getList(){
 
-        self::$list_start = $this->main->get('list_start', 0);
+        self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
         $model = new Model;
         $list = $model->getList(self::$list_start, self::$sort);
@@ -40,14 +40,14 @@ class TaskController {
         $err = false;
         $data = [];
 
-        if (!$data['task_id'] = $this->main->get('id', false)) {
+        if (!$data['task_id'] = $this->main->getInt('id', false)) {
             $err = true;
         }
         if (!$data['description'] = $this->main->get('description', false)) {
             $err = true;
         }
 
-        $data['status'] = $this->main->get('status', 0);
+        $data['status'] = $this->main->getInt('status', 0);
 
         if (!$err) {
             $model = new Model;
@@ -69,7 +69,7 @@ class TaskController {
             $err = false;
             $data = [];
 
-            if (!$data['user_id'] = $this->main->get('user_id', false)) {
+            if (!$data['user_id'] = $this->main->getInt('user_id', false)) {
                 $err = true;
             }
 
@@ -77,7 +77,7 @@ class TaskController {
                 $err = true;
             }
 
-            $data['status'] = $this->main->get('status', 0);
+            $data['status'] = $this->main->getInt('status', 0);
 
             if (!$err) {
                 $model = new Model;
@@ -89,8 +89,18 @@ class TaskController {
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
         header('location:index.php');
     }
+    public function delete(){
+        if($this->auth()) {
+            if ($id = $this->main->getInt('id', false)) {
+                $model = new Model;
+                $model->delete($id);
+                $this->main->setSess('message', 'success|Task #' . $id . ' has been deleted');
+            }
+        } else $this->main->setSess('message', 'error|Delete error.You do not have access');
+        header('location:index.php');
+    }
     public function viewedit(){
-        if($id = $this->main->get('id', false)){
+        if($id = $this->main->getInt('id', false)){
             $model = new Model;
             $task = $model->getOne($id);
             $view = new Edit;

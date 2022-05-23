@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
 <?php
-if($allowadd){
+if($allow_add){
  ?>
 
         <div class="display-6 mb-3">Add task</div>

@@ -8,17 +8,17 @@ defined('ROOTPATH') or die('access denied');
 
 class taskEdit {
 
-    private $allowadd;
+    private $allow_add;
     private function allowAdd(){
-        if(is_null($this->allowadd)){
+        if(is_null($this->allow_add)){
             $user = new User();
-            $this->allowadd = $user->auth();
+            $this->allow_add = $user->auth();
         }
-        return $this->allowadd;
+        return $this->allow_add;
     }
 
     public function task_add($userlist){
-        $allowadd = $this->allowAdd();
+        $allow_add = $this->allow_add();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';

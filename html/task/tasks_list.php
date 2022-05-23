@@ -12,7 +12,12 @@ if(!empty($list)){ ?>
                 <td style="width:60%">DESCRIPTION</td>
                 <td style="width:10%">STATUS<?php echo $sort;?><br><a href="index.php">&nbsp;Refresh</a></td>
                 <td style="width:15%">USER EMAIL</td>
-                <td style="width:10%">EDIT</td>
+                <?php if(!$allow_delete){ ?>
+                    <td style="width:10%">EDIT</td>
+                <?php } else { ?>
+                <td style="width:5%">EDIT</td>
+                <td style="width:5%">Delete</td>
+                <?php } ?>
             </tr>
             <?php
             foreach($list as $row){ ?>
@@ -22,6 +27,7 @@ if(!empty($list)){ ?>
                     <td><?php echo $row['status'];?></td>
                     <td><?php echo $row['email'];?></td>
                     <td><div data-id="<?php echo $row['id'];?>" class="edit"><a class="btn btn-success btn-sm" href="/?ctrl=task&task=viewedit&id=<?php echo $row['id'];?>">Edit</a></div></td>
+                    <?php if($allow_delete){ ?><td><a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=task&task=delete&id=<?php echo $row['id'];?>">Delete</a></td><?php }?>
                 </tr>
             <?php } ?>
         </table>
