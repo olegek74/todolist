@@ -17,13 +17,21 @@ class taskEdit {
         return $this->allow_add;
     }
 
-    public function task_add($userlist){
-        $allow_add = $this->allowAdd();
+    public function task_add(){
+        $allowass = $this->allowAdd();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
-        require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
+        if($allowass){
+            $userlist = \App\Models\UserModel::instance()->getList();
+            require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
+        }
+        else require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_deny.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
     public function task_edit($data){
+        $userlist = false;
+        if($this->allowAdd()) {
+            $userlist = \App\Models\UserModel::instance()->getList();
+        }
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'task_edit.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';

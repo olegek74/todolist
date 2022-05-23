@@ -32,8 +32,10 @@ if(!empty($list)){ ?>
             <?php } ?>
         </table>
     </div>
-    <?php
+    <div class="row justify-content-end"><?php
+    require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'selector.php';
     echo $paginator;
+    ?></div><?php
 } else {
     echo "<p>Task list is empty</p>";
     ?><?php

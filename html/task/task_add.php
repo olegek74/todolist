@@ -1,10 +1,6 @@
 <?php defined('ROOTPATH') or die('access denied'); ?>
 <div class="row">
     <div class="col-12 col-md-6">
-<?php
-if($allow_add){
- ?>
-
         <div class="display-6 mb-3">Add task</div>
         <form action="index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="task" />
@@ -29,11 +25,5 @@ if($allow_add){
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-
-<?php } else { ?>
-
-    Access denied! You need to login
-
-<?php } ?>
     </div>
 </div>

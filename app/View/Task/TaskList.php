@@ -25,6 +25,7 @@ class TaskList {
         $paginator = $this->pagination();
         $sort = $this->sort();
         $messages = TaskController::$messages;
+        $curr_list_opt = TaskController::$curr_list_opt;
         require_once ROOTPATH.DS.'html'.DS.'task'. DS .'tasks_list.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
@@ -43,12 +44,13 @@ class TaskList {
     private function pagination(){
         $count = TaskModel::getTotal();
         $list_start = TaskController::$list_start;
+        $curr_list_opt =  TaskController::$curr_list_opt;
         $sort = TaskController::$sort;
         $append = '';
         if($sort == 'asc' || $sort == 'desc'){
             $append = '&sort='.$sort;
         }
-        $numpages = $count/3;
+        $numpages = $count/$curr_list_opt;
         $num = intval($numpages);
         if($numpages != $num) $numpages = $num+1;
         ob_start();

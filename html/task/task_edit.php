@@ -10,6 +10,19 @@
                 <label for="status" class="form-label">Status</label>
                 <input type="number" class="form-control" id="status" name="status" value="<?php echo $data['status'];?>">
             </div>
+            <?php if(!empty($userlist)){ ?>
+                <div class="mb-3">
+                    <label for="user_id" class="form-label">User</label>
+                    <select id="user_id" class="form-select" name="user_id">
+                        <?php foreach($userlist as $user){
+                                $selected = ($data['user_id'] == $user['uid']) ? ' selected' : '';?>
+                                <option<?php echo $selected;?> value="<?php echo $user['uid'];?>">
+                                <?php echo $user['name'];?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+            <?php } ?>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" rows="3" name="description"><?php echo trim($data['description']);?></textarea>

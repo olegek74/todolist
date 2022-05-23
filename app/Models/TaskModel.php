@@ -29,7 +29,7 @@ class TaskModel extends Objects
         return $count;
     }
 
-    public function getList($list_start = 0, $sort = false){
+    public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
         $select = 'SELECT t.*, `u`.`email` FROM `tasks` AS `t` LEFT JOIN `users` AS `u` ON `t`.`user_id` = `u`.`id`';
         if($sort == 'asc' || $sort == 'desc'){
@@ -38,7 +38,7 @@ class TaskModel extends Objects
         else {
             $select .= ' ORDER BY `t`.`id` ASC';
         }
-        $select .= ' LIMIT '.$list_start.',3';
+        $select .= ' LIMIT '.$list_start.','.$curr_list_opt;
         $res = DB::query($select);
         $list = [];
         while($row = $res->fetch_assoc()){
@@ -48,7 +48,9 @@ class TaskModel extends Objects
     }
 
     public function edit($data){
-        $query = 'UPDATE `tasks` SET `description`="'.DB::escape($data['description']).'", `status` = '.intval($data['status']).' WHERE `id` = '.intval($data['task_id']).'';
+        $query = 'UPDATE `tasks` SET `description`="'.DB::escape($data['description']).'", `status` = '.intval($data['status']);
+        if(isset($data['user_id'])) $query .= ', user_id = '.$data['user_id'];
+        $query .= ' WHERE `id` = '.intval($data['task_id']).'';
         DB::query($query);
     }
 
