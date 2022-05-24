@@ -33,6 +33,10 @@ class DB {
         return mysqli_query(self::$db, $query);
     }
 
+    public static function insert_id(){
+        return mysqli_insert_id(self::$db);
+    }
+
     public static function escape($string){
         return mysqli_real_escape_string(self::$db, $string);
     }

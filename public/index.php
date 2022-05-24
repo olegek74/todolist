@@ -11,6 +11,12 @@ $route = \App\Router::instance();
 
 $controllerName = $route->controller;
 
+if(!class_exists($controllerName)){
+    $controller = new \App\Objects;
+    $controller->not_page();
+    die;
+}
+
 $controller = $controllerName::instance();
 $task = $route->task;
 $controller->$task();

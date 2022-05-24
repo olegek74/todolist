@@ -3,12 +3,15 @@
 namespace App\View\Task;
 
 use App\Controllers\UserController as User;
+use App\Controllers\MenuController;
+use App\Models\UserModel;
 
 defined('ROOTPATH') or die('access denied');
 
 class taskEdit {
 
     private $allow_add;
+    public $task_data;
     private function allowAdd(){
         if(is_null($this->allow_add)){
             $user = User::instance();
@@ -19,24 +22,28 @@ class taskEdit {
 
     public function task_add(){
         $allowass = $this->allowAdd();
-        $menu = \App\Controllers\MenuController::instance();
+        $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         if($allowass){
-            $userlist = \App\Models\UserModel::instance()->getList();
+            $userlist = UserModel::instance()->getList();
             require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
         }
-        else require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_deny.php';
+        else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
-    public function task_edit($data){
+    public function task_edit(){
         $userlist = false;
         if($this->allowAdd()) {
-            $userlist = \App\Models\UserModel::instance()->getList();
+            $userlist = UserModel::instance()->getList();
         }
-        $menu = \App\Controllers\MenuController::instance();
+        $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'task_edit.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
+    }
+    public function __get($name){
+        if(!empty($this->task_data) && isset($this->task_data[$name])) return $this->task_data[$name];
+        return '';
     }
 }
 ?>

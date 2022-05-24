@@ -2,7 +2,7 @@
     <h1 class="display-6">List of Tasks</h1>
     <br>
 <?php
-if(!empty($list)){ ?>
+if(!empty($this->tasks_list)){ ?>
     <div class="table-responsive">
 
         <?php require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php'; ?>
@@ -20,7 +20,7 @@ if(!empty($list)){ ?>
                 <?php } ?>
             </tr>
             <?php
-            foreach($list as $row){ ?>
+            foreach($this->tasks_list as $row){ ?>
                 <tr>
                     <td><?php echo $row['id'];?></td>
                     <td><?php echo $row['description'];?></td>

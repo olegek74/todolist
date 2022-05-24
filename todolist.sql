@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `managers` (
-  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `login` varchar(31) CHARACTER SET utf8mb4 NOT NULL,
   `password` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `status` int(2) NOT NULL
@@ -38,7 +38,7 @@ CREATE TABLE `managers` (
 -- Дамп данных таблицы `managers`
 --
 
-INSERT INTO `managers` (`id`, `login`, `password`, `status`) VALUES
+INSERT INTO `managers` (`user_id`, `login`, `password`, `status`) VALUES
 (1, 'admin', '202cb962ac59075b964b07152d234b70', 1),
 (2, 'adgj1', '289dff07669d7a23de0ef88d2f7129e7', 0);
 

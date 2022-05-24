@@ -84,6 +84,59 @@ class UserController extends Objects{
         $view->viewAuth($this->auth());
     }
 
+    public function viewadd(){
+        self::$messages[] = $this->main->getSess('message', null);
+        $this->main->setSess('message', null);
+        $view = new \App\View\User\User;
+        $view->userdata = $this->main->getSess('userdata', null);
+        $this->main->setSess('userdata', null);
+        $view->viewAdd();
+    }
+
+    public function add(){
+        $err = [];
+        $data = [];
+
+        $data['manager'] = $this->main->get('manager', false);
+
+        if($data['manager']) {
+            if (!$data['login'] = $this->main->get('login', false)) {
+                $err[2] = 'Login is missing';
+                unset($data['login']);
+            }
+            if (!$data['password'] = $this->main->get('password', false)) {
+                $err[3] = 'Password is missing';
+                unset($data['password']);
+            }
+        }
+        if(!$data['name'] = $this->main->get('name', false)){
+            $err[4] = 'Name is missing';
+            unset($data['name']);
+        }
+        if(!$data['email'] = $this->main->get('email', false)){
+            $err[1] = 'Email is missing';
+            unset($data['email']);
+        }
+
+        $this->main->setSess('userdata', $data);
+
+        if(empty($err)){
+            $model = Model::instance();
+            if($model->save($data)){
+                $this->main->setSess('message', 'success|User added successfully');
+            }
+            else $this->main->setSess('message', 'error|Error adding user');
+        }
+        else {
+            $mess = 'Error form';
+            foreach($err as $er){
+                $mess .= '<br>'.$er.'';
+            }
+            $this->main->setSess('message', 'error|'.$mess);
+        }
+        header('location:index.php?ctrl=user&task=viewadd');
+    }
+
     public static function instance(){
         self::$object = parent::_instance(__CLASS__);
         return self::$object;

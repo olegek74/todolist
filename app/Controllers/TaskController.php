@@ -26,12 +26,11 @@ class TaskController extends Objects {
 
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
-        $model = Model::instance();
-        $list = $model->getList(self::$list_start, self::$sort, self::$curr_list_opt);
         $view = new TList;
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
-        $view->tasklist($list);
+        $view->tasks_list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
+        $view->tasklist();
     }
 
     public function auth(){
@@ -97,6 +96,7 @@ class TaskController extends Objects {
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
         header('location:index.php');
     }
+
     public function delete(){
         if($this->auth()) {
             if ($id = $this->main->getInt('id', false)) {
@@ -104,16 +104,16 @@ class TaskController extends Objects {
                 $model->delete($id);
                 $this->main->setSess('message', 'success|Task #' . $id . ' has been deleted');
             }
-        } else $this->main->setSess('message', 'error|Delete error.You do not have access');
+        }
+        else $this->main->setSess('message', 'error|Delete error.You do not have access');
         header('location:index.php');
     }
 
     public function viewedit(){
         if($id = $this->main->getInt('id', false)){
-            $model = Model::instance();
-            $task = $model->getOne($id);
             $view = new Edit;
-            $view->task_edit($task);
+            $view->task_data = Model::instance()->getOne($id);
+            $view->task_edit();
         }
     }
 

@@ -5,11 +5,13 @@ namespace App\View\Task;
 use App\Controllers\UserController as User;
 use App\Models\TaskModel;
 use App\Controllers\TaskController;
+use App\Controllers\MenuController;
 
 defined('ROOTPATH') or die('access denied');
 
 class TaskList {
     private $allow_delete = null;
+    public $tasks_list;
 
     private function allowDelete(){
         if(is_null($this->allow_delete)){
@@ -19,9 +21,9 @@ class TaskList {
         return $this->allow_delete;
     }
 
-    public function tasklist($list){
+    public function tasklist(){
         $allow_delete = $this->allowDelete();
-        $menu = \App\Controllers\MenuController::instance();
+        $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $paginator = $this->pagination();
         $sort = $this->sort();
