@@ -7,8 +7,6 @@ use App\Model;
 class TaskModel extends Model
 {
 
-    protected static $object;
-
     public function __construct()
     {
         parent::__construct();
@@ -56,9 +54,8 @@ class TaskModel extends Model
         parent::delete($id, $table);
     }
 
-    public static function instance(){
-        self::$object = parent::_instance(__CLASS__);
-        return self::$object;
+    public static function instance($class = __CLASS__){
+        return parent::instance($class);
     }
 }
 ?>

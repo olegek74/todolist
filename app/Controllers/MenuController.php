@@ -14,7 +14,7 @@ class MenuController extends Objects {
     protected $controler;
     protected $task;
     protected $ctrl;
-    protected static $object;
+
     public $items = [
         'index.php'=>'Task list',
         'index.php?ctrl=task&task=viewadd'=>'Add Task',
@@ -64,8 +64,7 @@ class MenuController extends Objects {
         return false;
     }
 
-    public static function instance(){
-        self::$object = parent::_instance(__CLASS__);
-        return self::$object;
+    public static function instance($class = __CLASS__){
+        return parent::instance($class);
     }
 }

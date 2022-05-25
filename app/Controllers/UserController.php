@@ -10,8 +10,6 @@ defined('ROOTPATH') or die('access denied');
 
 class UserController extends Controller{
 
-    protected static $object;
-
     public function __construct()
     {
         parent::__construct();
@@ -167,9 +165,8 @@ class UserController extends Controller{
         else header('location:index.php?ctrl=user&task=viewadd');
     }
 
-    public static function instance(){
-        self::$object = parent::_instance(__CLASS__);
-        return self::$object;
+    public static function instance($class = __CLASS__){
+        return parent::instance($class);
     }
 }
     ?>

@@ -12,8 +12,8 @@ class Model extends Objects {
         DB::instance();
     }
 
-    public static function _instance($class){
-        return parent::_instance($class);
+    public static function instance($class){
+        return parent::instance($class);
     }
 
     public static function getTotal($table){

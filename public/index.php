@@ -20,4 +20,5 @@ if(!class_exists($controllerName)){
 $controller = $controllerName::instance();
 $task = $route->task;
 $controller->$task();
+/*var_dump(array_keys(\App\Objects::$objects));*/
 ?>

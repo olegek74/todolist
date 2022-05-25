@@ -10,10 +10,7 @@ defined('ROOTPATH') or die('access denied');
 
 class TaskController extends Controller{
 
-    protected static $object;
-
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
 
@@ -107,9 +104,8 @@ class TaskController extends Controller{
         }
     }
 
-    public static function instance(){
-        self::$object = parent::_instance(__CLASS__);
-        return self::$object;
+    public static function instance($class = __CLASS__){
+        return parent::instance($class);
     }
 }
 

@@ -21,8 +21,8 @@ class Controller extends Objects {
         self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
     }
 
-    public static function _instance($class){
-        return parent::_instance($class);
+    public static function instance($class){
+        return parent::instance($class);
     }
 
     public function auth(){
