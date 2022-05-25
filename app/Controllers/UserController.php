@@ -97,6 +97,8 @@ class UserController extends Controller{
     }
 
     public function viewlist(){
+        self::$messages[] = $this->main->getSess('message', null);
+        $this->main->setSess('message', null);
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
         $view = new Users;
@@ -106,6 +108,16 @@ class UserController extends Controller{
 
     public function viewedit(){
         $this->viewadd();
+    }
+
+    public function delete(){
+        if($this->auth()) {
+            $id = $this->main->getInt('id', false);
+            Model::instance()->delete($id);
+            $this->main->setSess('message', 'success|User deleted successfully');
+        }
+        else $this->main->setSess('message', 'error|Delete error.You do not have access');
+        header('location:index.php?ctrl=user&task=viewlist');
     }
 
     public function update(){
