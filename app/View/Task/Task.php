@@ -8,7 +8,7 @@ use App\Models\UserModel;
 
 defined('ROOTPATH') or die('access denied');
 
-class taskEdit {
+class Task {
 
     private $allow_add;
     public $task_data;

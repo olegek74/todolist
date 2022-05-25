@@ -3,8 +3,8 @@ namespace App\Controllers;
 
 use App\Objects;
 use \App\Models\TaskModel as Model;
-use \App\View\Task\TaskList as TList;
-use \App\View\Task\TaskEdit as Edit;
+use \App\View\Task\Tasks;
+use \App\View\Task\Task;
 use \App\Main;
 
 defined('ROOTPATH') or die('access denied');
@@ -22,11 +22,11 @@ class TaskController extends Objects {
         self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
     }
 
-    public function getList(){
+    public function viewlist(){
 
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
-        $view = new TList;
+        $view = new Tasks;
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
         $view->tasks_list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
@@ -67,7 +67,7 @@ class TaskController extends Objects {
     }
 
     public function viewadd() {
-        $view = new Edit;
+        $view = new Task;
         $view->task_add();
     }
 
@@ -111,7 +111,7 @@ class TaskController extends Objects {
 
     public function viewedit(){
         if($id = $this->main->getInt('id', false)){
-            $view = new Edit;
+            $view = new Task;
             $view->task_data = Model::instance()->getOne($id);
             $view->task_edit();
         }

@@ -9,7 +9,7 @@ use App\Controllers\MenuController;
 
 defined('ROOTPATH') or die('access denied');
 
-class TaskList {
+class Tasks {
     private $allow_delete = null;
     public $tasks_list;
 
@@ -32,30 +32,21 @@ class TaskList {
         require_once ROOTPATH.DS.'html'.DS.'task'. DS .'tasks_list.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
+
     private function sort(){
         $sort = TaskController::$sort;
-        if(!$sort || $sort == 'desc') {
-            $sort = 'asc';
-            $icon = '&uarr;';
-        }
-        else {
-            $sort = 'desc';
-            $icon = '&darr;';
-        }
-        return '<a href="index.php?sort='.$sort.'">&nbsp;'.$icon.'&nbsp;</a>';
+        $main_link = '';
+        ob_start();
+        require ROOTPATH.DS.'html'.DS.'utils'. DS .'sort.php';
+        return ob_get_clean();
     }
+
     private function pagination(){
         $count = TaskModel::getTotal();
         $list_start = TaskController::$list_start;
         $curr_list_opt =  TaskController::$curr_list_opt;
         $sort = TaskController::$sort;
-        $append = '';
-        if($sort == 'asc' || $sort == 'desc'){
-            $append = '&sort='.$sort;
-        }
-        $numpages = $count/$curr_list_opt;
-        $num = intval($numpages);
-        if($numpages != $num) $numpages = $num+1;
+        $main_link = '';
         ob_start();
         require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'paginator.php';
         return ob_get_clean();

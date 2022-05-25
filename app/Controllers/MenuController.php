@@ -19,7 +19,8 @@ class MenuController extends Objects {
         'index.php'=>'Task list',
         'index.php?ctrl=task&task=viewadd'=>'Add Task',
         'index.php?ctrl=user&task=viewauth'=>'Login',
-        'index.php?ctrl=user&task=viewadd'=>'Add user'
+        'index.php?ctrl=user&task=viewadd'=>'Add user',
+        'index.php?ctrl=user&task=viewlist'=>'Users'
     ];
 
     public function __construct(){

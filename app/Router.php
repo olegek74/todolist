@@ -8,7 +8,7 @@ defined('ROOTPATH') or die('access denied');
 class Router {
     public $controller_default = 'App\Controllers\TaskController';
     private $controller;
-    public $task_default = 'getList';
+    public $task_default = 'viewlist';
     private $task;
     private static $object;
     public function __construct(){

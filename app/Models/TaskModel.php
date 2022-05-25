@@ -2,16 +2,16 @@
 
 namespace App\Models;
 use App\DB;
-use App\Objects;
+use App\Model;
 
-class TaskModel extends Objects
+class TaskModel extends Model
 {
 
     protected static $object;
 
     public function __construct()
     {
-        DB::instance();
+        parent::__construct();
     }
 
     public function addNew($data) {
@@ -21,12 +21,8 @@ class TaskModel extends Objects
        DB::query($query);
     }
 
-    public static function getTotal(){
-        $query = 'SELECT COUNT(*) AS cnt FROM `tasks`';
-        $res = DB::query($query);
-        $result = mysqli_fetch_assoc($res);
-        $count = $result['cnt'];
-        return $count;
+    public static function getTotal($table = 'tasks'){
+        return parent::getTotal($table);
     }
 
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
@@ -39,12 +35,7 @@ class TaskModel extends Objects
             $select .= ' ORDER BY `t`.`id` ASC';
         }
         $select .= ' LIMIT '.$list_start.','.$curr_list_opt;
-        $res = DB::query($select);
-        $list = [];
-        while($row = $res->fetch_assoc()){
-            $list[] = $row;
-        }
-        return $list;
+        return parent::_getList($select);
     }
 
     public function edit($data){
@@ -61,9 +52,8 @@ class TaskModel extends Objects
         return $return;
     }
 
-    public function delete($id){
-        $query = 'DELETE FROM `tasks` WHERE `id` = '.$id.'';
-        $res = DB::query($query);
+    public function delete($id, $table = 'tasks'){
+        parent::delete($id, $table);
     }
 
     public static function instance(){

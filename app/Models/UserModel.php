@@ -2,16 +2,16 @@
 
 namespace App\Models;
 use App\DB;
-use App\Objects;
+use App\Model;
 
-class UserModel extends Objects
+class UserModel extends Model
 {
 
     protected static $object;
 
     public function __construct()
     {
-        DB::instance();
+        parent::__construct();
     }
 
     private function prepare($login){
@@ -31,15 +31,33 @@ class UserModel extends Objects
         return false;
     }
 
+    public function getDubleLogin($login){
+        $query = 'SELECT * FROM `managers` WHERE `login` = "'.DB::escape($login).'"';
+        if(mysqli_fetch_assoc(DB::query($query))) return true;
+        return false;
+    }
 
-    public function getList(){
-        $list = [];
-        $query = 'SELECT u.id AS uid, u.*, m.* FROM `users` AS u LEFT JOIN `managers` AS m ON (u.`id` = m.`user_id`)';
-        $res = DB::query($query);
-        while($row = mysqli_fetch_assoc($res)){
-            $list[] = $row;
+    public function getDubleEmail($email){
+        $query = 'SELECT * FROM `users` WHERE `email` = "'.DB::escape($email).'"';
+        if(mysqli_fetch_assoc(DB::query($query))) return true;
+        return false;
+    }
+
+    public static function getTotal($table = 'users'){
+        return parent::getTotal($table);
+    }
+
+    public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
+
+        $select = 'SELECT u.*, `m`.`login` FROM `users` AS `u` LEFT JOIN `managers` AS `m` ON `m`.`user_id` = `u`.`id`';
+        if($sort == 'asc' || $sort == 'desc'){
+            $select .= ' ORDER BY `u`.`name` '.strtoupper($sort).', `u`.`id` ASC';
         }
-        return $list;
+        else {
+            $select .= ' ORDER BY `u`.`id` ASC';
+        }
+        $select .= ' LIMIT '.$list_start.','.$curr_list_opt;
+        return parent::_getList($select);
     }
 
     public function save($data){
@@ -57,6 +75,10 @@ class UserModel extends Objects
             return true;
         }
         return false;
+    }
+
+    public function delete($id, $table = 'users'){
+        parent::delete($id, $table);
     }
 
     public static function instance(){
