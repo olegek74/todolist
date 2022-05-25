@@ -162,6 +162,7 @@ class UserController extends Controller{
                 $this->main->setSess('message', 'error|' . $mess);
             }
         }
+
         if($task == 'update' && $data['id']) header('location:index.php?ctrl=user&task=viewedit&id='.$data['id']);
         else header('location:index.php?ctrl=user&task=viewadd');
     }

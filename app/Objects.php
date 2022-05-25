@@ -12,13 +12,4 @@ class Objects {
         }
         return self::$objects[$class];
     }
-
-    public function __call($name, $value){
-        $this->not_page();
-    }
-
-    public function not_page(){
-        $view = new \App\View\NotPage;
-        $view->display();
-    }
 }

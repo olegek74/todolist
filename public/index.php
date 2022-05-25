@@ -12,7 +12,7 @@ $route = \App\Router::instance();
 $controllerName = $route->controller;
 
 if(!class_exists($controllerName)){
-    $controller = new \App\Objects;
+    $controller = new \App\Controller;
     $controller->not_page();
     die;
 }

@@ -28,4 +28,13 @@ class Controller extends Objects {
     public function auth(){
         return \App\Controllers\UserController::instance()->auth();
     }
+
+    public function __call($name, $value){
+        $this->not_page();
+    }
+
+    public function not_page(){
+        $view = new \App\View\NotPage;
+        $view->display();
+    }
 }
