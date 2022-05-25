@@ -49,7 +49,7 @@ class UserModel extends Model
 
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
-        $select = 'SELECT u.*, `m`.`login` FROM `users` AS `u` LEFT JOIN `managers` AS `m` ON `m`.`user_id` = `u`.`id`';
+        $select = 'SELECT u.*, u.`id` AS uid, `m`.`login` FROM `users` AS `u` LEFT JOIN `managers` AS `m` ON `m`.`user_id` = `u`.`id`';
         if($sort == 'asc' || $sort == 'desc'){
             $select .= ' ORDER BY `u`.`name` '.strtoupper($sort).', `u`.`id` ASC';
         }
