@@ -1,30 +1,20 @@
 <?php
 namespace App\Controllers;
 
-use App\Objects;
+use App\Controller;
 use App\Models\UserModel as Model;
-use App\Main;
 use App\View\User\User;
 use App\View\User\Users;
 
 defined('ROOTPATH') or die('access denied');
 
-class UserController extends Objects{
-
-    public static $messages = [];
-
-    private $main;
+class UserController extends Controller{
 
     protected static $object;
 
-    public static $list_start;
-    public static $curr_list_opt = 3;
-    public static $sort = false;
-
     public function __construct()
     {
-        $this->main = Main::instance();
-        self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
+        parent::__construct();
     }
 
     public function login(){
@@ -72,9 +62,10 @@ class UserController extends Objects{
 
             if(!$auth){
                 $usermodel = Model::instance();
-                if($usermodel->getAuth($login, $password)){
+                if($user = $usermodel->getAuth($login, $password)){
                     $this->main->setSess('password', md5($password));
                     $this->main->setSess('login', $login);
+                    $this->main->setSess('status', $user['status']);
                     setcookie('login', $login, time()+3600, '/');
                     setcookie('password', $password, time()+3600, '/');
                     $auth = true;
@@ -95,8 +86,15 @@ class UserController extends Objects{
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
         $view = new User;
-        $view->userdata = $this->main->getSess('userdata', null);
-        $this->main->setSess('userdata', null);
+        if($id = $this->main->getInt('id', false)){
+            $view->userdata = Model::instance()->getUserData($id);
+            $view->title = 'Edit user';
+        }
+        else {
+            $view->userdata = $this->main->getSess('userdata', null);
+            $this->main->setSess('userdata', null);
+            $view->title = 'Add user';
+        }
         $view->viewAdd();
     }
 
@@ -108,6 +106,13 @@ class UserController extends Objects{
         $view->viewList();
     }
 
+    public function viewedit(){
+        $this->viewadd();
+    }
+
+    public function update(){
+        $this->add();
+    }
     public function add(){
 
         if($this->auth()) {
@@ -116,13 +121,15 @@ class UserController extends Objects{
             $model = Model::instance();
 
             $data['manager'] = $this->main->get('manager', false);
+            $data['id'] = $this->main->getInt('id', false);
+            $task = $this->main->get('task', 'add');
 
             if ($data['manager']) {
                 if (!$data['login'] = $this->main->get('login', false)) {
                     $err[2] = 'Login is missing';
                 }
                 else {
-                    if($model->getDubleLogin($data['login'])) {
+                    if($model->getDubleLogin($data['login'], $data['id'])) {
                         $err[6] = 'Login already exists';
                     }
                 }
@@ -136,15 +143,15 @@ class UserController extends Objects{
             if (!$data['email'] = $this->main->get('email', false)) {
                 $err[1] = 'Email is missing';
             }
-            if($model->getDubleEmail($data['email'])){
+            if($model->getDubleEmail($data['email'], $data['id'])){
                 $err[5] = 'Email already exists';
             }
-
             $this->main->setSess('userdata', $data);
 
             if (empty($err)) {
                 if ($model->save($data)) {
-                    $this->main->setSess('message', 'success|User added successfully');
+                    if($task == 'update') $this->main->setSess('message', 'success|User edit successfully');
+                    else $this->main->setSess('message', 'success|User added successfully');
                 }
                 else $this->main->setSess('message', 'error|Error adding user');
             } else {
@@ -155,7 +162,8 @@ class UserController extends Objects{
                 $this->main->setSess('message', 'error|' . $mess);
             }
         }
-        header('location:index.php?ctrl=user&task=viewadd');
+        if($task == 'update' && $data['id']) header('location:index.php?ctrl=user&task=viewedit&id='.$data['id']);
+        else header('location:index.php?ctrl=user&task=viewadd');
     }
 
     public static function instance(){

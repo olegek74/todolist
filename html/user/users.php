@@ -13,7 +13,7 @@ if(!empty($this->users_list)){ ?>
                 <td style="width:10%">LOGIN<?php echo $sort;?><br><a href="index.php?ctrl=user&task=viewlist">&nbsp;Refresh</a></td>
                 <td style="width:15%">EMAIL</td>
                 <?php if(!$allow_delete){ ?>
-                    <td style="width:10%">EDIT</td>
+                    <td style="width:10%"></td>
                 <?php } else { ?>
                     <td style="width:5%">EDIT</td>
                     <td style="width:5%">Delete</td>
@@ -26,8 +26,10 @@ if(!empty($this->users_list)){ ?>
                     <td><?php echo $row['name'];?></td>
                     <td><?php echo $row['login'];?></td>
                     <td><?php echo $row['email'];?></td>
+                    <?php if($allow_delete){ ?>
                     <td><div data-id="<?php echo $row['id'];?>" class="edit"><a class="btn btn-success btn-sm" href="/?ctrl=user&task=viewedit&id=<?php echo $row['id'];?>">Edit</a></div></td>
-                    <?php if($allow_delete){ ?><td><a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=user&task=delete&id=<?php echo $row['id'];?>">Delete</a></td><?php }?>
+                    <td><a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=user&task=delete&id=<?php echo $row['id'];?>">Delete</a></td>
+                    <?php } else { ?><td></td><?php } ?>
                 </tr>
             <?php } ?>
         </table>

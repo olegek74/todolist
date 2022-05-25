@@ -1,7 +1,7 @@
 <?php defined('ROOTPATH') or die('access denied'); ?>
 <div class="row">
     <div class="col-12 col-md-6">
-        <div class="display-6 mb-3">Add user</div>
+        <div class="display-6 mb-3"><?php echo $this->title;?></div>
         <?php
         require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php';
         ?>
@@ -20,7 +20,7 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" value="<?php echo $this->password;?>">
+                <input type="password" class="form-control" id="password" name="password" value="">
             </div>
             <div class="mb-3">
                 <input class="form-check-input" type="checkbox"<?php echo ($this->manager) ? " checked" : ""; ?> value="1" id="manager" name="manager">
@@ -29,7 +29,12 @@
                 </label>
             </div>
             <input type="hidden" name="ctrl" value="user" />
+            <?php if($this->id){ ?>
+            <input type="hidden" name="id" value="<?php echo $this->id;?>" />
+            <input type="hidden" name="task" value="update" />
+            <?php } else { ?>
             <input type="hidden" name="task" value="add" />
+            <?php } ?>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>

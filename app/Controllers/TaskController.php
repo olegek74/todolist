@@ -1,25 +1,20 @@
 <?php
 namespace App\Controllers;
 
-use App\Objects;
+use App\Controller;
 use \App\Models\TaskModel as Model;
 use \App\View\Task\Tasks;
 use \App\View\Task\Task;
-use \App\Main;
 
 defined('ROOTPATH') or die('access denied');
 
-class TaskController extends Objects {
-    public static $list_start;
-    public static $sort = false;
-    public static $curr_list_opt = 3;
-    public static $messages = [];
-    private $main;
+class TaskController extends Controller{
+
     protected static $object;
+
     public function __construct()
     {
-        $this->main = Main::instance();
-        self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
+        parent::__construct();
     }
 
     public function viewlist(){
@@ -31,11 +26,6 @@ class TaskController extends Objects {
         $this->main->setSess('message', null);
         $view->tasks_list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
         $view->tasklist();
-    }
-
-    public function auth(){
-        $user = \App\Controllers\UserController::instance();
-        return $user->auth();
     }
 
     public function edit(){

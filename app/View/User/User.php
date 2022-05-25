@@ -9,6 +9,7 @@ defined('ROOTPATH') or die('access denied');
 class User {
 
     public $userdata = [];
+    public $title;
 
     public function viewAuth($isauth){
         $menu = MenuController::instance();
