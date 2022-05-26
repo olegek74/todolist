@@ -14,8 +14,7 @@ class Task {
     public $task_data;
     private function allowAdd(){
         if(is_null($this->allow_add)){
-            $user = User::instance();
-            $this->allow_add = $user->auth();
+            $this->allow_add = User::instance()->auth();
         }
         return $this->allow_add;
     }
