@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 
-use App\Objects;
-use \App\Main;
-use App\Router;
+use Kernel\Objects;
+use Kernel\Main;
+use Kernel\Router;
 
 defined('ROOTPATH') or die('access denied');
 
@@ -17,10 +17,10 @@ class MenuController extends Objects {
 
     public $items = [
         'index.php'=>'Task list',
-        'index.php?ctrl=task&task=viewadd'=>'Add Task',
-        'index.php?ctrl=user&task=viewauth'=>'Login',
-        'index.php?ctrl=user&task=viewadd'=>'Add user',
-        'index.php?ctrl=user&task=viewlist'=>'Users'
+        'index.php?ctrl=task&task=view_add'=>'Add Task',
+        'index.php?ctrl=user&task=view_auth'=>'Login',
+        'index.php?ctrl=user&task=view_add'=>'Add user',
+        'index.php?ctrl=user&task=view_list'=>'Users'
     ];
 
     public function __construct(){

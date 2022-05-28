@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace Kernel;
 
-use App\DB;
-use App\Objects;
+use Kernel\DB;
+use Kernel\Objects;
 
 class Model extends Objects {
 

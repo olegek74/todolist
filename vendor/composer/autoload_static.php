@@ -23,6 +23,10 @@ class ComposerStaticInit0b7a335937dca76a450481f22b513074
         array (
             'PhpOption\\' => 10,
         ),
+        'K' => 
+        array (
+            'Kernel\\' => 7,
+        ),
         'G' => 
         array (
             'GrahamCampbell\\ResultType\\' => 26,
@@ -53,6 +57,10 @@ class ComposerStaticInit0b7a335937dca76a450481f22b513074
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'Kernel\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/kernel',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (

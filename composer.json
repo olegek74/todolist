@@ -2,7 +2,8 @@
   "name": "todolist/todolist",
   "autoload": {
     "psr-4": {
-      "App\\": "app/"
+      "App\\": "app/",
+      "Kernel\\": "kernel/"
     }
   },
   "require": {

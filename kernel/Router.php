@@ -1,14 +1,14 @@
 <?php
-namespace App;
+namespace Kernel;
 
-use App\Main;
+use Kernel\Main;
 
 defined('ROOTPATH') or die('access denied');
 
 class Router {
     public $controller_default = 'App\Controllers\TaskController';
     private $controller;
-    public $task_default = 'viewlist';
+    public $task_default = 'view_list';
     private $task;
     private static $object;
     public function __construct(){

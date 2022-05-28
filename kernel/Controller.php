@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
-use App\Objects;
-use \App\Main;
+namespace Kernel;
+use Kernel\Objects;
+use Kernel\Main;
 
 class Controller extends Objects {
 
@@ -26,7 +26,12 @@ class Controller extends Objects {
     }
 
     public function auth(){
-        return \App\Controllers\UserController::instance()->auth();
+        try {
+            return \App\Controllers\UserController::instance()->auth();
+        }
+        catch (\Error $error){
+            file_put_contents(__DIR__.DS.'log.txt', $error->getMessage()."\n",  FILE_APPEND);
+        }
     }
 
     public function __call($name, $value){

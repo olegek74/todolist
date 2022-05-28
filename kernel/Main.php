@@ -1,5 +1,5 @@
 <?php
- namespace App;
+ namespace Kernel;
 
  defined('ROOTPATH') or die('access denied');
 

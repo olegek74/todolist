@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace Kernel;
 defined('ROOTPATH') or die('access denied');
 class DB {
 
@@ -20,7 +20,7 @@ class DB {
     }
 
     private static function getConfig(){
-        foreach(\App\ConfLoad::getDbConf() as $name => $val){
+        foreach(\Kernel\ConfLoad::getDbConf() as $name => $val){
             self::$$name = $val;
         }
     }

@@ -1,15 +1,24 @@
 <?php
 
 namespace App\Models;
-use App\DB;
-use App\Model;
+use Kernel\DB;
+use Kernel\Model;
 
 class UserModel extends Model
 {
+    private static $roles = [
+        '1' => ['edit', 'delete', 'create'],
+        '0' => []
+    ];
 
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function getAllow($allow, $role){
+        if(in_array($allow, self::$roles[$role])) return true;
+        else return false;
     }
 
     private function prepare($login){

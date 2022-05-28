@@ -4,7 +4,7 @@
         <div class="display-6 mb-3">Add task</div>
         <form action="index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="task" />
-            <input type="hidden" name="task" value="addNew" />
+            <input type="hidden" name="task" value="add" />
             <div class="mb-3">
                 <label for="user_id" class="form-label">User</label>
                 <select id="user_id" class="form-select" name="user_id">

@@ -1,18 +1,27 @@
 <?php
 
 namespace App\Models;
-use App\DB;
-use App\Model;
+use Kernel\DB;
+use Kernel\Model;
 
 class TaskModel extends Model
 {
+    private static $roles = [
+        '1' => ['edit', 'delete', 'create'],
+        '0' => ['edit']
+    ];
+
+    public function getAllow($action, $role){
+        if(in_array($action, self::$roles[$role])) return true;
+        else return false;
+    }
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function addNew($data) {
+    public function create($data) {
 
        $query = 'INSERT INTO `tasks` (`id`, `description`, `user_id`, `status`) VALUES ';
        $query .= '(NULL, "'.DB::escape($data['description']).'", '.intval($data['user_id']).', '.intval($data['status']).')';

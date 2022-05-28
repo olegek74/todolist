@@ -11,7 +11,7 @@ class User {
     public $userdata = [];
     public $title;
 
-    public function viewAuth($isauth){
+    public function auth($isauth){
         $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         $messages = UserController::$messages;
@@ -24,14 +24,14 @@ class User {
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
     private function allowAdd(){
-        if(UserController::instance()->auth()){
+        if(UserController::instance()->allow('create')){
             return true;
         }
         return false;
     }
-    public function viewAdd(){
+    public function add(){
         $messages = UserController::$messages;
-        $allow_add = $this->allowAdd();
+        $allow_add = UserController::instance()->allow('create');
         $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
         if($allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';

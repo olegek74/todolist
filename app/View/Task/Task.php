@@ -2,7 +2,7 @@
 
 namespace App\View\Task;
 
-use App\Controllers\UserController as User;
+use App\Controllers\TaskController;
 use App\Controllers\MenuController;
 use App\Models\UserModel;
 
@@ -10,34 +10,30 @@ defined('ROOTPATH') or die('access denied');
 
 class Task {
 
-    private $allow_add;
     public $task_data;
-    private function allowAdd(){
-        if(is_null($this->allow_add)){
-            $this->allow_add = User::instance()->auth();
-        }
-        return $this->allow_add;
+
+    private function getUserList(){
+        UserModel::instance()->getList();
     }
 
-    public function task_add(){
-        $allowass = $this->allowAdd();
+    public function add(){
+        $allow_create = TaskController::instance()->allow('create');
         $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
-        if($allowass){
-            $userlist = UserModel::instance()->getList();
-            require_once ROOTPATH.DS.'html'.DS.'task'. DS .'task_add.php';
+        if($allow_create){
+            $userlist = $userlist = $this->getUserList();
+            require_once ROOTPATH.DS.'html'.DS.'task'. DS .'add.php';
         }
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
-    public function task_edit(){
+    public function edit(){
         $userlist = false;
-        if($this->allowAdd()) {
-            $userlist = UserModel::instance()->getList();
-        }
+        $allow_create = TaskController::instance()->allow('create');
+        if($allow_create) $userlist = $this->getUserList(); // не все пользоватли могут пере
         $menu = MenuController::instance();
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
-        require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'task_edit.php';
+        require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'edit.php';
         require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
     }
     public function __get($name){

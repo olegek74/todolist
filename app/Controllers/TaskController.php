@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Controller;
+use Kernel\Controller;
 use \App\Models\TaskModel as Model;
 use \App\View\Task\Tasks;
 use \App\View\Task\Task;
@@ -14,52 +14,51 @@ class TaskController extends Controller{
         parent::__construct();
     }
 
-    public function viewlist(){
+    public function view_list(){
 
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$sort = $this->main->get('sort', false);
         $view = new Tasks;
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
-        $view->tasks_list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
-        $view->tasklist();
+        $view->list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
+        $view->task_list();
     }
 
     public function edit(){
+        if($this->allow('edit')) {
+            $err = []; //false;
+            $data = [];
 
-        $err = false;
-        $data = [];
-
-        if (!$data['task_id'] = $this->main->getInt('id', false)) {
-            $err = true;
-        }
-        if (!$data['description'] = $this->main->get('description', false)) {
-            $err = true;
-        }
-        if($this->auth()){
-            if(!$data['user_id'] = $this->main->getInt('user_id', false)){
-                $err = true;
+            if (!$data['task_id'] = $this->main->getInt('id', false)) {
+                $err[] = 'task_id error';
             }
-        }
+            if (!$data['description'] = $this->main->get('description', false)) {
+                $err[] = 'description error';
+            }
+            if ($this->allow('create')) {
+                $data['user_id'] = $this->main->getInt('user_id', false);
+            }
 
-        $data['status'] = $this->main->getInt('status', 0);
+            $data['status'] = $this->main->getInt('status', 0);
 
-        if (!$err) {
-            $model = Model::instance();
-            $model->edit($data);
-            $this->main->setSess('message', 'success|Post edit successfully');
+            if (!$err) {
+                $model = Model::instance();
+                $model->edit($data);
+                $this->main->setSess('message', 'success|Post edit successfully');
+            } else $this->main->setSess('message', 'error|Edit error');
         }
-        else $this->main->setSess('message', 'error|Edit error');
+        else $this->main->setSess('message', 'error|Edit error.Access denied');
         header('location:index.php');
     }
 
-    public function viewadd() {
+    public function view_add() {
         $view = new Task;
-        $view->task_add();
+        $view->add();
     }
 
-    public function addNew(){
-        if($this->auth()) {
+    public function create(){
+        if($this->allow('create')) {
             $err = false;
             $data = [];
 
@@ -75,7 +74,7 @@ class TaskController extends Controller{
 
             if (!$err) {
                 $model = Model::instance();
-                $model->addNew($data);
+                $model->create($data);
                 $this->main->setSess('message', 'success|Post added successfully');
             }
             else $this->main->setSess('message', 'error|Add error');
@@ -84,8 +83,12 @@ class TaskController extends Controller{
         header('location:index.php');
     }
 
+    public function allow($action){
+        return Model::instance()->getAllow($action, $this->main->getSess('role', 0));
+    }
+
     public function delete(){
-        if($this->auth()) {
+        if($this->allow('delete')) {
             if ($id = $this->main->getInt('id', false)) {
                 $model = Model::instance();
                 $model->delete($id);
@@ -96,11 +99,11 @@ class TaskController extends Controller{
         header('location:index.php');
     }
 
-    public function viewedit(){
+    public function view_edit(){
         if($id = $this->main->getInt('id', false)){
             $view = new Task;
             $view->task_data = Model::instance()->getOne($id);
-            $view->task_edit();
+            $view->edit();
         }
     }
 

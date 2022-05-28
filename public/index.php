@@ -7,12 +7,12 @@ define('ROOTPATH', dirname(__DIR__));
 session_start();
 
 require_once ROOTPATH.DS.'vendor'.DS.'autoload.php';
-$route = App\Router::instance();
+$route = \Kernel\Router::instance();
 
 $controllerName = $route->controller;
 
 if(!class_exists($controllerName)){
-    App\Controller::instance()->not_page();
+    Kernel\Controller::instance()->not_page();
     die;
 }
 

@@ -2,7 +2,7 @@
     <h1 class="display-6">List of Tasks</h1>
     <br>
 <?php
-if(!empty($this->tasks_list)){ ?>
+if(!empty($this->list)){ ?>
     <div class="table-responsive">
 
         <?php require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php'; ?>
@@ -20,13 +20,13 @@ if(!empty($this->tasks_list)){ ?>
                 <?php } ?>
             </tr>
             <?php
-            foreach($this->tasks_list as $row){ ?>
+            foreach($this->list as $row){ ?>
                 <tr>
                     <td><?php echo $row['id'];?></td>
                     <td><?php echo $row['description'];?></td>
                     <td><?php echo $row['status'];?></td>
                     <td><?php echo $row['email'];?></td>
-                    <td><div data-id="<?php echo $row['id'];?>" class="edit"><a class="btn btn-success btn-sm" href="/?ctrl=task&task=viewedit&id=<?php echo $row['id'];?>">Edit</a></div></td>
+                    <td><div data-id="<?php echo $row['id'];?>" class="edit"><a class="btn btn-success btn-sm" href="/?ctrl=task&task=view_edit&id=<?php echo $row['id'];?>">Edit</a></div></td>
                     <?php if($allow_delete){ ?><td><a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=task&task=delete&id=<?php echo $row['id'];?>">Delete</a></td><?php }?>
                 </tr>
             <?php } ?>
