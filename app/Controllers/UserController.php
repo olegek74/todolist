@@ -136,9 +136,8 @@ class UserController extends Controller{
     public function add(){
         if($this->allow('create')){
             $this->save();
-            header('location:index.php?ctrl=user&task=view_add');
         }
-        else $this->main->setSess('message', 'error|Create error.You do not have access');
+        header('location:index.php?ctrl=user&task=view_add');
     }
 
     private function save(&$id = null){
