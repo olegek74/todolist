@@ -6,7 +6,7 @@
         document.cookie = 'curr_list_opt = ' + this.value;
         var href = document.location.href;
         if(href.search('list_start=')>-1){
-            var href = href.replace(/(\?|\&)list_start\=([0-9]+)/, '');
+            href = href.replace(/(\?|\&)list_start\=([0-9]+)/, '');
         }
         document.location.href = href;
     }
