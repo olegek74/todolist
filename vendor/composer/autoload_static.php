@@ -37,6 +37,7 @@ class ComposerStaticInit0b7a335937dca76a450481f22b513074
         ),
         'A' => 
         array (
+            'Aura\\SqlQuery\\' => 14,
             'App\\' => 4,
         ),
     );
@@ -69,6 +70,10 @@ class ComposerStaticInit0b7a335937dca76a450481f22b513074
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Aura\\SqlQuery\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aura/sqlquery/src',
         ),
         'App\\' => 
         array (

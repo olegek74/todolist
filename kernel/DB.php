@@ -7,15 +7,18 @@ class DB {
     private static $dbname;
     private static $user;
     private static $password;
-    private static $db = null;
+    private static $pdo = null;
 
     private static function db_conn(){
-        if(!self::$db){
+        if(!self::$pdo){
             self::getConfig();
-            if(!self::$db = mysqli_connect(self::$host, self::$user, self::$password, self::$dbname)){
-                die('error connect to db');
+            try {
+                self::$pdo = new \PDO('mysql:host='.self::$host.';dbname='.self::$dbname.';charset=utf8mb4', self::$user, self::$password);
             }
-            mysqli_set_charset(self::$db, "utf8mb4");
+            catch (\PDOException $exception){
+                file_put_contents(__DIR__.DS.'log.txt', $exception->getMessage()."\n",  FILE_APPEND);
+                die('db error');
+            }
         }
     }
 
@@ -29,16 +32,18 @@ class DB {
         self::db_conn();
     }
 
-    public static function query($query){
-        return mysqli_query(self::$db, $query);
-    }
-
-    public static function insert_id(){
-        return mysqli_insert_id(self::$db);
+    public static function get_insert_id(){
+        return self::$pdo->lastInsertId();
     }
 
     public static function escape($string){
-        return mysqli_real_escape_string(self::$db, $string);
+        return self::$pdo->quote($string);
+    }
+
+    public static function execute($query){
+        $sth = self::$pdo->prepare($query->getStatement());
+        $sth->execute($query->getBindValues());
+        return $sth;
     }
 }
 ?>

@@ -1,2 +1,6 @@
 Class 'Appt\Controllers\UserController' not found
 Class 'Appt\Controllers\UserController' not found
+SQLSTATE[HY000] [1049] Unknown database '1todolist'
+SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo failed: Этот хост неизвестен. 
+SQLSTATE[HY000] [1049] Unknown database '1todolist'
+SQLSTATE[HY000] [1045] Access denied for user '1mysql'@'localhost' (using password: YES)

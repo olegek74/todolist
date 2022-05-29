@@ -28,26 +28,42 @@ class UserModel extends Model
     public function getAuth($login, $password){
         $login = $this->prepare($login);
         if($login) {
-            $query = 'SELECT * FROM `managers` WHERE `login` = "' . DB::escape($login) . '" AND `password` = "' . $password . '" LIMIT 1';
-            if ($result = mysqli_fetch_assoc(DB::query($query))) {
-                return $result;
-            }
+            $select = parent::$queryFactory->newSelect();
+            $select->cols(['*'])->from('managers')
+                ->where('login = :login')->where('password = :password')
+                ->bindValues(['login' => $login, 'password' => $password]);
+            $sth = DB::execute($select);
+            return $sth->fetch(\PDO::FETCH_ASSOC);
         }
         return false;
     }
 
     public function getDubleLogin($login, $id){
-        $query = 'SELECT * FROM `managers` WHERE `login` = "'.DB::escape($login).'"';
-        if($id) $query .= ' AND `user_id` <> '.$id.'';
-        if(mysqli_fetch_assoc(DB::query($query))) return true;
-        return false;
+
+        $select = parent::$queryFactory->newSelect();
+        $select->cols(['*'])->from('managers')->where('login = :login');
+        $binds = ['login' => $login];
+        if($id){
+            $select->where('user_id<>:user_id');
+            $binds['user_id'] = $id;
+        }
+        $select->bindValues($binds);
+        $sth = DB::execute($select);
+        return $sth->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function getDubleEmail($email, $id){
-        $query = 'SELECT * FROM `users` WHERE `email` = "'.DB::escape($email).'"';
-        if($id) $query .= ' AND `id` <> '.$id.'';
-        if(mysqli_fetch_assoc(DB::query($query))) return true;
-        return false;
+
+        $select = parent::$queryFactory->newSelect();
+        $select->cols(['*'])->from('users')->where('email = :email');
+        $binds = ['email' => $email];
+        if($id){
+            $select->where('id<>:id');
+            $binds['id'] = $id;
+        }
+        $select->bindValues($binds);
+        $sth = DB::execute($select);
+        return $sth->fetch(\PDO::FETCH_ASSOC);
     }
 
     public static function getTotal($table = 'users'){
@@ -56,53 +72,79 @@ class UserModel extends Model
 
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
-        $select = 'SELECT u.*, u.`id` AS uid, `m`.`login` FROM `users` AS `u` LEFT JOIN `managers` AS `m` ON `m`.`user_id` = `u`.`id`';
+        $select = parent::$queryFactory->newSelect();
+        $select->cols(['u.*','u.id AS uid','m.login'])->from('users AS u')->join('LEFT','managers AS m','m.user_id = u.id');
+        $select->limit($curr_list_opt)->offset($list_start);
+
         if($sort == 'asc' || $sort == 'desc'){
-            $select .= ' ORDER BY `u`.`name` '.strtoupper($sort).', `u`.`id` ASC';
+            $select->orderBy(['u.name '.strtoupper($sort), 'u.id ASC']);
         }
         else {
-            $select .= ' ORDER BY `u`.`id` ASC';
+            $select->orderBy(['u.id ASC']);
         }
-        $select .= ' LIMIT '.$list_start.','.$curr_list_opt;
-        return parent::_getList($select);
+        $sth = DB::execute($select);
+        return $this->get_list($sth);
     }
 
     public function save($data){
         if(!$data['id']) {
-            $query = 'INSERT INTO `users` (`id`, `name`, `email`) VALUES ';
-            $query .= '(NULL, "' . DB::escape($data['name']) . '", "' . DB::escape($data['email']) . '")';
-            DB::query($query);
-            $user_id = DB::insert_id();
+            $insert = parent::$queryFactory->newInsert();
+            $insert->into('users')->cols(['id','name','email'])->bindValues(['id' => NULL,'name' => $data['name'],'email' => $data['email']]);
+            DB::execute($insert);
+            $user_id = DB::get_insert_id();
+
             if ($data['manager']) {
-                $query = 'INSERT INTO `managers` (`user_id`, `login`, `password`) VALUES ';
-                $query .= '(' . intval($user_id) . ', "' . DB::escape($data['login']) . '", "' . md5($data['password']) . '")';
-                DB::query($query);
+                $insert = parent::$queryFactory->newInsert();
+                $insert->into('managers')->cols(['user_id','login','password'])->bindValues(['user_id' => $user_id,'login' => $data['login'],'password' => md5($data['password'])]);
+                DB::execute($insert);
             }
             if ($user_id) {
                 return true;
             }
+
         } else {
-            $query = 'UPDATE `users` SET `name` = "'.DB::escape($data['name']).'", `email` = "'.DB::escape($data['email']).'"';
-            $query .= ' WHERE id = '.$data['id'];
-            DB::query($query);
+
+            $update = parent::$queryFactory->newUpdate();
+            $cols = ['name', 'email'];
+            $binds = ['name' => $data['name'], 'email' => $data['email']];
+            $update->table('users')->cols($cols)->where('id='.$data['id']);
+            $update->bindValues($binds);
+            DB::execute($update);
+
             if($data['manager']){
-                $query = 'SELECT * FROM `managers` WHERE `user_id` = '.$data['id'];
-                if(mysqli_fetch_assoc(DB::query($query))){
-                    $query = 'UPDATE `managers` SET `login` = "'.DB::escape($data['login']).'"';
-                    if($data['password']) $query .= ', `password` = "'.md5($data['password']).'"';
-                    $query .= ' WHERE `user_id`='.$data['id'];
+
+                $select = parent::$queryFactory->newSelect();
+                $select->cols(['*'])->from('managers')->where('user_id = :user_id')->bindValues(['user_id' => $data['id']]);
+                $sth = DB::execute($select);
+                if($sth->fetch(\PDO::FETCH_ASSOC)){
+
+                    $update = parent::$queryFactory->newUpdate();
+                    $cols = ['login'];
+                    $binds = ['login' => $data['login']];
+                    if($data['password']){
+                        $cols[] = 'password';
+                        $binds['password'] = md5($data['password']);
+                    }
+                    $update->table('managers')->cols($cols)->where('user_id='.$data['id']);
+                    $update->bindValues($binds);
+                    DB::execute($update);
+
                 }
                 else {
-                    $query = 'INSERT INTO `managers` (`user_id`, `login`';
-                    if($data['password']) $query .= ', `password`';
-                    $query .= ') VALUES ('.$data['id'].', "'.DB::escape($data['login']).'"';
-                    if($data['password']) $query .= ', "'.md5($data['password']).'"';
-                    $query .= ')';
+
+                    $insert = parent::$queryFactory->newInsert();
+                    $cols = ['user_id','login'];
+                    $binds = ['user_id' => (string)$data['id'], 'login' => $data['login']];
+                    if($data['password']){
+                        $cols[] = 'password';
+                        $binds['password'] = md5($data['password']);
+                    }
+                    $insert->into('managers')->cols($cols)->bindValues($binds);
+                    DB::execute($insert);
                 }
-                DB::query($query);
                 return true;
             } else {
-                DB::query('DELETE FROM `managers` WHERE `user_id`='.$data['id']);
+                $this->delete($data['id'], 'managers', 'user_id');
                 return true;
             }
         }
@@ -110,12 +152,16 @@ class UserModel extends Model
     }
 
     public function getUserData($id){
-        $query = 'SELECT u.*, m.*, IF(m.`user_id` IS NULL, 0, 1) AS manager FROM `users` AS u LEFT JOIN `managers` AS m ON u.`id` = m.`user_id` WHERE u.`id` = '.$id;
-        return mysqli_fetch_assoc(DB::query($query));
+        $select = parent::$queryFactory->newSelect();
+        $select->cols(['u.*', 'u.id', 'm.*', 'IF(m.user_id IS NULL, 0, 1) AS manager']);
+        $select->from('users AS u')->join('LEFT', 'managers AS m', 'u.id = m.user_id');
+        $select->where('u.id='.$id);
+        $sth = DB::execute($select);
+        return $sth->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function delete($id, $table = 'users'){
-        parent::delete($id, $table);
+    public function delete($id, $table = 'users', $key = 'id'){
+        parent::delete($id, $table, $key);
     }
 
     public static function instance($class = __CLASS__){

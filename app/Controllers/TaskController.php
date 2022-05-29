@@ -57,7 +57,7 @@ class TaskController extends Controller{
         $view->add();
     }
 
-    public function create(){
+    public function add(){
         if($this->allow('create')) {
             $err = false;
             $data = [];

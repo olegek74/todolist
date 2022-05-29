@@ -26,7 +26,8 @@ class ConfLoad{
                 self::$read_env = $dotenv->load();
             }
             catch (\Exception $exception){
-                echo ($exception->getMessage()); die;
+                file_put_contents(__DIR__.DS.'log.txt', $exception->getMessage()."\n",  FILE_APPEND);
+                die('error config');
             }
             if(empty(self::$read_env)) die('Config file is empty');
         }

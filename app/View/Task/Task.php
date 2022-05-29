@@ -13,7 +13,7 @@ class Task {
     public $task_data;
 
     private function getUserList(){
-        UserModel::instance()->getList();
+        return UserModel::instance()->getList();
     }
 
     public function add(){

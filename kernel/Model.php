@@ -2,14 +2,18 @@
 
 namespace Kernel;
 
+use Aura\SqlQuery\QueryFactory;
 use Kernel\DB;
 use Kernel\Objects;
 
 class Model extends Objects {
 
+    protected static $queryFactory;
+
     public function __construct()
     {
         DB::instance();
+        self::$queryFactory = new QueryFactory('mysql');
     }
 
     public static function instance($class){
@@ -17,23 +21,24 @@ class Model extends Objects {
     }
 
     public static function getTotal($table){
-        $query = 'SELECT COUNT(*) AS cnt FROM `'.$table.'`';
-        $res = DB::query($query);
-        $result = mysqli_fetch_assoc($res);
+        $select = self::$queryFactory->newSelect();
+        $select->cols(['COUNT(*) AS cnt'])->from($table);
+        $sth = DB::execute($select);
+        $result = $sth->fetch(\PDO::FETCH_ASSOC);
         return $result['cnt'];
     }
 
-    public function _getList($select){
-        $res = DB::query($select);
+    public function get_list($sth){
         $list = [];
-        while($row = $res->fetch_assoc()){
-            $list[] = $row;
+        while($result = $sth->fetch(\PDO::FETCH_ASSOC)){
+            $list[] = $result;
         }
         return $list;
     }
 
-    public function delete($id, $table){
-        $query = 'DELETE FROM `'.$table.'` WHERE `id` = '.$id.'';
-        $res = DB::query($query);
+    public function delete($id, $table, $key = 'id'){
+        $delete = self::$queryFactory->newDelete();
+        $delete->from($table)->where($key.' = :'.$key)->bindValue($key, $id);
+        DB::execute($delete);
     }
 }

@@ -5,11 +5,20 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '11e1e5bdc88e8c94f6badcb69448925db88a8c8e',
+        'reference' => '1416cf65154da6d4ebfec145370cf4c0dfaf8b7d',
         'name' => 'todolist/todolist',
         'dev' => true,
     ),
     'versions' => array(
+        'aura/sqlquery' => array(
+            'pretty_version' => '2.8.0',
+            'version' => '2.8.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../aura/sqlquery',
+            'aliases' => array(),
+            'reference' => '3cadc8bbdeb6cde5fde01349bbd5c4b0fbc1287e',
+            'dev_requirement' => false,
+        ),
         'graham-campbell/result-type' => array(
             'pretty_version' => 'v1.0.4',
             'version' => '1.0.4.0',
@@ -61,7 +70,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '11e1e5bdc88e8c94f6badcb69448925db88a8c8e',
+            'reference' => '1416cf65154da6d4ebfec145370cf4c0dfaf8b7d',
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(
