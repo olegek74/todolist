@@ -104,10 +104,8 @@ class UserController extends Controller{
     public function view_list(){
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
-        self::$list_start = $this->main->getInt('list_start', 0);
-        self::$sort = $this->main->get('sort', false);
         $view = new Users;
-        $view->users_list = Model::instance()->getList(self::$list_start, self::$sort, self::$curr_list_opt);
+        $view->users_list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
         $view->user_list();
     }
 

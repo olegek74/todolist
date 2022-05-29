@@ -19,6 +19,8 @@ class Controller extends Objects {
     public function __construct(){
         $this->main = Main::instance();
         self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
+        self::$sort = $this->main->get('sort', false);
+        self::$list_start = $this->main->getInt('list_start', 0);
     }
 
     public static function instance($class = __CLASS__){

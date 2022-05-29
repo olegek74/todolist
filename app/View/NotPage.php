@@ -1,13 +1,14 @@
 <?php
 namespace App\View;
 
-class NotPage{
+use Kernel\View;
+
+class NotPage extends View{
 
     public function display(){
-        $menu = \App\Controllers\MenuController::instance();
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
+        $this->header();
         require_once ROOTPATH . DS . 'html' . DS . 'utils'. DS .'page404.php';
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
+        $this->footer();
     }
 }
 ?>

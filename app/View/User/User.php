@@ -2,18 +2,18 @@
 namespace App\View\User;
 
 use App\Controllers\UserController;
-use App\Controllers\MenuController;
+use Kernel\View;
 
 defined('ROOTPATH') or die('access denied');
 
-class User {
+class User extends View {
 
     public $userdata = [];
     public $title;
 
     public function auth($isauth){
-        $menu = MenuController::instance();
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
+
+        $this->header();
         $messages = UserController::$messages;
         if($isauth){
             require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'unlogin.php';
@@ -21,7 +21,7 @@ class User {
         else {
             require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'login.php';
         }
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
+        $this->footer();
     }
     private function allowAdd(){
         if(UserController::instance()->allow('create')){
@@ -32,11 +32,10 @@ class User {
     public function add(){
         $messages = UserController::$messages;
         $allow_add = UserController::instance()->allow('create');
-        $menu = MenuController::instance();
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'head.php';
+        $this->header();
         if($allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'foot.php';
+        $this->footer();
     }
     public function __get($name){
         if(isset($this->userdata[$name])) return $this->userdata[$name];

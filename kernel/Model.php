@@ -2,7 +2,6 @@
 
 namespace Kernel;
 
-use Aura\SqlQuery\QueryFactory;
 use Kernel\DB;
 use Kernel\Objects;
 
@@ -12,8 +11,7 @@ class Model extends Objects {
 
     public function __construct()
     {
-        DB::instance();
-        self::$queryFactory = new QueryFactory('mysql');
+        self::$queryFactory = DB::createFactory();
     }
 
     public static function instance($class){
@@ -21,6 +19,7 @@ class Model extends Objects {
     }
 
     public static function getTotal($table){
+        self::$queryFactory = DB::createFactory();
         $select = self::$queryFactory->newSelect();
         $select->cols(['COUNT(*) AS cnt'])->from($table);
         $sth = DB::execute($select);

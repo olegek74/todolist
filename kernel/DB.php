@@ -1,5 +1,6 @@
 <?php
 namespace Kernel;
+use Aura\SqlQuery\QueryFactory;
 defined('ROOTPATH') or die('access denied');
 class DB {
 
@@ -20,6 +21,11 @@ class DB {
                 die('db error');
             }
         }
+    }
+
+    public static function createFactory(){
+        self::db_conn();
+        return new QueryFactory('mysql');
     }
 
     private static function getConfig(){
