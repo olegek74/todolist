@@ -15,12 +15,19 @@ class TaskController extends Controller{
     }
 
     public function view_list(){
-
         $view = new Tasks;
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
         $view->list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
         $view->task_list();
+    }
+
+    public function view_show(){
+        if($id = $this->main->getInt('id', false)){
+            $view = new Task;
+            $view->task_data = Model::instance()->getOne($id);
+            $view->show();
+        }
     }
 
     public function edit(){

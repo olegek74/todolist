@@ -12,6 +12,8 @@ class View {
 
     protected $sort;
 
+    public $page_title;
+
     public function __construct() {
         $this->sort = Controller::$sort;
     }

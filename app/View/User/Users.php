@@ -19,6 +19,7 @@ class Users extends View {
 
     public function user_list(){
         $allow_delete = UserController::instance()->allow('delete');
+        $this->page_title = 'List of Users';
         $this->header();
         $paginator = $this->pagination();
         $sort = $this->sort();

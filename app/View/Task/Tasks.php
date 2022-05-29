@@ -20,6 +20,8 @@ class Tasks extends View{
 
     public function task_list(){
         $allow_delete = TaskController::instance()->allow('delete');
+        $allow_edit = TaskController::instance()->allow('edit');
+        $this->page_title = 'List of Tasks';
         $this->header();
         $paginator = $this->pagination();
         $sort = $this->sort();

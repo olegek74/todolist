@@ -12,7 +12,7 @@ class User extends View {
     public $title;
 
     public function auth($isauth){
-
+        $this->page_title = 'Login';
         $this->header();
         $messages = UserController::$messages;
         if($isauth){
@@ -32,6 +32,7 @@ class User extends View {
     public function add(){
         $messages = UserController::$messages;
         $allow_add = UserController::instance()->allow('create');
+        $this->page_title = 'Add User';
         $this->header();
         if($allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';

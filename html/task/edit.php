@@ -10,9 +10,17 @@
                 <label for="status" class="form-label">Status</label>
                 <input type="number" class="form-control" id="status" name="status" value="<?php echo $this->status;?>">
             </div>
+            <div class="mb-3">
+                <label for="user_id" class="form-label">User name</label>
+                <div id="user_id" class="form-control"><?php echo $this->name;?></div>
+            </div>
+            <div class="mb-3">
+                <label for="user_id" class="form-label">User email</label>
+                <div id="user_id" class="form-control"><?php echo $this->email;?></div>
+            </div>
             <?php if(!empty($userlist)){ ?>
                 <div class="mb-3">
-                    <label for="user_id" class="form-label">User</label>
+                    <label for="user_id" class="form-label">Select User</label>
                     <select id="user_id" class="form-select" name="user_id">
                         <?php foreach($userlist as $user){
                                 $selected = ($this->user_id == $user['uid']) ? ' selected' : '';?>
