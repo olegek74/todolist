@@ -66,11 +66,7 @@ class UserController extends Controller{
             if(!$auth){
                 $usermodel = Model::instance();
                 if($user = $usermodel->getAuth($login, $password)){
-                    $this->main->setSess('password', md5($password));
-                    $this->main->setSess('login', $login);
-                    $this->main->setSess('role', $user['role']);
-                    setcookie('login', $login, time()+3600, '/');
-                    setcookie('password', $password, time()+3600, '/');
+                    $this->saveData($user);
                     $auth = true;
                 }
             }
@@ -83,6 +79,7 @@ class UserController extends Controller{
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', '');
         $view = new User;
+        $view->userdata = Model::instance()->getUserData($this->main->getSess('user_id'));
         $view->auth($this->auth());
     }
 
@@ -92,6 +89,9 @@ class UserController extends Controller{
         $view = new User;
         if($id = $this->main->getInt('id', false)){
             $view->userdata = Model::instance()->getUserData($id);
+            $user_id = $this->main->getSess('user_id', null);
+            $view->userdata['is_self'] = false;
+            if($view->userdata['user_id'] == $user_id) $view->userdata['is_self'] = true;
             $view->title = 'Edit user';
         }
         else {
@@ -126,15 +126,42 @@ class UserController extends Controller{
 
     public function update(){
         if($this->allow('edit')){
-            $this->save($id);
+            if($this->save($id)){
+                $this->main->setSess('message', 'success|User edit successfully');
+            }
             header('location:index.php?ctrl=user&task=view_edit&id='.$id);
+        }
+        else $this->main->setSess('message', 'error|Edit error.You do not have access');
+    }
+
+    private function saveData($data){
+        $this->main->setSess('login', $data['login']);
+        $this->main->setSess('password', $data['password']);
+        $this->main->setSess('user_id', $data['user_id']);
+        if(isset($data['role'])) $this->main->setSess('role', $data['role']);
+        setcookie('login', $data['login'], time()+3600, '/');
+        setcookie('password', $data['password'], time()+3600, '/');
+    }
+
+    public function self_update(){
+        $user_id = $this->main->getSess('user_id', false);
+        $id = $this->main->getInt('id', false);
+        if($user_id && $id == $user_id){
+            $data = $this->save($id);
+            if(!empty($data)){
+                $this->saveData($data);
+                $this->main->setSess('message', 'success|You profile edit successfully');
+            }
+            header('location:index.php?ctrl=user&task=view_add&id='.$id);
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
     }
 
     public function add(){
         if($this->allow('create')){
-            $this->save();
+            if($this->save()){
+                $this->main->setSess('message', 'success|User added successfully');
+            }
         }
         header('location:index.php?ctrl=user&task=view_add');
     }
@@ -145,8 +172,13 @@ class UserController extends Controller{
         $model = Model::instance();
 
         $data['manager'] = $this->main->get('manager', false);
-        $data['id'] = $this->main->getInt('id', false);
-        $id = $data['id'];
+
+        if(!$id) {
+            $id = $this->main->getInt('id', false);
+        }
+
+        $data['user_id'] = $id;
+
         $task = $this->main->get('task', 'add');
 
         if ($data['manager']) {
@@ -154,7 +186,7 @@ class UserController extends Controller{
                 $err[2] = 'Login is missing';
             }
             else {
-                if($model->getDubleLogin($data['login'], $data['id'])) {
+                if($model->getDubleLogin($data['login'], $data['user_id'])) {
                     $err[6] = 'Login already exists';
                 }
             }
@@ -168,7 +200,7 @@ class UserController extends Controller{
         if (!$data['email'] = $this->main->get('email', false)) {
             $err[1] = 'Email is missing';
         }
-        if($model->getDubleEmail($data['email'], $data['id'])){
+        if($model->getDubleEmail($data['email'], $data['user_id'])){
             $err[5] = 'Email already exists';
         }
 
@@ -177,13 +209,16 @@ class UserController extends Controller{
         $this->main->setSess('userdata', $data);
 
         if (empty($err)) {
+
+            if(isset($data['password'])) $data['password'] = md5($data['password']);
+
             if ($model->save($data)) {
-                if($task == 'update') $this->main->setSess('message', 'success|User edit successfully');
-                else $this->main->setSess('message', 'success|User added successfully');
+                return $data;
             }
             else $this->main->setSess('message', 'error|Error adding user');
         } else {
             $this->buildErrorMessage($err, 'Errors:<br>');
+            return false;
         }
     }
 

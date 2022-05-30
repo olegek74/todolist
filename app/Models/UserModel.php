@@ -87,7 +87,7 @@ class UserModel extends Model
     }
 
     public function save($data){
-        if(!$data['id']) {
+        if(!$data['user_id']) {
             $insert = parent::$queryFactory->newInsert();
             $insert->into('users')->cols(['id','name','email'])->bindValues(['id' => NULL,'name' => $data['name'],'email' => $data['email']]);
             DB::execute($insert);
@@ -95,7 +95,7 @@ class UserModel extends Model
 
             if ($data['manager']) {
                 $insert = parent::$queryFactory->newInsert();
-                $insert->into('managers')->cols(['user_id','login','password'])->bindValues(['user_id' => $user_id,'login' => $data['login'],'password' => md5($data['password'])]);
+                $insert->into('managers')->cols(['user_id','login','password'])->bindValues(['user_id' => $user_id,'login' => $data['login'],'password' =>$data['password']]);
                 DB::execute($insert);
             }
             if ($user_id) {
@@ -107,14 +107,14 @@ class UserModel extends Model
             $update = parent::$queryFactory->newUpdate();
             $cols = ['name', 'email'];
             $binds = ['name' => $data['name'], 'email' => $data['email']];
-            $update->table('users')->cols($cols)->where('id='.$data['id']);
+            $update->table('users')->cols($cols)->where('id='.$data['user_id']);
             $update->bindValues($binds);
             DB::execute($update);
 
             if($data['manager']){
 
                 $select = parent::$queryFactory->newSelect();
-                $select->cols(['*'])->from('managers')->where('user_id = :user_id')->bindValues(['user_id' => $data['id']]);
+                $select->cols(['*'])->from('managers')->where('user_id = :user_id')->bindValues(['user_id' => $data['user_id']]);
                 $sth = DB::execute($select);
                 if($sth->fetch(\PDO::FETCH_ASSOC)){
 
@@ -123,9 +123,9 @@ class UserModel extends Model
                     $binds = ['login' => $data['login']];
                     if($data['password']){
                         $cols[] = 'password';
-                        $binds['password'] = md5($data['password']);
+                        $binds['password'] = $data['password'];
                     }
-                    $update->table('managers')->cols($cols)->where('user_id='.$data['id']);
+                    $update->table('managers')->cols($cols)->where('user_id='.$data['user_id']);
                     $update->bindValues($binds);
                     DB::execute($update);
 
@@ -134,17 +134,17 @@ class UserModel extends Model
 
                     $insert = parent::$queryFactory->newInsert();
                     $cols = ['user_id','login'];
-                    $binds = ['user_id' => (string)$data['id'], 'login' => $data['login']];
+                    $binds = ['user_id' => $data['user_id'], 'login' => $data['login']];
                     if($data['password']){
                         $cols[] = 'password';
-                        $binds['password'] = md5($data['password']);
+                        $binds['password'] = $data['password'];
                     }
                     $insert->into('managers')->cols($cols)->bindValues($binds);
                     DB::execute($insert);
                 }
                 return true;
             } else {
-                $this->delete($data['id'], 'managers', 'user_id');
+                $this->delete($data['user_id'], 'managers', 'user_id');
                 return true;
             }
         }
@@ -152,12 +152,15 @@ class UserModel extends Model
     }
 
     public function getUserData($id){
-        $select = parent::$queryFactory->newSelect();
-        $select->cols(['u.*', 'u.id', 'm.*', 'IF(m.user_id IS NULL, 0, 1) AS manager']);
-        $select->from('users AS u')->join('LEFT', 'managers AS m', 'u.id = m.user_id');
-        $select->where('u.id='.$id);
-        $sth = DB::execute($select);
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        if($id) {
+            $select = parent::$queryFactory->newSelect();
+            $select->cols(['u.*', 'u.id', 'm.*', 'IF(m.user_id IS NULL, 0, 1) AS manager']);
+            $select->from('users AS u')->join('LEFT', 'managers AS m', 'u.id = m.user_id');
+            $select->where('u.id=' . $id);
+            $sth = DB::execute($select);
+            return $sth->fetch(\PDO::FETCH_ASSOC);
+        }
+        return [];
     }
 
     public function delete($id, $table = 'users', $key = 'id'){

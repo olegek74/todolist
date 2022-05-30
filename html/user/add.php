@@ -31,7 +31,11 @@
             <input type="hidden" name="ctrl" value="user" />
             <?php if($this->id){ ?>
             <input type="hidden" name="id" value="<?php echo $this->id;?>" />
-            <input type="hidden" name="task" value="update" />
+                <?php if($this->is_self) { ?>
+                <input type="hidden" name="task" value="self_update" />
+                <?php } else { ?>
+                <input type="hidden" name="task" value="update" />
+                <?php } ?>
             <?php } else { ?>
             <input type="hidden" name="task" value="add" />
             <?php } ?>
