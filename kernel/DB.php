@@ -9,6 +9,7 @@ class DB {
     private static $user;
     private static $password;
     private static $pdo = null;
+    private static $QF;
 
     private static function db_conn(){
         if(!self::$pdo){
@@ -25,7 +26,8 @@ class DB {
 
     public static function createFactory(){
         self::db_conn();
-        return new QueryFactory('mysql');
+        if(!self::$QF) self::$QF = new QueryFactory('mysql');
+        return self::$QF;
     }
 
     private static function getConfig(){
