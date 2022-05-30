@@ -36,6 +36,13 @@ class Controller extends Objects {
         }
     }
 
+    protected function buildErrorMessage($errors, $mess = ''){
+        foreach ($errors as $error) {
+            $mess .= '' . $error . '<br>';
+        }
+        $this->main->setSess('message', 'error|' . $mess);
+    }
+
     public function __call($name, $value){
         $this->not_page();
     }

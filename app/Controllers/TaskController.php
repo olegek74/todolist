@@ -39,7 +39,7 @@ class TaskController extends Controller{
                 $err[] = 'task_id error';
             }
             if (!$data['description'] = $this->main->get('description', false)) {
-                $err[] = 'description error';
+                $err[] = 'Description is empty';
             }
             if ($this->allow('create')) {
                 $data['user_id'] = $this->main->getInt('user_id', false);
@@ -47,11 +47,13 @@ class TaskController extends Controller{
 
             $data['status'] = $this->main->getInt('status', 0);
 
-            if (!$err) {
+            if (empty($err)) {
                 $model = Model::instance();
                 $model->edit($data);
                 $this->main->setSess('message', 'success|Post edit successfully');
-            } else $this->main->setSess('message', 'error|Edit error');
+            } else {
+                $this->buildErrorMessage($err, 'Errors:<br>');
+            }
         }
         else $this->main->setSess('message', 'error|Edit error.Access denied');
         header('location:index.php');
@@ -64,25 +66,27 @@ class TaskController extends Controller{
 
     public function add(){
         if($this->allow('create')) {
-            $err = false;
+            $err = [];
             $data = [];
 
             if (!$data['user_id'] = $this->main->getInt('user_id', false)) {
-                $err = true;
+                $err[] = 'Unknown user';
             }
 
             if (!$data['description'] = $this->main->get('description', false)) {
-                $err = true;
+                $err[] = 'Description is empty';
             }
 
             $data['status'] = $this->main->getInt('status', 0);
 
-            if (!$err) {
+            if (empty($err)) {
                 $model = Model::instance();
                 $model->create($data);
                 $this->main->setSess('message', 'success|Post added successfully');
             }
-            else $this->main->setSess('message', 'error|Add error');
+            else {
+                $this->buildErrorMessage($err, 'Errors:<br>');
+            }
         }
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
         header('location:index.php');

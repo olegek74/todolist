@@ -5,6 +5,7 @@ use Kernel\Controller;
 use App\Models\UserModel as Model;
 use App\View\User\User;
 use App\View\User\Users;
+use App\Classes\Validate;
 
 defined('ROOTPATH') or die('access denied');
 
@@ -170,6 +171,9 @@ class UserController extends Controller{
         if($model->getDubleEmail($data['email'], $data['id'])){
             $err[5] = 'Email already exists';
         }
+
+        Validate::instance()->validateData($data, $err);
+
         $this->main->setSess('userdata', $data);
 
         if (empty($err)) {
@@ -179,11 +183,7 @@ class UserController extends Controller{
             }
             else $this->main->setSess('message', 'error|Error adding user');
         } else {
-            $mess = 'Error form';
-            foreach ($err as $er) {
-                $mess .= '<br>' . $er . '';
-            }
-            $this->main->setSess('message', 'error|' . $mess);
+            $this->buildErrorMessage($err, 'Errors:<br>');
         }
     }
 
