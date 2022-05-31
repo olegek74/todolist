@@ -31,7 +31,7 @@ class UserModel extends Model
             $select = parent::$queryFactory->newSelect();
             $select->cols(['*'])->from('managers')
                 ->where('login = :login')->where('password = :password')
-                ->bindValues(['login' => $login, 'password' => $password]);
+                ->bindValues(['login' => $login, 'password' => md5($password)]);
             $sth = DB::execute($select);
             return $sth->fetch(\PDO::FETCH_ASSOC);
         }

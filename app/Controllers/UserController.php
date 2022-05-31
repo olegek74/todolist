@@ -29,10 +29,7 @@ class UserController extends Controller{
     }
 
     public function unlogin(){
-        $this->main->setSess('password', null);
-        $this->main->setSess('login', null);
-        setcookie('login', '', time()-3600, '/');
-        setcookie('password', '', time()-3600, '/');
+        $this->main->setSess('auth', null);
         header('location: index.php?ctrl=user&task=view_auth');
         die;
     }
@@ -43,35 +40,19 @@ class UserController extends Controller{
 
     public function auth(){
 
-        $auth = false;
+        if(!$auth = $this->main->getSess('auth', false)) {
 
-        $login = $this->main->getCookie('login', false);
-        $password = $this->main->getCookie('password', false);
-
-        if(!$login || !$password){
             $login = $this->main->get('login', false);
             $password = $this->main->get('password', false);
-            if($password) $password = md5($password);
-        }
 
-        if($login != "" && $password != "") {
-            $_login = $this->main->getSess('login', false);
-            $_password = $this->main->getSess('password', false);
-            if($_login && $_password){
-                if($_login == $login && $_password == $password){
-                    $auth = true;
-                }
-            }
-
-            if(!$auth){
-                $usermodel = Model::instance();
-                if($user = $usermodel->getAuth($login, $password)){
+            if ($login != "" && $password != "") {
+                if ($user = Model::instance()->getAuth($login, $password)) {
                     $this->saveData($user);
                     $auth = true;
                 }
             }
         }
-        if(!$auth) $this->main->setSess('role', 0);
+
         return $auth;
     }
 
@@ -135,12 +116,10 @@ class UserController extends Controller{
     }
 
     private function saveData($data){
-        $this->main->setSess('login', $data['login']);
-        $this->main->setSess('password', $data['password']);
         $this->main->setSess('user_id', $data['user_id']);
+        $this->main->setSess('auth', '1');
         if(isset($data['role'])) $this->main->setSess('role', $data['role']);
-        setcookie('login', $data['login'], time()+3600, '/');
-        setcookie('password', $data['password'], time()+3600, '/');
+        else $this->main->setSess('role', 0);
     }
 
     public function self_update(){
