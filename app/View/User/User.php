@@ -37,7 +37,7 @@ class User extends View {
         $allow_add = UserController::instance()->allow('create');
         $this->page_title = 'Add User';
         $this->header();
-        if($this->userdata['is_self'] || $allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
+        if((isset($this->userdata['is_self']) && $this->userdata['is_self']) || $allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
         $this->footer();
     }
