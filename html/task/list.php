@@ -12,8 +12,7 @@ if(!empty($this->list)){ ?>
                 <td style="width:60%">DESCRIPTION</td>
                 <td style="width:10%">STATUS<?php echo $sort;?><br><a href="index.php">&nbsp;Refresh</a></td>
                 <td style="width:15%">USER EMAIL</td>
-                <td style="width:5%"><?php if($allow_edit){ ?>EDIT<?php } ?></td>
-                <td style="width:5%"><?php if($allow_delete){ ?>Delete<?php } ?></td>
+                <td style="width:10%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>
             <?php
             foreach($this->list as $row){ ?>
@@ -23,9 +22,13 @@ if(!empty($this->list)){ ?>
                     <td><?php echo $row['status'];?></td>
                     <td><?php echo $row['email'];?></td>
                     <td>
-                        <?php if($allow_edit){ ?><a class="btn btn-success btn-sm" href="/?ctrl=task&task=view_edit&id=<?php echo $row['id'];?>">Edit</a><?php } ?>
+                    <?php if($allow_edit){ ?>
+                        <a class="btn btn-success btn-sm" href="/?ctrl=task&task=view_edit&id=<?php echo $row['id'];?>">Edit</a>
+                        <?php } ?>
+                    <?php if($allow_delete){ ?>
+                        <a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=task&task=delete&id=<?php echo $row['id'];?>">Del</a>
+                    <?php } ?>
                     </td>
-                    <td><?php if($allow_delete){ ?><a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=task&task=delete&id=<?php echo $row['id'];?>">Delete</a><?php } ?></td>
                 </tr>
             <?php } ?>
         </table>

@@ -8,8 +8,9 @@ use Kernel\Model;
 class TaskModel extends Model
 {
     private static $roles = [
-        '1' => ['edit', 'delete', 'create'],
-        '0' => ['edit']
+        '2' => ['edit', 'delete', 'create'],
+        '1' => ['edit'],
+        '0' => []
     ];
 
     public function getAllow($action, $role){

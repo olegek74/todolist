@@ -7,7 +7,8 @@ use Kernel\Model;
 class UserModel extends Model
 {
     private static $roles = [
-        '1' => ['edit', 'delete', 'create'],
+        '2' => ['edit', 'delete', 'create'],
+        '1' => ['edit'],
         '0' => []
     ];
 

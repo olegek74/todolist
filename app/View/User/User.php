@@ -26,18 +26,13 @@ class User extends View {
         }
         $this->footer();
     }
-    private function allowAdd(){
-        if(UserController::instance()->allow('create')){
-            return true;
-        }
-        return false;
-    }
     public function add(){
         $messages = UserController::$messages;
         $allow_add = UserController::instance()->allow('create');
+        $allow_edit = UserController::instance()->allow('edit');
         $this->page_title = 'Add User';
         $this->header();
-        if((isset($this->userdata['is_self']) && $this->userdata['is_self']) || $allow_add) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
+        if((isset($this->userdata['is_self']) && $this->userdata['is_self']) || $allow_add || $allow_edit) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
         $this->footer();
     }

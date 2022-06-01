@@ -30,6 +30,7 @@ class UserController extends Controller{
 
     public function unlogin(){
         $this->main->setSess('auth', null);
+        session_destroy();
         header('location: index.php?ctrl=user&task=view_auth');
         die;
     }
