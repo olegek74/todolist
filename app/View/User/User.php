@@ -9,7 +9,6 @@ defined('ROOTPATH') or die('access denied');
 class User extends View {
 
     public $userdata = [];
-    public $title;
 
     public function auth($isauth){
 
@@ -26,16 +25,30 @@ class User extends View {
         }
         $this->footer();
     }
-    public function add(){
+
+    public function edit(){
         $messages = UserController::$messages;
-        $allow_add = UserController::instance()->allow('create');
-        $allow_edit = UserController::instance()->allow('edit');
-        $this->page_title = 'Add User';
+        $this->title = $this->page_title = 'Edit profile';
+        if($this->userdata['is_self']) {
+            $this->title = $this->page_title = 'Edit you profile';
+        }
         $this->header();
-        if((isset($this->userdata['is_self']) && $this->userdata['is_self']) || $allow_add || $allow_edit) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'add.php';
+        if($this->userdata['access'] && ($this->userdata['is_self'] || UserController::instance()->allow('edit'))){
+            require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'form.php';
+        }
         else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
         $this->footer();
     }
+
+    public function add(){
+        $messages = UserController::$messages;
+        $this->title = $this->page_title = 'Add user';
+        $this->header();
+        if(UserController::instance()->allow('create')) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'form.php';
+        else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
+        $this->footer();
+    }
+
     public function __get($name){
         if(isset($this->userdata[$name])) return $this->userdata[$name];
         return '';

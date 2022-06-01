@@ -58,7 +58,7 @@ class UserController extends Controller{
     }
 
     public function view_auth(){
-        self::$messages[] = $this->main->getSess('message', null);
+        parent::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', '');
         $view = new User;
         $view->userdata = Model::instance()->getUserData($this->main->getSess('user_id'));
@@ -66,26 +66,29 @@ class UserController extends Controller{
     }
 
     public function view_add(){
-        self::$messages[] = $this->main->getSess('message', null);
+        parent::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
         $view = new User;
         if($id = $this->main->getInt('id', false)){
             $view->userdata = Model::instance()->getUserData($id);
             $user_id = $this->main->getSess('user_id', null);
+            $view->userdata['access'] = true;
+            if($view->userdata['role'] == '2' && $user_id != $id){
+                $view->userdata['access'] = false;
+            }
             $view->userdata['is_self'] = false;
             if($view->userdata['user_id'] == $user_id) $view->userdata['is_self'] = true;
-            $view->title = 'Edit user';
+            $view->edit();
         }
         else {
             $view->userdata = $this->main->getSess('userdata', null);
             $this->main->setSess('userdata', null);
-            $view->title = 'Add user';
+            $view->add();
         }
-        $view->add();
     }
 
     public function view_list(){
-        self::$messages[] = $this->main->getSess('message', null);
+        parent::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
         $view = new Users;
         $view->users_list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
@@ -99,10 +102,15 @@ class UserController extends Controller{
     public function delete(){
         if($this->allow('delete')) {
             $id = $this->main->getInt('id', false);
-            Model::instance()->delete($id);
-            $this->main->setSess('message', 'success|User deleted successfully');
+            $userdata = Model::instance()->getUserData($id);
+            if($userdata['role'] != '2' || $id == $this->main->getSess('user_id', null)){
+                Model::instance()->delete($id);
+                $this->main->setSess('message', 'success|User deleted successfully');
+                header('location:index.php?ctrl=user&task=view_list');
+                die;
+            }
         }
-        else $this->main->setSess('message', 'error|Delete error.You do not have access');
+        $this->main->setSess('message', 'error|Delete error.You do not have access');
         header('location:index.php?ctrl=user&task=view_list');
     }
 
@@ -132,9 +140,9 @@ class UserController extends Controller{
                 $this->saveData($data);
                 $this->main->setSess('message', 'success|You profile edit successfully');
             }
-            header('location:index.php?ctrl=user&task=view_add&id='.$id);
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
+        header('location:index.php?ctrl=user&task=view_list');
     }
 
     public function add(){
@@ -149,6 +157,7 @@ class UserController extends Controller{
     private function save(&$id = null){
         $err = [];
         $data = [];
+        $validate = [];
         $model = Model::instance();
 
         $data['manager'] = $this->main->get('manager', false);
@@ -158,6 +167,14 @@ class UserController extends Controller{
         }
 
         $data['user_id'] = $id;
+
+        if($data['user_id']) {
+            $userdata = Model::instance()->getUserData($id);
+            if($userdata['role'] == '2' && $data['user_id'] != $this->main->getSess('user_id')){
+                $this->main->setSess('message', 'error|You do not have access');
+                return false;
+            }
+        }
 
         $task = $this->main->get('task', 'add');
 
@@ -169,22 +186,29 @@ class UserController extends Controller{
                 if($model->getDubleLogin($data['login'], $data['user_id'])) {
                     $err[6] = 'Login already exists';
                 }
+                else $validate['login'] = $data['login'];
             }
+
             if (!$data['password'] = $this->main->get('password', false)) {
                 $err[3] = 'Password is missing';
             }
+            else $validate['password'] = $data['password'];
         }
+
         if (!$data['name'] = $this->main->get('name', false)) {
             $err[4] = 'Name is missing';
         }
+        else $validate['name'] = $data['name'];
+
         if (!$data['email'] = $this->main->get('email', false)) {
             $err[1] = 'Email is missing';
         }
-        if($model->getDubleEmail($data['email'], $data['user_id'])){
+        elseif($model->getDubleEmail($data['email'], $data['user_id'])) {
             $err[5] = 'Email already exists';
         }
+        else $validate['email'] = $data['email'];
 
-        Validate::instance()->validateData($data, $err);
+        Validate::instance()->validateData($validate, $err);
 
         $this->main->setSess('userdata', $data);
 

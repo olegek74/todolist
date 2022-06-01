@@ -2,6 +2,7 @@
 namespace Kernel;
 
 use App\Controllers\MenuController;
+use App\Controllers\UserController;
 use Kernel\Controller;
 
 class View {
@@ -13,6 +14,8 @@ class View {
     protected $sort;
 
     public $page_title;
+
+    public $title;
 
     public function __construct() {
         $this->sort = Controller::$sort;
