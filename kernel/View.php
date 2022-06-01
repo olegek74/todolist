@@ -2,7 +2,6 @@
 namespace Kernel;
 
 use App\Controllers\MenuController;
-use App\Controllers\UserController;
 use Kernel\Controller;
 
 class View {
