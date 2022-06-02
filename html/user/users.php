@@ -5,7 +5,7 @@
 if(!empty($this->users_list)){ ?>
     <div class="table-responsive">
 
-        <?php require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php'; ?>
+        <?php $this->tmpl('utils', 'messages', ['messages' => $messages]); ?>
         <table class="table table-bordered">
             <tr>
                 <td style="width:5%">ID</td>

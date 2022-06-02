@@ -19,11 +19,11 @@ class UserController extends Controller{
     public function login(){
         if($this->auth()){
             $this->main->setSess('message', 'success|Welcome!');
-            header('location: index.php');
+            $this->redirect('index.php');
         }
         else {
             $this->main->setSess('message', 'error|Incorrect login or password');
-            header('location: index.php?ctrl=user&task=view_auth');
+            $this->redirect('index.php?ctrl=user&task=view_auth');
         }
         die;
     }
@@ -31,7 +31,7 @@ class UserController extends Controller{
     public function unlogin(){
         $this->main->setSess('auth', null);
         session_destroy();
-        header('location: index.php?ctrl=user&task=view_auth');
+        $this->redirect('index.php?ctrl=user&task=view_auth');
         die;
     }
 
@@ -58,16 +58,12 @@ class UserController extends Controller{
     }
 
     public function view_auth(){
-        parent::$messages[] = $this->main->getSess('message', null);
-        $this->main->setSess('message', '');
         $view = new User;
         $view->userdata = Model::instance()->getUserData($this->main->getSess('user_id'));
         $view->auth($this->auth());
     }
 
     public function view_add(){
-        parent::$messages[] = $this->main->getSess('message', null);
-        $this->main->setSess('message', null);
         $view = new User;
         if($id = $this->main->getInt('id', false)){
             $view->userdata = Model::instance()->getUserData($id);
@@ -88,8 +84,6 @@ class UserController extends Controller{
     }
 
     public function view_list(){
-        parent::$messages[] = $this->main->getSess('message', null);
-        $this->main->setSess('message', null);
         $view = new Users;
         $view->users_list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
         $view->user_list();
@@ -106,12 +100,12 @@ class UserController extends Controller{
             if($userdata['role'] != '2' || $id == $this->main->getSess('user_id', null)){
                 Model::instance()->delete($id);
                 $this->main->setSess('message', 'success|User deleted successfully');
-                header('location:index.php?ctrl=user&task=view_list');
+                $this->redirect('index.php?ctrl=user&task=view_list');
                 die;
             }
         }
         $this->main->setSess('message', 'error|Delete error.You do not have access');
-        header('location:index.php?ctrl=user&task=view_list');
+        $this->redirect('index.php?ctrl=user&task=view_list');
     }
 
     public function update(){
@@ -119,7 +113,7 @@ class UserController extends Controller{
             if($this->save($id)){
                 $this->main->setSess('message', 'success|User edit successfully');
             }
-            header('location:index.php?ctrl=user&task=view_edit&id='.$id);
+            $this->redirect('index.php?ctrl=user&task=view_edit&id='.$id);
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
     }
@@ -142,7 +136,7 @@ class UserController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
-        header('location:index.php?ctrl=user&task=view_list');
+        $this->redirect('index.php?ctrl=user&task=view_list');
     }
 
     public function add(){
@@ -151,7 +145,7 @@ class UserController extends Controller{
                 $this->main->setSess('message', 'success|User added successfully');
             }
         }
-        header('location:index.php?ctrl=user&task=view_add');
+        $this->redirect('index.php?ctrl=user&task=view_add');
     }
 
     private function save(&$id = null){
@@ -176,9 +170,8 @@ class UserController extends Controller{
             }
         }
 
-        $task = $this->main->get('task', 'add');
-
         if ($data['manager']) {
+
             if (!$data['login'] = $this->main->get('login', false)) {
                 $err[2] = 'Login is missing';
             }

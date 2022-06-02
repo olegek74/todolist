@@ -2,6 +2,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Edit task</div>
+        <?php $this->tmpl('utils', 'messages', ['messages' => $messages]); ?>
         <form action="index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="task" />
             <input type="hidden" name="task" value="edit" />
@@ -30,6 +31,20 @@
                         <?php } ?>
                     </select>
                 </div>
+            <?php }
+                if(!empty($cat_list)){ ?>
+                    <div class="mb-3">
+                        <label for="cat_id" class="form-label">Select Category</label>
+                        <select id="cat_id" class="form-select" name="cat_id">
+                            <option>No category</option>
+                            <?php foreach($cat_list as $category){
+                                $selected = ($this->category_id == $category['id']) ? ' selected' : '';?>
+                                <option<?php echo $selected;?> value="<?php echo $category['id'];?>">
+                                    <?php echo $category['name'];?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
             <?php } ?>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>

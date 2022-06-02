@@ -5,13 +5,14 @@
 if(!empty($this->list)){ ?>
     <div class="table-responsive">
 
-        <?php require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php'; ?>
+        <?php $this->tmpl('utils', 'messages', ['messages' => $messages]); ?>
         <table class="table table-bordered">
             <tr>
                 <td style="width:5%">ID</td>
-                <td style="width:60%">DESCRIPTION</td>
+                <td style="width:59%">DESCRIPTION</td>
                 <td style="width:10%">STATUS<?php echo $sort;?><br><a href="index.php">&nbsp;Refresh</a></td>
-                <td style="width:15%">USER EMAIL</td>
+                <td style="width:8%">USER EMAIL</td>
+                <td style="width:8%">Category</td>
                 <td style="width:10%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>
             <?php
@@ -21,6 +22,7 @@ if(!empty($this->list)){ ?>
                     <td><?php echo $row['description'];?></td>
                     <td><?php echo $row['status'];?></td>
                     <td><?php echo $row['email'];?></td>
+                    <td><?php echo isset($row['category_name']) ? $row['category_name'] : '';?></td>
                     <td>
                     <?php if($allow_edit){ ?>
                         <a class="btn btn-success btn-sm" href="/?ctrl=task&task=view_edit&id=<?php echo $row['id'];?>">Edit</a>

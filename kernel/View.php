@@ -22,29 +22,34 @@ class View {
 
     protected function header(){
         $menu = MenuController::instance();
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'header.php';
+        $this->tmpl('global', 'header', ['menu'=> $menu]);
     }
 
     protected function footer(){
-        require_once ROOTPATH . DS . 'html' . DS . 'global'. DS .'footer.php';
+        $this->tmpl('global', 'footer');
     }
 
     protected function pagination(){
-        $list_start = Controller::$list_start;
-        $curr_list_opt =  Controller::$curr_list_opt;
-        $sort = $this->sort;
-        $count = $this->count;
-        $main_link = $this->main_link;
         ob_start();
-        require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'paginator.php';
+        $this->tmpl('utils', 'paginator', [
+            'list_start' => Controller::$list_start,
+            'curr_list_opt' => Controller::$curr_list_opt,
+            'sort' => $this->sort,
+            'count' => $this->count,
+            'main_link' => $this->main_link
+        ]);
         return ob_get_clean();
     }
 
     protected function sort(){
-        $sort = $this->sort;
-        $main_link = $this->main_link;
         ob_start();
-        require ROOTPATH.DS.'html'.DS.'utils'. DS .'sort.php';
+        $this->tmpl('utils', 'sort', ['sort' => $this->sort, 'main_link' => $this->main_link]);
         return ob_get_clean();
+    }
+
+    protected function tmpl($folder, $tpl, $data = []){
+        extract($data);
+        unset($data);
+        require_once ROOTPATH . DS . 'html' . DS . $folder. DS . $tpl .'.php';
     }
 }

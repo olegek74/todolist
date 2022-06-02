@@ -16,8 +16,6 @@ class TaskController extends Controller{
 
     public function view_list(){
         $view = new Tasks;
-        self::$messages[] = $this->main->getSess('message', null);
-        $this->main->setSess('message', null);
         $view->list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
         $view->task_list();
     }
@@ -46,6 +44,7 @@ class TaskController extends Controller{
             }
 
             $data['status'] = $this->main->getInt('status', 0);
+            $data['cat_id'] = $this->main->getInt('cat_id', null);
 
             if (empty($err)) {
                 $model = Model::instance();
@@ -56,7 +55,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Edit error.Access denied');
-        header('location:index.php');
+        $this->redirect('index.php');
     }
 
     public function view_add() {
@@ -78,6 +77,7 @@ class TaskController extends Controller{
             }
 
             $data['status'] = $this->main->getInt('status', 0);
+            $data['cat_id'] = $this->main->getInt('cat_id', null);
 
             if (empty($err)) {
                 $model = Model::instance();
@@ -89,7 +89,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
-        header('location:index.php');
+        $this->redirect('index.php');
     }
 
     public function allow($action){
@@ -105,7 +105,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Delete error.You do not have access');
-        header('location:index.php');
+        $this->redirect('index.php');
     }
 
     public function view_edit(){

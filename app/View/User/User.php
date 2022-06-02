@@ -12,40 +12,37 @@ class User extends View {
 
     public function auth($isauth){
 
-        $messages = UserController::$messages;
         if($isauth){
             $this->page_title = 'You profile';
             $this->header();
-            require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'unlogin.php';
+            $this->tmpl('user', 'unlogin');
         }
         else {
             $this->page_title = 'Login';
             $this->header();
-            require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'login.php';
+            $this->tmpl('user', 'login', ['messages' => UserController::$messages]);
         }
         $this->footer();
     }
 
     public function edit(){
-        $messages = UserController::$messages;
         $this->title = $this->page_title = 'Edit profile';
         if($this->userdata['is_self']) {
             $this->title = $this->page_title = 'Edit you profile';
         }
         $this->header();
         if($this->userdata['access'] && ($this->userdata['is_self'] || UserController::instance()->allow('edit'))){
-            require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'form.php';
+            $this->tmpl('user', 'form', ['messages' => UserController::$messages]);
         }
-        else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
+        else $this->tmpl('utils', 'deny');
         $this->footer();
     }
 
     public function add(){
-        $messages = UserController::$messages;
         $this->title = $this->page_title = 'Add user';
         $this->header();
-        if(UserController::instance()->allow('create')) require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'form.php';
-        else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
+        if(UserController::instance()->allow('create')) $this->tmpl('user', 'form', ['messages' => UserController::$messages]);
+        else $this->tmpl('utils', 'deny');
         $this->footer();
     }
 

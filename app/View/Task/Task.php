@@ -4,6 +4,7 @@ namespace App\View\Task;
 
 use App\Controllers\TaskController;
 use App\Models\UserModel;
+use App\Models\CategoryModel;
 use Kernel\View;
 
 defined('ROOTPATH') or die('access denied');
@@ -12,8 +13,16 @@ class Task extends View{
 
     public $task_data;
 
+    private function getCategoryList(){
+        return CategoryModel::instance()->getList(0, false, 20);
+    }
+
     private function getUserList(){
-        return UserModel::instance()->getList();
+        return UserModel::instance()->getList(0, false, 20);
+    }
+
+    private function getCategory($id){
+        return CategoryModel::instance()->getOne($id, 'categories');
     }
 
     private function getAuthorData(){
@@ -23,25 +32,36 @@ class Task extends View{
     }
 
     public function add(){
-        $allow_create = TaskController::instance()->allow('create');
         $this->page_title = 'Add Task';
         $this->header();
-        if($allow_create){
-            $userlist = $userlist = $this->getUserList();
-            require_once ROOTPATH.DS.'html'.DS.'task'. DS .'add.php';
+        if(TaskController::instance()->allow('create')){
+            $this->tmpl('task', 'add', [
+                'cat_list' => $this->getCategoryList(),
+                'userlist' => $this->getUserList(),
+                'messages' => TaskController::$messages
+            ]);
         }
-        else require_once ROOTPATH.DS.'html'.DS.'utils'. DS .'deny.php';
+        else $this->tmpl('utils', 'deny');
         $this->footer();
     }
 
     public function edit(){
-        $userlist = false;
+
+        $tpl_data = [];
         $this->page_title = 'Edit Task';
-        $allow_create = TaskController::instance()->allow('create');
-        if($allow_create) $userlist = $this->getUserList(); // не все пользоватли могут пере
+        $tpl_data['userlist'] = false;
+        $tpl_data['messages'] = TaskController::$messages;
+        if($this->task_data['category_id']) {
+            $category = $this->getCategory($this->task_data['category_id']);
+            $this->task_data['category'] = $category['name'];
+        }
+
+        if(TaskController::instance()->allow('create')) $tpl_data['userlist'] = $this->getUserList();
+
+        $tpl_data['cat_list'] = $this->getCategoryList();
         $this->getAuthorData();
         $this->header();
-        require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'edit.php';
+        $this->tmpl('task', 'edit', $tpl_data);
         $this->footer();
     }
 
@@ -49,7 +69,7 @@ class Task extends View{
         $this->page_title = 'Show Task';
         $this->getAuthorData();
         $this->header();
-        require_once ROOTPATH . DS . 'html' . DS . 'task'. DS .'show.php';
+        $this->tmpl('task', 'show', ['messages' => TaskController::$messages]);
         $this->footer();
     }
 

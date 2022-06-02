@@ -26,12 +26,13 @@ class TaskModel extends Model
     public function create($data) {
 
         $insert = parent::$queryFactory->newInsert();
-        $insert->into('tasks')->cols(['id','description','user_id','status'])
+        $insert->into('tasks')->cols(['id','description','user_id','status', 'category_id'])
             ->bindValues([
                 'id' => NULL,
                 'description' => $data['description'],
                 'user_id' => $data['user_id'],
-                'status' => $data['status']
+                'status' => $data['status'],
+                'category_id' => $data['cat_id']
             ]);
 
         $sth = DB::execute($insert);
@@ -44,7 +45,8 @@ class TaskModel extends Model
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
         $select = parent::$queryFactory->newSelect();
-        $select->cols(['t.*', 'u.email'])->from('tasks AS t')->join('LEFT', 'users AS u', 't.user_id = u.id');
+        $select->cols(['t.*', 'c.name AS category_name', 'u.email'])->from('tasks AS t')->join('LEFT', 'users AS u', 't.user_id = u.id');
+        $select->join('LEFT', 'categories AS c', 't.category_id = c.id');
         $select->limit($curr_list_opt)->offset($list_start);
         if($sort == 'asc' || $sort == 'desc'){
             $select->orderBy(['t.status '.strtoupper($sort), 't.id ASC']);
@@ -59,8 +61,8 @@ class TaskModel extends Model
     public function edit($data){
 
         $update = parent::$queryFactory->newUpdate();
-        $cols = ['description', 'status'];
-        $binds = ['description' => $data['description'], 'status' => $data['status']];
+        $cols = ['description', 'status', 'category_id'];
+        $binds = ['description' => $data['description'], 'status' => $data['status'], 'category_id' => $data['cat_id']];
         if(isset($data['user_id'])) {
             $binds['user_id'] = $data['user_id'];
             $cols[] = 'user_id';
@@ -70,12 +72,8 @@ class TaskModel extends Model
         DB::execute($update);
     }
 
-    public function getOne($id){
-        $select = parent::$queryFactory->newSelect();
-        $select->cols(['*'])->from('tasks')->where('id = :id');
-        $select->bindValues(['id'=>$id]);
-        $sth = DB::execute($select);
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+    public function getOne($id, $table = 'tasks'){
+        return parent::getOne($id, $table);
     }
 
     public function delete($id, $table = 'tasks', $key = 'id'){

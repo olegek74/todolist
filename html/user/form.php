@@ -2,9 +2,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3"><?php echo $this->title;?></div>
-        <?php
-        require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'messages.php';
-        ?>
+        <?php $this->tmpl('utils', 'messages', ['messages' => $messages]); ?>
         <form action="index.php" novalidate>
            <div class="mb-3">
                 <label for="name" class="form-label">Name</label>

@@ -18,15 +18,16 @@ class Users extends View {
     }
 
     public function user_list(){
-        $allow_delete = UserController::instance()->allow('delete');
-        $allow_edit = UserController::instance()->allow('edit');
         $this->page_title = 'List of Users';
         $this->header();
-        $paginator = $this->pagination();
-        $sort = $this->sort();
-        $messages = UserController::$messages;
-        $curr_list_opt = UserController::$curr_list_opt;
-        require_once ROOTPATH . DS . 'html' . DS . 'user'.DS.'users.php';
+        $this->tmpl('user', 'users', [
+            'curr_list_opt' => UserController::$curr_list_opt,
+            'messages' => UserController::$messages,
+            'sort' => $this->sort(),
+            'paginator' => $this->pagination(),
+            'allow_delete' => UserController::instance()->allow('delete'),
+            'allow_edit' => UserController::instance()->allow('edit')
+        ]);
         $this->footer();
     }
 }

@@ -50,6 +50,7 @@
              $name = $values[0];
              $value = $values[1];
              $_SESSION[$name] = $value;
+             //var_dump($values); die;
          }
      }
 

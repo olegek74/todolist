@@ -40,4 +40,12 @@ class Model extends Objects {
         $delete->from($table)->where($key.' = :'.$key)->bindValue($key, $id);
         DB::execute($delete);
     }
+
+    public function getOne($id, $table){
+        $select = self::$queryFactory->newSelect();
+        $select->cols(['*'])->from($table)->where('id = :id');
+        $select->bindValues(['id'=>$id]);
+        $sth = DB::execute($select);
+        return $sth->fetch(\PDO::FETCH_ASSOC);
+    }
 }

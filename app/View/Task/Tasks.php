@@ -19,15 +19,16 @@ class Tasks extends View{
     }
 
     public function task_list(){
-        $allow_delete = TaskController::instance()->allow('delete');
-        $allow_edit = TaskController::instance()->allow('edit');
-        $this->page_title = 'List of Tasks';
+        $this->page_title = 'List of task';
         $this->header();
-        $paginator = $this->pagination();
-        $sort = $this->sort();
-        $messages = TaskController::$messages;
-        $curr_list_opt = TaskController::$curr_list_opt;
-        require_once ROOTPATH.DS.'html'.DS.'task'. DS .'list.php';
+        $this->tmpl('task', 'list', [
+            'allow_delete' => TaskController::instance()->allow('delete'),
+            'allow_edit' => TaskController::instance()->allow('edit'),
+            'paginator' => $this->pagination(),
+            'sort' => $this->sort(),
+            'messages' => TaskController::$messages,
+            'curr_list_opt' => TaskController::$curr_list_opt
+        ]);
         $this->footer();
     }
 }

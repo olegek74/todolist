@@ -18,9 +18,11 @@ class MenuController extends Objects {
     public $items = [
         'index.php'=>'Task list',
         'index.php?ctrl=task&task=view_add'=>'Add Task',
-        'index.php?ctrl=user&task=view_auth'=>'Login',
+        'index.php?ctrl=category&task=view_list'=>'Categories',
+        'index.php?ctrl=category&task=view_add'=>'Add category',
+        'index.php?ctrl=user&task=view_list'=>'Users',
         'index.php?ctrl=user&task=view_add'=>'Add user',
-        'index.php?ctrl=user&task=view_list'=>'Users'
+        'index.php?ctrl=user&task=view_auth'=>'Login'
     ];
 
     public function __construct(){
