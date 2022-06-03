@@ -24,49 +24,42 @@ class View {
         $this->sort = Controller::$sort;
     }
 
-    protected function header(){
+    protected function requireHtml($folder, $file, $data = []){
+        extract($data);
+        unset($data);
         ob_start();
-        $menu = MenuController::instance();
-        require_once ROOTPATH . DS . 'html' . DS . 'global' . DS . 'header.php';
-        self::$tpl['header'] .= ob_get_clean();
+        require_once ROOTPATH . DS . 'html' . DS . $folder . DS . $file.'.php';
+        return ob_get_clean();
+    }
+
+    protected function header(){
+        self::$tpl['header'] .= $this->requireHtml('global', 'header', ['menu' => MenuController::instance()]);
     }
 
     protected function footer(){
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . 'global' . DS . 'footer.php';
-        self::$tpl['footer'] .= ob_get_clean();
+        self::$tpl['footer'] .= $this->requireHtml('global', 'footer');
     }
 
     protected function pagination(){
-        $list_start = Controller::$list_start;
-        $curr_list_opt = Controller::$curr_list_opt;
-        $sort = $this->sort;
-        $count = $this->count;
-        $main_link = $this->main_link;
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . 'utils' . DS . 'paginator.php';
-        return ob_get_clean();
+        return $this->requireHtml('utils', 'paginator', [
+            'list_start' => Controller::$list_start,
+            'curr_list_opt' => Controller::$curr_list_opt,
+            'sort' => $this->sort,
+            'count' => $this->count,
+            'main_link' => $this->main_link
+        ]);
     }
 
     protected function selector(){
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . 'utils' . DS . 'selector.php';
-        return ob_get_clean();
+        return $this->requireHtml('utils', 'selector');
     }
 
     protected function messages(){
-        $messages = Controller::$messages;
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . 'utils' . DS . 'messages.php';
-        return ob_get_clean();
+        return $this->requireHtml('utils', 'messages', ['messages' => Controller::$messages]);
     }
 
     protected function sort(){
-        $sort = $this->sort;
-        $main_link = $this->main_link;
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . 'utils' . DS . 'sort.php';
-        return ob_get_clean();
+        return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => $this->sort]);
     }
 
     protected function tmpl($folder, $tpl, $data = []){

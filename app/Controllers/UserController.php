@@ -121,7 +121,6 @@ class UserController extends Controller{
         $this->main->setSess('user_id', $data['user_id']);
         $this->main->setSess('auth', '1');
         if(isset($data['role'])) $this->main->setSess('role', $data['role']);
-        else $this->main->setSess('role', 0);
     }
 
     public function self_update(){
@@ -186,6 +185,7 @@ class UserController extends Controller{
             }
             else $validate['password'] = $data['password'];
         }
+        else $data['role'] = '0';
 
         if (!$data['name'] = $this->main->get('name', false)) {
             $err[4] = 'Name is missing';
