@@ -1,4 +1,4 @@
-    <h1 class="display-6">List of Tasks</h1>
+    <h1 class="display-6">List of Category</h1>
     <br>
 <?php
 if(!empty($this->list)){ ?>
