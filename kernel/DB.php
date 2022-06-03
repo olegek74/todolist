@@ -1,7 +1,7 @@
 <?php
 namespace Kernel;
 use Aura\SqlQuery\QueryFactory;
-defined('ROOTPATH') or die('access denied');
+
 class DB {
 
     private static $host;

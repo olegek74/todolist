@@ -5,8 +5,6 @@ use Kernel\Objects;
 use Kernel\Main;
 use Kernel\Router;
 
-defined('ROOTPATH') or die('access denied');
-
 class MenuController extends Objects {
 
     protected $main;

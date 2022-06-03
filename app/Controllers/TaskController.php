@@ -6,7 +6,6 @@ use \App\Models\TaskModel as Model;
 use \App\View\Task\Tasks;
 use \App\View\Task\Task;
 
-defined('ROOTPATH') or die('access denied');
 
 class TaskController extends Controller{
 

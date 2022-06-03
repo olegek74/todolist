@@ -7,7 +7,6 @@ use App\View\User\User;
 use App\View\User\Users;
 use App\Classes\Validate;
 
-defined('ROOTPATH') or die('access denied');
 
 class UserController extends Controller{
 

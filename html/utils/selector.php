@@ -1,5 +1,3 @@
-<?php defined('ROOTPATH') or die('access denied'); ?>
-
 <div class="col-auto">
     <select class="form-select" id="curr_list_opt">
         <?php foreach([3, 6, 12, 25, 50] as $opt){

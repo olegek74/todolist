@@ -1,7 +1,6 @@
 <?php
 namespace Kernel;
 
-defined('ROOTPATH') or die('access denied');
 
 class ConfLoad{
 

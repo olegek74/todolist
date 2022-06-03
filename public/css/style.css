@@ -26,3 +26,23 @@ ul.menu a {
 ul.menu a.active {
      font-weight: 600;
 }
+html, body {
+     height: 100%;
+}
+html {
+     overflow-x: hidden;
+}
+.layout {
+     display: flex;
+     flex-direction: column;
+     min-height: 100%;
+}
+.layout__header {
+     flex-shrink: 0;
+}
+.layout__content {
+     flex-grow: 1;
+}
+.layout__footer {
+     flex-shrink: 0;
+}

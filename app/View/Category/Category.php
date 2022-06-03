@@ -15,35 +15,32 @@ class Category extends View{
 
     public function add(){
         $this->page_title = 'Add Category';
-        $this->header();
+        parent::$meta['description'] = 'This is a add category page';
         if(CategoryController::instance()->allow('create')){
             $this->tmpl('category', 'add', [
                 'catlist' => $this->getCatList(),
-                'messages' => CategoryController::$messages
+                'messages' => $this->messages()
             ]);
         }
         else $this->tmpl('utils', 'deny');
-        $this->footer();
     }
 
     public function edit(){
         $this->page_title = 'Edit Category';
-        $this->header();
+        parent::$meta['description'] = 'This is a edit category page';
         if(CategoryController::instance()->allow('edit')) {
             $this->tmpl('category', 'edit', [
                 'catlist' => $this->getCatList(),
-                'messages' => CategoryController::$messages
+                'messages' => $this->messages()
             ]);
         }
         else $this->tmpl('utils', 'deny');
-        $this->footer();
     }
 
     public function show(){
         $this->page_title = 'Show Category';
-        $this->header();
-        $this->tmpl('category', 'show', ['messages' => CategoryController::$messages]);
-        $this->footer();
+        parent::$meta['description'] = 'This is a category show page';
+        $this->tmpl('category', 'show', ['messages' => $this->messages()]);
     }
 
     public function __get($name){

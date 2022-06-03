@@ -4,7 +4,6 @@ namespace App\View\User;
 use App\Controllers\UserController;
 use Kernel\View;
 
-defined('ROOTPATH') or die('access denied');
 
 class User extends View {
 
@@ -14,15 +13,12 @@ class User extends View {
 
         if($isauth){
             $this->page_title = 'You profile';
-            $this->header();
             $this->tmpl('user', 'unlogin');
         }
         else {
             $this->page_title = 'Login';
-            $this->header();
-            $this->tmpl('user', 'login', ['messages' => UserController::$messages]);
+            $this->tmpl('user', 'login', ['messages' => $this->messages()]);
         }
-        $this->footer();
     }
 
     public function edit(){
@@ -30,20 +26,17 @@ class User extends View {
         if($this->userdata['is_self']) {
             $this->title = $this->page_title = 'Edit you profile';
         }
-        $this->header();
+
         if($this->userdata['access'] && ($this->userdata['is_self'] || UserController::instance()->allow('edit'))){
-            $this->tmpl('user', 'form', ['messages' => UserController::$messages]);
+            $this->tmpl('user', 'form', ['messages' => $this->messages()]);
         }
         else $this->tmpl('utils', 'deny');
-        $this->footer();
     }
 
     public function add(){
         $this->title = $this->page_title = 'Add user';
-        $this->header();
-        if(UserController::instance()->allow('create')) $this->tmpl('user', 'form', ['messages' => UserController::$messages]);
+        if(UserController::instance()->allow('create')) $this->tmpl('user', 'form', ['messages' => $this->messages()]);
         else $this->tmpl('utils', 'deny');
-        $this->footer();
     }
 
     public function __get($name){

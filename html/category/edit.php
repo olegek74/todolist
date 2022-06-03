@@ -1,8 +1,7 @@
-<?php defined('ROOTPATH') or die('access denied'); ?>
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Edit category</div>
-        <?php $this->tmpl('utils', 'messages', ['messages' => $messages]); ?>
+        <?php echo $messages; ?>
         <form action="index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="category" />
             <input type="hidden" name="task" value="edit" />

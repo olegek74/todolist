@@ -3,8 +3,6 @@ namespace Kernel;
 
 use Kernel\Main;
 
-defined('ROOTPATH') or die('access denied');
-
 class Router {
     public $controller_default = 'App\Controllers\TaskController';
     private $controller;

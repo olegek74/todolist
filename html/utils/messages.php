@@ -1,4 +1,3 @@
-<?php defined('ROOTPATH') or die('access denied'); ?>
 <?php
 if(!empty($messages)){
     foreach($messages as $message){?>

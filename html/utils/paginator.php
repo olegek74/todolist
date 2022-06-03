@@ -1,5 +1,3 @@
-<?php defined('ROOTPATH') or die('access denied'); ?>
-
 <div class="col-auto">
     <ul class="pagination">
         <?php
