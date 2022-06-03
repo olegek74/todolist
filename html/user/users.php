@@ -31,7 +31,7 @@ if(!empty($this->users_list)){ ?>
         </table>
     </div>
     <div class="row justify-content-end"><?php
-    require ROOTPATH . DS . 'html' . DS . 'utils'. DS .'selector.php';
+    echo $selector;
     echo $paginator;
     ?></div><?php
 } else {

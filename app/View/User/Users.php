@@ -23,6 +23,7 @@ class Users extends View {
             'messages' => $this->messages(),
             'sort' => $this->sort(),
             'paginator' => $this->pagination(),
+            'selector' => $this->selector(),
             'allow_delete' => UserController::instance()->allow('delete'),
             'allow_edit' => UserController::instance()->allow('edit')
         ]);

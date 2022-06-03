@@ -21,7 +21,6 @@ class View {
     private static $tpl = ['header' => '', 'content' => '', 'footer' => ''];
 
     public function __construct() {
-        $this->sort = Controller::$sort;
     }
 
     protected function requireHtml($folder, $file, $data = []){
@@ -44,14 +43,14 @@ class View {
         return $this->requireHtml('utils', 'paginator', [
             'list_start' => Controller::$list_start,
             'curr_list_opt' => Controller::$curr_list_opt,
-            'sort' => $this->sort,
+            'sort' => Controller::$sort,
             'count' => $this->count,
             'main_link' => $this->main_link
         ]);
     }
 
     protected function selector(){
-        return $this->requireHtml('utils', 'selector');
+        return $this->requireHtml('utils', 'selector', ['curr_list_opt' => Controller::$curr_list_opt]);
     }
 
     protected function messages(){
@@ -59,7 +58,7 @@ class View {
     }
 
     protected function sort(){
-        return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => $this->sort]);
+        return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
     }
 
     protected function tmpl($folder, $tpl, $data = []){

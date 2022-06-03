@@ -24,6 +24,7 @@ class Tasks extends View{
             'allow_edit' => TaskController::instance()->allow('edit'),
             'paginator' => $this->pagination(),
             'sort' => $this->sort(),
+            'selector' => $this->selector(),
             'messages' => $this->messages(),
             'curr_list_opt' => TaskController::$curr_list_opt
         ]);
