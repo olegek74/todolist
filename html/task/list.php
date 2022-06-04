@@ -12,11 +12,11 @@ if(!empty($this->list)){ ?>
                 <td style="width:5%">
                     <?php echo $this->buidSortLink($sort_data, 't.id', 'ID'); ?>
                 </td>
-                <td style="width:59%">DESCRIPTION</td>
+                <td style="width:55%">DESCRIPTION</td>
                 <td style="width:10%">
                     <?php echo $this->buidSortLink($sort_data, 't.status', 'STATUS'); ?>
                 </td>
-                <td style="width:8%">
+                <td style="width:12%">
                     <?php echo $this->buidSortLink($sort_data, 'u.email', 'USER EMAIL'); ?>
                 </td>
                 <td style="width:8%">

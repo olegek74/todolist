@@ -14,7 +14,7 @@ if(!empty($this->list)){ ?>
                 <td style="width:10%">
                     <?php echo $this->buidSortLink($sort_data, 'c.name', 'NAME'); ?>
                 </td>
-                <td style="width:60%">Description</td>
+                <td style="width:60%">DESCRIPTION</td>
                 <td style="width:15%">
                     <?php echo $this->buidSortLink($sort_data, 'c1.name', 'PARENT'); ?>
                 </td>
