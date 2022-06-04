@@ -35,6 +35,19 @@ class Model extends Objects {
         return $list;
     }
 
+    public function getFiedListByIds($ids, $table, $field, $key = 'id'){
+        $select = self::$queryFactory->newSelect();
+        $select->cols([$key, $field])->from($table);
+        $select->where($key.' IN ('.implode(',', $ids).')');
+        $sth = DB::execute($select);
+        $list = $this->get_list($sth);
+        $result = [];
+        foreach($list as $item){
+            $result[$item[$key]] = $item[$field];
+        }
+        return $result;
+    }
+
     public function delete($id, $table, $key = 'id'){
         $delete = self::$queryFactory->newDelete();
         $delete->from($table)->where($key.' = :'.$key)->bindValue($key, $id);

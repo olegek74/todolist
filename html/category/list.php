@@ -19,7 +19,7 @@ if(!empty($this->list)){ ?>
                     <td><a href="/?ctrl=category&task=view_show&id=<?php echo $row['id'];?>"><?php echo $row['id'];?></a></td>
                     <td><?php echo $row['name'];?></td>
                     <td><?php echo $row['description'];?></td>
-                    <td><?php echo $row['parent_id'];?></td>
+                    <td><?php echo $this->parents[$row['parent_id']];?></td>
                     <td>
                         <?php if($allow_edit){ ?>
                             <a class="btn btn-success btn-sm" href="/?ctrl=category&task=view_edit&id=<?php echo $row['id'];?>">Edit</a>

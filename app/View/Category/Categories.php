@@ -8,6 +8,7 @@ use Kernel\View;
 
 class Categories extends View{
     public $list;
+    public $parents;
 
     public function __construct(){
         parent::__construct();

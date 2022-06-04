@@ -58,6 +58,14 @@ class Controller extends Objects {
         $view->display();
     }
 
+    public function buildFieldValueByKey($assoclist, $key){
+        $fieldValueByKey = [];
+        foreach($assoclist as $item){
+            if($item[$key]) $fieldValueByKey[] = (int) $item[$key];
+        }
+        return $fieldValueByKey;
+    }
+
     protected function redirect($url){
         header('location:'.$url);
         die;

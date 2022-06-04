@@ -16,7 +16,11 @@ class CategoryController extends Controller {
 
     public function view_list(){
         $view = new Categories;
-        $view->list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
+        $model = Model::instance();
+        $list = $model->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
+        $parent_ids = $this->buildFieldValueByKey($list, 'parent_id');
+        $view->parents = $model->getFiedListByIds($parent_ids);
+        $view->list = $list;
         $view->category_list();
     }
 

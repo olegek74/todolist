@@ -60,6 +60,10 @@ class CategoryModel extends Model
         return $this->get_list($sth);
     }
 
+    public function getFiedListByIds($ids, $table = 'categories', $field = 'name', $key = 'id'){
+        return parent::getFiedListByIds($ids, $table, $field, $key);
+    }
+
     public function getOne($id, $table = 'categories'){
         return parent::getOne($id, $table);
     }
