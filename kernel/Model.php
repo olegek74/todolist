@@ -36,6 +36,7 @@ class Model extends Objects {
     }
 
     protected function buidSort($select, $sort, $field_def){
+        $sort_dir = $sort_by = null;
         if($sort) list($sort_dir, $sort_by) = explode(':', $sort);
         if(!$sort_dir) $sort_dir = 'asc';
         if(!$sort_by) $sort_by = $field_def;
