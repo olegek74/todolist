@@ -62,6 +62,14 @@ class UserController extends Controller{
         $view->auth($this->auth());
     }
 
+    public function view_show(){
+        if($id = $this->main->getInt('id', false)){
+            $view = new User;
+            $view->userdata = Model::instance()->getUserData($id);
+            $view->show();
+        }
+    }
+
     public function view_add(){
         $view = new User;
         if($id = $this->main->getInt('id', false)){

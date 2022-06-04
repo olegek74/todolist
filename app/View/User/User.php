@@ -39,6 +39,12 @@ class User extends View {
         else $this->tmpl('utils', 'deny');
     }
 
+    public function show(){
+        $this->page_title = 'Show User';
+        parent::$meta['description'] = 'This is a user show page';
+        $this->tmpl('user', 'show', ['messages' => $this->messages()]);
+    }
+
     public function __get($name){
         if(isset($this->userdata[$name])) return $this->userdata[$name];
         return '';

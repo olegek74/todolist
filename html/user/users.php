@@ -16,7 +16,7 @@ if(!empty($this->users_list)){ ?>
             <?php
             foreach($this->users_list as $row){ ?>
                 <tr>
-                    <td><?php echo $row['id'];?></td>
+                    <td><a href="/?ctrl=user&task=view_show&id=<?php echo $row['id'];?>"><?php echo $row['id'];?></a></td>
                     <td><?php echo $row['name'];?></td>
                     <td><?php echo $row['login'];?></td>
                     <td><?php echo $row['email'];?></td>
