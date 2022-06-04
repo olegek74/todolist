@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html>
+{head}
+<body>
+<div class="layout">
 {header}
+<div class="layout__content">
+<div class="container">
 {content}
+</div>
+</div>
 {footer}
+</div>
+</body>
+</html>

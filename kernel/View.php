@@ -18,7 +18,7 @@ class View {
 
     public static $meta = ['description' => 'Todolist for managers and users'];
 
-    private static $tpl = ['header' => '', 'content' => '', 'footer' => ''];
+    private static $tpl = ['head' => '', 'header' => '', 'content' => '', 'footer' => ''];
 
     public function __construct() {
     }
@@ -32,11 +32,17 @@ class View {
     }
 
     protected function header(){
-        self::$tpl['header'] .= $this->requireHtml('global', 'header', ['menu' => MenuController::instance()]);
+        self::$tpl['header'] .= $this->requireHtml('common', 'header', [
+            'menu' => MenuController::instance()
+        ]);
+    }
+
+    protected function head(){
+        self::$tpl['head'] .= $this->requireHtml('common', 'head');
     }
 
     protected function footer(){
-        self::$tpl['footer'] .= $this->requireHtml('global', 'footer');
+        self::$tpl['footer'] .= $this->requireHtml('common', 'footer');
     }
 
     protected function pagination(){
@@ -70,9 +76,10 @@ class View {
     }
 
     public function __destruct(){
+        $this->head();
         $this->header();
         $this->footer();
         $tpl_file = file_get_contents(ROOTPATH.DS.'tpl.bak');
-        echo str_replace(['{header}','{content}','{footer}'], [self::$tpl['header'], self::$tpl['content'], self::$tpl['footer']], $tpl_file);
+        echo str_replace(['{head}','{header}','{content}','{footer}'], [self::$tpl['head'], self::$tpl['header'], self::$tpl['content'], self::$tpl['footer']], $tpl_file);
     }
 }
