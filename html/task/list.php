@@ -1,17 +1,27 @@
     <h1 class="display-6">List of Tasks</h1>
     <br>
 <?php
+
+$sort_data = json_decode($sort);
 if(!empty($this->list)){ ?>
     <div class="table-responsive">
 
         <?php echo $messages; ?>
-        <table class="table table-bordered">
+        <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($sort);?>">
             <tr>
-                <td style="width:5%">ID</td>
+                <td style="width:5%">
+                    <?php echo $this->buidSortLink($sort_data, 't.id', 'ID'); ?>
+                </td>
                 <td style="width:59%">DESCRIPTION</td>
-                <td style="width:10%">STATUS<?php echo $sort;?><br><a href="index.php">&nbsp;Refresh</a></td>
-                <td style="width:8%">USER EMAIL</td>
-                <td style="width:8%">Category</td>
+                <td style="width:10%">
+                    <?php echo $this->buidSortLink($sort_data, 't.status', 'STATUS'); ?>
+                </td>
+                <td style="width:8%">
+                    <?php echo $this->buidSortLink($sort_data, 'u.email', 'USER EMAIL'); ?>
+                </td>
+                <td style="width:8%">
+                    <?php echo $this->buidSortLink($sort_data, 'c.name', 'CATEGORY'); ?>
+                </td>
                 <td style="width:10%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>
             <?php

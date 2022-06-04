@@ -8,7 +8,7 @@ class Controller extends Objects {
 
     public static $messages = [];
 
-    public static $curr_list_opt = 3;
+    public static $curr_list_opt = 50;
 
     public static $sort = false;
 
@@ -18,7 +18,7 @@ class Controller extends Objects {
 
     public function __construct(){
         $this->main = Main::instance();
-        self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 3));
+        self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 50));
         self::$sort = $this->main->get('sort', false);
         self::$list_start = $this->main->getInt('list_start', 0);
         self::$messages[] = $this->main->getSess('message', null);

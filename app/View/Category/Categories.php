@@ -8,7 +8,6 @@ use Kernel\View;
 
 class Categories extends View{
     public $list;
-    public $parents;
 
     public function __construct(){
         parent::__construct();
@@ -26,7 +25,7 @@ class Categories extends View{
             'selector' => $this->selector(),
             'messages' => $this->messages(),
             'curr_list_opt' => CategoryController::$curr_list_opt,
-            'sort' => CategoryController::$sort
+            'sort' => $this->sort()
         ]);
     }
 }

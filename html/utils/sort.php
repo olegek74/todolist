@@ -1,11 +1,24 @@
 <?php
-if(!$sort || $sort == 'desc') {
-    $sort = 'asc';
-    $icon = '&uarr;';
+if($sort){
+    list($sort_dir, $sort_by) = explode(':', $sort);
 }
 else {
-    $sort = 'desc';
-    $icon = '&darr;';
+    $sort_dir = false;
+    $sort_by = false;
 }
+
+if(!$sort_dir || $sort_dir == 'desc') {
+    $sort_dir = 'asc';
+    $icon = '&#129073;';
+}
+else {
+    $sort_dir = 'desc';
+    $icon = '&#129075;';
+}
+$sort_data = new stdClass;
+$sort_data->main_link = $main_link;
+$sort_data->sort_dir = $sort_dir;
+$sort_data->sort_by = $sort_by;
+$sort_data->icon = $icon;
+echo json_encode($sort_data);
 ?>
-<a href="index.php?<?php echo $main_link;?>sort=<?php echo $sort;?>">&nbsp;<?php echo $icon;?>&nbsp;</a>

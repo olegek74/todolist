@@ -77,12 +77,8 @@ class UserModel extends Model
         $select->cols(['u.*','u.id AS uid','m.login'])->from('users AS u')->join('LEFT','managers AS m','m.user_id = u.id');
         $select->limit($curr_list_opt)->offset($list_start);
 
-        if($sort == 'asc' || $sort == 'desc'){
-            $select->orderBy(['u.name '.strtoupper($sort), 'u.id ASC']);
-        }
-        else {
-            $select->orderBy(['u.id ASC']);
-        }
+        $this->buidSort($select, $sort, 'u.id');
+
         $sth = DB::execute($select);
         return $this->get_list($sth);
     }

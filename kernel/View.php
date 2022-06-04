@@ -27,7 +27,7 @@ class View {
         extract($data);
         unset($data);
         ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . $folder . DS . $file.'.php';
+        require ROOTPATH . DS . 'html' . DS . $folder . DS . $file.'.php';
         return ob_get_clean();
     }
 
@@ -43,6 +43,12 @@ class View {
 
     protected function footer(){
         self::$tpl['footer'] .= $this->requireHtml('common', 'footer');
+    }
+
+    protected function buidSortLink($sort_data, $sort_by, $title){
+        return $this->requireHtml('utils', 'build_sort', [
+            'sort_data' => $sort_data, 'sort_by' => $sort_by, 'title' => $title
+        ]);
     }
 
     protected function pagination(){
@@ -64,7 +70,7 @@ class View {
     }
 
     protected function sort(){
-        return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
+       return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
     }
 
     protected function tmpl($folder, $tpl, $data = []){

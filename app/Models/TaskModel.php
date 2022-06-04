@@ -48,12 +48,9 @@ class TaskModel extends Model
         $select->cols(['t.*', 'c.name AS category_name', 'u.email'])->from('tasks AS t')->join('LEFT', 'users AS u', 't.user_id = u.id');
         $select->join('LEFT', 'categories AS c', 't.category_id = c.id');
         $select->limit($curr_list_opt)->offset($list_start);
-        if($sort == 'asc' || $sort == 'desc'){
-            $select->orderBy(['t.status '.strtoupper($sort), 't.id ASC']);
-        }
-        else {
-            $select->orderBy(['t.id ASC']);
-        }
+
+        $this->buidSort($select, $sort, 't.id');
+
         $sth = DB::execute($select);
         return $this->get_list($sth);
     }

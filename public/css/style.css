@@ -46,3 +46,13 @@ html {
 .layout__footer {
      flex-shrink: 0;
 }
+div.sort{
+     cursor:pointer;
+     display:inline-block;
+     text-decoration: underline;
+}
+div.sort.active {
+     cursor: unset;
+     font-weight:bold;
+     text-decoration: none;
+}

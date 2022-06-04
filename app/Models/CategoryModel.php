@@ -48,14 +48,12 @@ class CategoryModel extends Model
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
         $select = parent::$queryFactory->newSelect();
-        $select->cols(['*'])->from('categories');
+        $select->cols(['c.*, c1.name AS parent'])->from('categories AS c');
         $select->limit($curr_list_opt)->offset($list_start);
-        if($sort == 'asc' || $sort == 'desc'){
-            $select->orderBy(['name '.strtoupper($sort), 'id ASC']);
-        }
-        else {
-            $select->orderBy(['id ASC']);
-        }
+        $select->join('LEFT','categories AS c1', 'c1.id = c.parent_id');
+
+        $this->buidSort($select, $sort, 'c.id');
+
         $sth = DB::execute($select);
         return $this->get_list($sth);
     }

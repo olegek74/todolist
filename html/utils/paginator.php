@@ -1,9 +1,16 @@
 <div class="col-auto">
     <ul class="pagination">
         <?php
+        if($sort){
+            list($sort_dir, $sort_by) = explode(':', $sort);
+        }
+        else {
+            $sort_dir = false;
+            $sort_by = false;
+        }
         $append = '';
-        if($sort == 'asc' || $sort == 'desc'){
-            $append = '&sort='.$sort;
+        if($sort_dir == 'asc' || $sort_dir == 'desc'){
+            $append = '&sort='.$sort_dir.':'.$sort_by;
         }
         $numpages = $count/$curr_list_opt;
         $num = intval($numpages);

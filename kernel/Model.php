@@ -35,6 +35,21 @@ class Model extends Objects {
         return $list;
     }
 
+    protected function buidSort($select, $sort, $field_def){
+        if($sort) list($sort_dir, $sort_by) = explode(':', $sort);
+        if(!$sort_dir) $sort_dir = 'asc';
+        if(!$sort_by) $sort_by = $field_def;
+
+        if($sort_dir == 'asc' || $sort_dir == 'desc'){
+            $order = [$sort_by.' '.strtoupper($sort_dir)];
+            if($sort_by != $field_def) $order[] = $field_def.' ASC';
+            $select->orderBy($order);
+        }
+        else {
+            $select->orderBy([$field_def.' ASC']);
+        }
+    }
+
     public function getFiedListByIds($ids, $table, $field, $key = 'id'){
         $select = self::$queryFactory->newSelect();
         $select->cols([$key, $field])->from($table);
