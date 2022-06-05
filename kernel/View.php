@@ -73,7 +73,7 @@ class View {
        return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
     }
 
-    protected function tmpl($folder, $tpl, $data = []){
+    protected function content($folder, $tpl, $data = []){
         extract($data);
         unset($data);
         ob_start();

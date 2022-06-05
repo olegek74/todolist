@@ -13,11 +13,11 @@ class User extends View {
 
         if($isauth){
             $this->page_title = 'You profile';
-            $this->tmpl('user', 'unlogin');
+            $this->content('user', 'unlogin');
         }
         else {
             $this->page_title = 'Login';
-            $this->tmpl('user', 'login', ['messages' => $this->messages()]);
+            $this->content('user', 'login', ['messages' => $this->messages()]);
         }
     }
 
@@ -28,21 +28,21 @@ class User extends View {
         }
 
         if($this->userdata['access'] && ($this->userdata['is_self'] || UserController::instance()->allow('edit'))){
-            $this->tmpl('user', 'form', ['messages' => $this->messages()]);
+            $this->content('user', 'form', ['messages' => $this->messages()]);
         }
-        else $this->tmpl('utils', 'deny');
+        else $this->content('utils', 'deny');
     }
 
     public function add(){
         $this->title = $this->page_title = 'Add user';
-        if(UserController::instance()->allow('create')) $this->tmpl('user', 'form', ['messages' => $this->messages()]);
-        else $this->tmpl('utils', 'deny');
+        if(UserController::instance()->allow('create')) $this->content('user', 'form', ['messages' => $this->messages()]);
+        else $this->content('utils', 'deny');
     }
 
     public function show(){
         $this->page_title = 'Show User';
         parent::$meta['description'] = 'This is a user show page';
-        $this->tmpl('user', 'show', ['messages' => $this->messages()]);
+        $this->content('user', 'show', ['messages' => $this->messages()]);
     }
 
     public function __get($name){

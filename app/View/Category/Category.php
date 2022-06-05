@@ -17,30 +17,30 @@ class Category extends View{
         $this->page_title = 'Add Category';
         parent::$meta['description'] = 'This is a add category page';
         if(CategoryController::instance()->allow('create')){
-            $this->tmpl('category', 'add', [
+            $this->content('category', 'add', [
                 'catlist' => $this->getCatList(),
                 'messages' => $this->messages()
             ]);
         }
-        else $this->tmpl('utils', 'deny');
+        else $this->content('utils', 'deny');
     }
 
     public function edit(){
         $this->page_title = 'Edit Category';
         parent::$meta['description'] = 'This is a edit category page';
         if(CategoryController::instance()->allow('edit')) {
-            $this->tmpl('category', 'edit', [
+            $this->content('category', 'edit', [
                 'catlist' => $this->getCatList(),
                 'messages' => $this->messages()
             ]);
         }
-        else $this->tmpl('utils', 'deny');
+        else $this->content('utils', 'deny');
     }
 
     public function show(){
         $this->page_title = 'Show Category';
         parent::$meta['description'] = 'This is a category show page';
-        $this->tmpl('category', 'show', ['messages' => $this->messages()]);
+        $this->content('category', 'show', ['messages' => $this->messages()]);
     }
 
     public function __get($name){

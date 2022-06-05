@@ -18,7 +18,7 @@ class Categories extends View{
 
     public function category_list(){
         $this->page_title = 'List of Category';
-        $this->tmpl('category', 'list', [
+        $this->content('category', 'list', [
             'allow_delete' => CategoryController::instance()->allow('delete'),
             'allow_edit' => CategoryController::instance()->allow('edit'),
             'paginator' => $this->pagination(),

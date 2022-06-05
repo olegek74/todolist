@@ -18,7 +18,7 @@ class Users extends View {
 
     public function user_list(){
         $this->page_title = 'List of Users';
-        $this->tmpl('user', 'users', [
+        $this->content('user', 'users', [
             'curr_list_opt' => UserController::$curr_list_opt,
             'messages' => $this->messages(),
             'sort' => $this->sort(),

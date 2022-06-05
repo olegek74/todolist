@@ -19,7 +19,7 @@ class Tasks extends View{
 
     public function task_list(){
         $this->page_title = 'List of task';
-        $this->tmpl('task', 'list', [
+        $this->content('task', 'list', [
             'allow_delete' => TaskController::instance()->allow('delete'),
             'allow_edit' => TaskController::instance()->allow('edit'),
             'paginator' => $this->pagination(),

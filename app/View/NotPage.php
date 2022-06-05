@@ -6,7 +6,7 @@ use Kernel\View;
 class NotPage extends View{
 
     public function display(){
-		$this->tmpl('utils', 'page404');
+		$this->content('utils', 'page404');
     }
 }
 ?>

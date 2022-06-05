@@ -33,13 +33,13 @@ class Task extends View{
     public function add(){
         $this->page_title = 'Add Task';
         if(TaskController::instance()->allow('create')){
-            $this->tmpl('task', 'add', [
+            $this->content('task', 'add', [
                 'cat_list' => $this->getCategoryList(),
                 'userlist' => $this->getUserList(),
                 'messages' => $this->messages()
             ]);
         }
-        else $this->tmpl('utils', 'deny');
+        else $this->content('utils', 'deny');
     }
 
     public function edit(){
@@ -57,13 +57,13 @@ class Task extends View{
 
         $tpl_data['cat_list'] = $this->getCategoryList();
         $this->getAuthorData();
-        $this->tmpl('task', 'edit', $tpl_data);
+        $this->content('task', 'edit', $tpl_data);
     }
 
     public function show(){
         $this->page_title = 'Show Task';
         $this->getAuthorData();
-        $this->tmpl('task', 'show', ['messages' => $this->messages()]);
+        $this->content('task', 'show', ['messages' => $this->messages()]);
     }
 
     public function __get($name){
