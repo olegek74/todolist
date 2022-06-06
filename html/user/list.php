@@ -10,7 +10,9 @@ if(!empty($view->list)){ ?>
         <?php echo $view->messages(); ?>
         <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($view->sort());?>">
             <tr>
-                <td style="width:10%">ID</td>
+                <td style="width:10%">
+                    <?php echo $view->buidSortLink('u.id', 'ID'); ?>
+                </td>
                 <td style="width:25%">
                     <?php echo $view->buidSortLink('u.name', 'NAME'); ?>
                 </td>
