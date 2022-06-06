@@ -45,9 +45,9 @@ class View {
         self::$tpl['footer'] .= Helper::requireHtml('common', 'footer');
     }
 
-    public function buidSortLink($sort_data, $sort_by, $title){
+    public function buidSortLink($sort_by, $title){
         return Helper::requireHtml('utils', 'build_sort', [
-            'sort_data' => $sort_data, 'sort_by' => $sort_by, 'title' => $title
+            'sortData' => $this->sort(), 'sort_by' => $sort_by, 'title' => $title
         ]);
     }
 

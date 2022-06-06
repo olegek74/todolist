@@ -4,7 +4,6 @@ $view = Helper::getObj();
 <h1 class="display-6">List of Category</h1>
     <br>
 <?php
-$sort_data = json_decode($view->sort());
 if(!empty($view->list)){ ?>
     <div class="table-responsive">
 
@@ -12,14 +11,14 @@ if(!empty($view->list)){ ?>
         <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($view->sort());?>">
             <tr>
                 <td style="width:5%">
-                    <?php echo $view->buidSortLink($sort_data, 'c.id', 'ID'); ?>
+                    <?php echo $view->buidSortLink('c.id', 'ID'); ?>
                 </td>
                 <td style="width:10%">
-                    <?php echo $view->buidSortLink($sort_data, 'c.name', 'NAME'); ?>
+                    <?php echo $view->buidSortLink('c.name', 'NAME'); ?>
                 </td>
                 <td style="width:60%">DESCRIPTION</td>
                 <td style="width:15%">
-                    <?php echo $view->buidSortLink($sort_data, 'c1.name', 'PARENT'); ?>
+                    <?php echo $view->buidSortLink('c1.name', 'PARENT'); ?>
                 </td>
                 <td style="width:10%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>

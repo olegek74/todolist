@@ -15,10 +15,5 @@ else {
     $sort_dir = 'desc';
     $icon = '&#129075;';
 }
-$sort_data = new stdClass;
-$sort_data->main_link = $main_link;
-$sort_data->sort_dir = $sort_dir;
-$sort_data->sort_by = $sort_by;
-$sort_data->icon = $icon;
-echo json_encode($sort_data);
+echo '{"main_link":"'.$main_link.'", "sort_dir":"'.$sort_dir.'", "sort_by":"'.$sort_by.'", "icon":"'.$icon.'"}';
 ?>
