@@ -34,10 +34,10 @@ class CategoryController extends Controller {
     public function view_show(){
         if($id = $this->main->getInt('id', false)){
             $view = new Category;
-            $view->category_data = Model::instance()->getOne($id);
-            if($view->category_data['parent_id']) {
-                $parent_data = Model::instance()->getOne($view->category_data['parent_id']);
-                $view->category_data['parent'] = $parent_data['name'];
+            $view->data = Model::instance()->getOne($id);
+            if($view->data['parent_id']) {
+                $parent_data = Model::instance()->getOne($view->data['parent_id']);
+                $view->data['parent'] = $parent_data['name'];
             }
             $view->show();
         }
@@ -46,7 +46,7 @@ class CategoryController extends Controller {
     public function view_edit(){
         if($id = $this->main->getInt('id', false)){
             $view = new Category;
-            $view->category_data = Model::instance()->getOne($id);
+            $view->data = Model::instance()->getOne($id);
             $view->edit();
         }
     }

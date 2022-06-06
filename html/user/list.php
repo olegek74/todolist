@@ -1,28 +1,31 @@
-    <h1 class="display-6">List of Users</h1>
+<?php use App\Classes\Helper;
+$view = Helper::getObj();
+?>
+<h1 class="display-6">List of Users</h1>
     <br>
 <?php
 
-$sort_data = json_decode($sort);
-if(!empty($this->users_list)){ ?>
+$sort_data = json_decode($view->sort());
+if(!empty($view->list)){ ?>
     <div class="table-responsive">
 
-        <?php echo $messages; ?>
-        <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($sort);?>">
+        <?php echo $view->messages(); ?>
+        <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($view->sort());?>">
             <tr>
                 <td style="width:10%">ID</td>
                 <td style="width:25%">
-                    <?php echo $this->buidSortLink($sort_data, 'u.name', 'NAME'); ?>
+                    <?php echo $view->buidSortLink($sort_data, 'u.name', 'NAME'); ?>
                 </td>
                 <td style="width:25%">
-                    <?php echo $this->buidSortLink($sort_data, 'm.login', 'LOGIN'); ?>
+                    <?php echo $view->buidSortLink($sort_data, 'm.login', 'LOGIN'); ?>
                 </td>
                 <td style="width:25%">
-                    <?php echo $this->buidSortLink($sort_data, 'u.email', 'EMAIL'); ?>
+                    <?php echo $view->buidSortLink($sort_data, 'u.email', 'EMAIL'); ?>
                 </td>
                 <td style="width:15%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>
             <?php
-            foreach($this->users_list as $row){ ?>
+            foreach($view->list as $row){ ?>
                 <tr>
                     <td><a href="/?ctrl=user&task=view_show&id=<?php echo $row['id'];?>"><?php echo $row['id'];?></a></td>
                     <td><?php echo $row['name'];?></td>
@@ -39,8 +42,8 @@ if(!empty($this->users_list)){ ?>
         </table>
     </div>
     <div class="row justify-content-end"><?php
-    echo $selector;
-    echo $paginator;
+    echo $view->selector();
+    echo $view->pagination();
     ?></div><?php
 } else {
     echo "<p>Task list is empty</p>";

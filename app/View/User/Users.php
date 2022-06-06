@@ -8,7 +8,7 @@ use Kernel\View;
 
 class Users extends View {
 
-    public $users_list;
+    public $list;
 
     public function __construct(){
         parent::__construct();
@@ -18,12 +18,8 @@ class Users extends View {
 
     public function user_list(){
         $this->page_title = 'List of Users';
-        $this->content('user', 'users', [
+        $this->content('user', 'list', [
             'curr_list_opt' => UserController::$curr_list_opt,
-            'messages' => $this->messages(),
-            'sort' => $this->sort(),
-            'paginator' => $this->pagination(),
-            'selector' => $this->selector(),
             'allow_delete' => UserController::instance()->allow('delete'),
             'allow_edit' => UserController::instance()->allow('edit')
         ]);

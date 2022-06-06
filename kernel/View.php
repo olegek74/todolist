@@ -3,6 +3,7 @@ namespace Kernel;
 
 use App\Controllers\MenuController;
 use Kernel\Controller;
+use App\Classes\Helper;
 
 class View {
 
@@ -20,39 +21,38 @@ class View {
 
     private static $tpl = ['head' => '', 'header' => '', 'content' => '', 'footer' => ''];
 
+    private static $instance;
+
     public function __construct() {
+        self::$instance = $this;
     }
 
-    protected function requireHtml($folder, $file, $data = []){
-        extract($data);
-        unset($data);
-        ob_start();
-        require ROOTPATH . DS . 'html' . DS . $folder . DS . $file.'.php';
-        return ob_get_clean();
+    public static function instance(){
+        return self::$instance;
     }
 
     protected function header(){
-        self::$tpl['header'] .= $this->requireHtml('common', 'header', [
+        self::$tpl['header'] .= Helper::requireHtml('common', 'header', [
             'menu' => MenuController::instance()
         ]);
     }
 
     protected function head(){
-        self::$tpl['head'] .= $this->requireHtml('common', 'head');
+        self::$tpl['head'] .= Helper::requireHtml('common', 'head', ['meta' => self::$meta]);
     }
 
     protected function footer(){
-        self::$tpl['footer'] .= $this->requireHtml('common', 'footer');
+        self::$tpl['footer'] .= Helper::requireHtml('common', 'footer');
     }
 
-    protected function buidSortLink($sort_data, $sort_by, $title){
-        return $this->requireHtml('utils', 'build_sort', [
+    public function buidSortLink($sort_data, $sort_by, $title){
+        return Helper::requireHtml('utils', 'build_sort', [
             'sort_data' => $sort_data, 'sort_by' => $sort_by, 'title' => $title
         ]);
     }
 
-    protected function pagination(){
-        return $this->requireHtml('utils', 'paginator', [
+    public function pagination(){
+        return Helper::requireHtml('utils', 'paginator', [
             'list_start' => Controller::$list_start,
             'curr_list_opt' => Controller::$curr_list_opt,
             'sort' => Controller::$sort,
@@ -61,31 +61,27 @@ class View {
         ]);
     }
 
-    protected function selector(){
-        return $this->requireHtml('utils', 'selector', ['curr_list_opt' => Controller::$curr_list_opt]);
+    public function selector(){
+        return Helper::requireHtml('utils', 'selector', ['curr_list_opt' => Controller::$curr_list_opt]);
     }
 
-    protected function messages(){
-        return $this->requireHtml('utils', 'messages', ['messages' => Controller::$messages]);
+    public function messages(){
+        return Helper::requireHtml('utils', 'messages', ['messages' => Controller::$messages]);
     }
 
-    protected function sort(){
-       return $this->requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
+    public function sort(){
+       return Helper::requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
     }
 
     protected function content($folder, $tpl, $data = []){
-        extract($data);
-        unset($data);
-        ob_start();
-        require_once ROOTPATH . DS . 'html' . DS . $folder. DS . $tpl .'.php';
-        self::$tpl['content'] .= ob_get_clean();
+        self::$tpl['content'] .= Helper::requireHtml($folder, $tpl, $data);
     }
 
     public function __destruct(){
         $this->head();
         $this->header();
         $this->footer();
-        $tpl_file = file_get_contents(ROOTPATH.DS.'tpl.bak');
+        $tpl_file = file_get_contents(ROOTPATH.DS.'tpl.html');
         echo str_replace(['{head}','{header}','{content}','{footer}'], [self::$tpl['head'], self::$tpl['header'], self::$tpl['content'], self::$tpl['footer']], $tpl_file);
     }
 }

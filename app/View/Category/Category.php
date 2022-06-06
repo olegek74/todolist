@@ -7,7 +7,7 @@ use App\Controllers\CategoryController;
 use Kernel\View;
 
 class Category extends View{
-    public $category_data;
+    public $data;
 
     private function getCatList(){
         return CategoryModel::instance()->getList(0, false, 10);
@@ -18,8 +18,7 @@ class Category extends View{
         parent::$meta['description'] = 'This is a add category page';
         if(CategoryController::instance()->allow('create')){
             $this->content('category', 'add', [
-                'catlist' => $this->getCatList(),
-                'messages' => $this->messages()
+                'catlist' => $this->getCatList()
             ]);
         }
         else $this->content('utils', 'deny');
@@ -30,8 +29,7 @@ class Category extends View{
         parent::$meta['description'] = 'This is a edit category page';
         if(CategoryController::instance()->allow('edit')) {
             $this->content('category', 'edit', [
-                'catlist' => $this->getCatList(),
-                'messages' => $this->messages()
+                'catlist' => $this->getCatList()
             ]);
         }
         else $this->content('utils', 'deny');
@@ -40,11 +38,11 @@ class Category extends View{
     public function show(){
         $this->page_title = 'Show Category';
         parent::$meta['description'] = 'This is a category show page';
-        $this->content('category', 'show', ['messages' => $this->messages()]);
+        $this->content('category', 'show');
     }
 
     public function __get($name){
-        if(!empty($this->category_data) && isset($this->category_data[$name])) return $this->category_data[$name];
+        if(!empty($this->data) && isset($this->data[$name])) return $this->data[$name];
         return '';
     }
 }

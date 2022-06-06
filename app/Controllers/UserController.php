@@ -92,7 +92,7 @@ class UserController extends Controller{
 
     public function view_list(){
         $view = new Users;
-        $view->users_list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
+        $view->list = Model::instance()->getList(parent::$list_start, parent::$sort, parent::$curr_list_opt);
         $view->user_list();
     }
 
@@ -142,7 +142,7 @@ class UserController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
-        $this->redirect('index.php?ctrl=user&task=view_list');
+        $this->redirect('index.php?ctrl=user&task=view_add');
     }
 
     public function add(){

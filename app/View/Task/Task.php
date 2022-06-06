@@ -10,7 +10,7 @@ use Kernel\View;
 
 class Task extends View{
 
-    public $task_data;
+    public $data;
 
     private function getCategoryList(){
         return CategoryModel::instance()->getList(0, false, 20);
@@ -26,8 +26,8 @@ class Task extends View{
 
     private function getAuthorData(){
         $user_data = UserModel::instance()->getUserData($this->user_id);
-        $this->task_data['name'] = $user_data['name'];
-        $this->task_data['email'] = $user_data['email'];
+        $this->data['name'] = $user_data['name'];
+        $this->data['email'] = $user_data['email'];
     }
 
     public function add(){
@@ -35,8 +35,7 @@ class Task extends View{
         if(TaskController::instance()->allow('create')){
             $this->content('task', 'add', [
                 'cat_list' => $this->getCategoryList(),
-                'userlist' => $this->getUserList(),
-                'messages' => $this->messages()
+                'userlist' => $this->getUserList()
             ]);
         }
         else $this->content('utils', 'deny');
@@ -47,10 +46,9 @@ class Task extends View{
         $tpl_data = [];
         $this->page_title = 'Edit Task';
         $tpl_data['userlist'] = false;
-        $tpl_data['messages'] = $this->messages();
-        if($this->task_data['category_id']) {
-            $category = $this->getCategory($this->task_data['category_id']);
-            $this->task_data['category'] = $category['name'];
+        if($this->data['category_id']) {
+            $category = $this->getCategory($this->data['category_id']);
+            $this->data['category'] = $category['name'];
         }
 
         if(TaskController::instance()->allow('create')) $tpl_data['userlist'] = $this->getUserList();
@@ -63,11 +61,11 @@ class Task extends View{
     public function show(){
         $this->page_title = 'Show Task';
         $this->getAuthorData();
-        $this->content('task', 'show', ['messages' => $this->messages()]);
+        $this->content('task', 'show');
     }
 
     public function __get($name){
-        if(!empty($this->task_data) && isset($this->task_data[$name])) return $this->task_data[$name];
+        if(!empty($this->data) && isset($this->data[$name])) return $this->data[$name];
         return '';
     }
 }

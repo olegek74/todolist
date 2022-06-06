@@ -22,7 +22,7 @@ class TaskController extends Controller{
     public function view_show(){
         if($id = $this->main->getInt('id', false)){
             $view = new Task;
-            $view->task_data = Model::instance()->getOne($id);
+            $view->data = Model::instance()->getOne($id);
             $view->show();
         }
     }
@@ -110,7 +110,7 @@ class TaskController extends Controller{
     public function view_edit(){
         if($id = $this->main->getInt('id', false)){
             $view = new Task;
-            $view->task_data = Model::instance()->getOne($id);
+            $view->data = Model::instance()->getOne($id);
             $view->edit();
         }
     }

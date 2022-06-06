@@ -21,11 +21,7 @@ class Categories extends View{
         $this->content('category', 'list', [
             'allow_delete' => CategoryController::instance()->allow('delete'),
             'allow_edit' => CategoryController::instance()->allow('edit'),
-            'paginator' => $this->pagination(),
-            'selector' => $this->selector(),
-            'messages' => $this->messages(),
-            'curr_list_opt' => CategoryController::$curr_list_opt,
-            'sort' => $this->sort()
+            'curr_list_opt' => CategoryController::$curr_list_opt
         ]);
     }
 }

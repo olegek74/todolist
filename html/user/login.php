@@ -1,7 +1,10 @@
+<?php use App\Classes\Helper;
+$view = Helper::getObj();
+?>
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Login</div>
-        <?php echo $messages; ?>
+        <?php echo $view->messages(); ?>
         <form action="index.php" novalidate>
             <div class="mb-3">
                 <label for="login" class="form-label">Login</label>

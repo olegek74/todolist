@@ -1,7 +1,10 @@
+<?php use App\Classes\Helper;
+$view = Helper::getObj();
+?>
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Add task</div>
-        <?php echo $messages; ?>
+        <?php echo $view->messages(); ?>
         <form action="index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="task" />
             <input type="hidden" name="task" value="add" />
