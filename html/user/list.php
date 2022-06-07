@@ -1,5 +1,8 @@
-<?php use App\Classes\Helper;
+<?php
+use App\Classes\Helper;
+use Kernel\Router;
 $view = Helper::getObj();
+$router = Router::instance();
 ?>
 <h1 class="display-6">List of Users</h1>
     <br>
@@ -27,15 +30,15 @@ if(!empty($view->list)){ ?>
             <?php
             foreach($view->list as $row){ ?>
                 <tr>
-                    <td><a href="/?ctrl=user&task=view_show&id=<?php echo $row['id'];?>"><?php echo $row['id'];?></a></td>
+                    <td><a href="<?php echo $router->getLink('/?ctrl=user&task=view_show&id='.$row['id']);?>"><?php echo $row['id'];?></a></td>
                     <td><?php echo $row['name'];?></td>
                     <td><?php echo $row['login'];?></td>
                     <td><?php echo $row['email'];?></td>
                     <td><?php if($allow_edit){ ?>
-                    <a class="btn btn-success btn-sm" href="/?ctrl=user&task=view_edit&id=<?php echo $row['id'];?>">Edit</a>
+                    <a class="btn btn-success btn-sm" href="<?php echo $router->getLink('/?ctrl=user&task=view_edit&id='.$row['id']);?>">Edit</a>
                     <?php } ?>
                     <?php if($allow_delete){ ?>
-                    <a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="/?ctrl=user&task=delete&id=<?php echo $row['id'];?>">Delete</a>
+                    <a onclick="if(!confirm('Do you really want to delete?')) return false;" class="btn btn-success btn-sm" href="<?php echo $router->getLink('/?ctrl=user&task=delete&id='.$row['id']);?>">Delete</a>
                     <?php } ?></td>
                 </tr>
             <?php } ?>

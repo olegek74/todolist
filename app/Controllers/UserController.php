@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use Kernel\Controller;
+use Kernel\Router;
 use App\Models\UserModel as Model;
 use App\View\User\User;
 use App\View\User\Users;
@@ -10,19 +11,21 @@ use App\Classes\Validate;
 
 class UserController extends Controller{
 
+    private $router;
     public function __construct()
     {
         parent::__construct();
+        $this->router = Router::instance();
     }
 
     public function login(){
         if($this->auth()){
             $this->main->setSess('message', 'success|Welcome!');
-            $this->redirect('index.php');
+            $this->redirect($this->router->getLink('index.php'));
         }
         else {
             $this->main->setSess('message', 'error|Incorrect login or password');
-            $this->redirect('index.php?ctrl=user&task=view_auth');
+            $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_auth'));
         }
         die;
     }
@@ -30,7 +33,7 @@ class UserController extends Controller{
     public function unlogin(){
         $this->main->setSess('auth', null);
         session_destroy();
-        $this->redirect('index.php?ctrl=user&task=view_auth');
+        $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_auth'));
         die;
     }
 
@@ -107,12 +110,12 @@ class UserController extends Controller{
             if($userdata['role'] != '2' || $id == $this->main->getSess('user_id', null)){
                 Model::instance()->delete($id);
                 $this->main->setSess('message', 'success|User deleted successfully');
-                $this->redirect('index.php?ctrl=user&task=view_list');
+                $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_list'));
                 die;
             }
         }
         $this->main->setSess('message', 'error|Delete error.You do not have access');
-        $this->redirect('index.php?ctrl=user&task=view_list');
+        $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_list'));
     }
 
     public function update(){
@@ -120,7 +123,7 @@ class UserController extends Controller{
             if($this->save($id)){
                 $this->main->setSess('message', 'success|User edit successfully');
             }
-            $this->redirect('index.php?ctrl=user&task=view_edit&id='.$id);
+            $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_edit&id='.$id));
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
     }
@@ -142,7 +145,7 @@ class UserController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Edit error.You do not have access');
-        $this->redirect('index.php?ctrl=user&task=view_add');
+        $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_add'));
     }
 
     public function add(){
@@ -151,7 +154,7 @@ class UserController extends Controller{
                 $this->main->setSess('message', 'success|User added successfully');
             }
         }
-        $this->redirect('index.php?ctrl=user&task=view_add');
+        $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_add'));
     }
 
     private function save(&$id = null){

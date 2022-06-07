@@ -4,14 +4,14 @@ $view = Helper::getObj();
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Unlogin</div>
-        <form action="index.php" novalidate>
+        <form action="/index.php" novalidate>
             <input type="hidden" name="ctrl" value="user" />
             <input type="hidden" name="task" value="unlogin" />
             <button type="submit" class="btn btn-primary">Unlogin</button>
         </form>
         <hr>
         <div class="display-6 mb-3">Edit profile</div>
-        <form action="index.php" novalidate>
+        <form action="/index.php" novalidate>
             <input type="hidden" name="ctrl" value="user" />
             <input type="hidden" name="task" value="view_add" />
             <input type="hidden" name="id" value="<?php echo $view->user_id;?>" />

@@ -4,6 +4,7 @@ namespace Kernel;
 use App\Controllers\MenuController;
 use Kernel\Controller;
 use App\Classes\Helper;
+use Kernel\Router;
 
 class View {
 
@@ -33,7 +34,8 @@ class View {
 
     protected function header(){
         self::$tpl['header'] .= Helper::requireHtml('common', 'header', [
-            'menu' => MenuController::instance()
+            'menu' => MenuController::instance(),
+            'router' => Router::instance()
         ]);
     }
 
@@ -47,7 +49,7 @@ class View {
 
     public function buidSortLink($sort_by, $title){
         return Helper::requireHtml('utils', 'build_sort', [
-            'sortData' => $this->sort(), 'sort_by' => $sort_by, 'title' => $title
+            'sortData' => $this->sort(), 'sort_by' => $sort_by, 'title' => $title, 'router' => Router::instance()
         ]);
     }
 
@@ -57,7 +59,8 @@ class View {
             'curr_list_opt' => Controller::$curr_list_opt,
             'sort' => Controller::$sort,
             'count' => $this->count,
-            'main_link' => $this->main_link
+            'main_link' => $this->main_link,
+            'router' => Router::instance()
         ]);
     }
 

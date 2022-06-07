@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use Kernel\Controller;
+use Kernel\Router;
 use \App\Models\TaskModel as Model;
 use \App\View\Task\Tasks;
 use \App\View\Task\Task;
@@ -9,8 +10,11 @@ use \App\View\Task\Task;
 
 class TaskController extends Controller{
 
+    private $router;
+
     public function __construct(){
         parent::__construct();
+        $this->router = Router::instance();
     }
 
     public function view_list(){
@@ -54,7 +58,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Edit error.Access denied');
-        $this->redirect('index.php');
+        $this->redirect($this->router->getLink('index.php'));
     }
 
     public function view_add() {
@@ -88,7 +92,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
-        $this->redirect('index.php');
+        $this->redirect($this->router->getLink('index.php'));
     }
 
     public function allow($action){
@@ -104,7 +108,7 @@ class TaskController extends Controller{
             }
         }
         else $this->main->setSess('message', 'error|Delete error.You do not have access');
-        $this->redirect('index.php');
+        $this->redirect($this->router->getLink('index.php'));
     }
 
     public function view_edit(){

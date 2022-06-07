@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use Kernel\Controller;
+use Kernel\Router;
 use App\Models\CategoryModel as Model;
 use App\View\Category\Categories;
 use App\View\Category\Category;
@@ -9,9 +10,11 @@ use App\View\Category\Category;
 class CategoryController extends Controller {
 
     private $redirect_url = 'index.php?ctrl=category';
+    private $router;
 
     public function __construct(){
         parent::__construct();
+        $this->router = Router::instance();
     }
 
     public function view_list(){
@@ -81,7 +84,7 @@ class CategoryController extends Controller {
         }
         else $this->main->setSess('message', 'error|Edit error.Access denied');
 
-        $this->redirect($this->redirect_url);
+        $this->redirect($this->router->getLink($this->redirect_url));
     }
 
     public function add(){
@@ -117,7 +120,7 @@ class CategoryController extends Controller {
             }
         }
         else $this->main->setSess('message', 'error|Add error.Authorization is required to add');
-        $this->redirect($this->redirect_url);
+        $this->redirect($this->router->getLink($this->redirect_url));
     }
 
     public function delete(){
@@ -129,7 +132,7 @@ class CategoryController extends Controller {
             }
         }
         else $this->main->setSess('message', 'error|Delete error.You do not have access');
-        $this->redirect($this->redirect_url);
+        $this->redirect($this->router->getLink($this->redirect_url));
     }
 
     public static function instance($class = __CLASS__){

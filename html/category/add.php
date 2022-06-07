@@ -5,7 +5,7 @@ $view = Helper::getObj();
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3">Add Category</div>
         <?php echo $view->messages(); ?>
-        <form action="index.php" method="get" novalidate>
+        <form action="/index.php" method="get" novalidate>
             <input type="hidden" name="ctrl" value="category" />
             <input type="hidden" name="task" value="add" />
             <div class="mb-3">

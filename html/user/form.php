@@ -5,7 +5,7 @@ $view = Helper::getObj();
     <div class="col-12 col-md-6">
         <div class="display-6 mb-3"><?php echo $view->title;?></div>
         <?php echo $view->messages(); ?>
-        <form action="index.php" novalidate>
+        <form action="/index.php" novalidate>
            <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input class="form-control" id="name" name="name" value="<?php echo $view->name;?>">

@@ -11,7 +11,7 @@
                     <li class="nav-item">
                         <?php $active = '';
                         if($menu->isActive($link)) $active = ' active';?>
-                        <a class="nav-link<?php echo $active;?>" href="<?php echo $link;?>"><?php echo $title;?></a>
+                        <a class="nav-link<?php echo $active;?>" href="<?php echo $router->getLink($link);?>"><?php echo $title;?></a>
                     </li>
                     <?php } ?>
                 </ul>

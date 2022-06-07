@@ -26,7 +26,7 @@
             <?php } else {
                 ?>
                 <li class="page-item">
-                    <a class="page-link" href="index.php?<?php echo $main_link;?>list_start=<?php echo $_list_start;?><?php echo $append;?>"><?php echo $page;?></a>
+                    <a class="page-link" href="<?php echo $router->getLink('index.php?'.$main_link.'list_start='.$_list_start.$append);?>"><?php echo $page;?></a>
                 </li>
             <?php } ?>
 

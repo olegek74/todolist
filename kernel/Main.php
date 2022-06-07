@@ -45,6 +45,9 @@
              if(isset($_SESSION[$name])) return $_SESSION[$name];
              return $default;
          }
+         if($func == 'uri'){
+             return $_SERVER['REQUEST_URI'];
+         }
          if($func == 'setSess'){
              $name = $values[0];
              $value = $values[1];
