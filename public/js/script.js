@@ -14,13 +14,23 @@ jQuery(document).ready(function($){
             document.location.href = href;
         });
     }
+
     var sort_data = $('#sort_table').data('sort');
 
+    var sort_link = sort_data.main_link;
+    //console.log(sort_link);
+    if(sort_link.search('/')!==0){
+        sort_link = '/?' + sort_link;
+    }
+    else sort_link += '?';
+    //console.log(sort_link);
     $('div.sort').click(function(){
         if(!$(this).hasClass('active')){
             var sort_dir = 'asc';
             if(sort_data.sort_dir == 'asc') sort_dir = 'desc';
-            var href = '/?' + sort_data.main_link + 'sort=' + sort_dir + ':' + $(this).data('name');
+
+            var href = sort_link + 'sort=' + sort_dir + ':' + $(this).data('name');
+            //console.log(href);
             document.location.href = href;
         }
     })

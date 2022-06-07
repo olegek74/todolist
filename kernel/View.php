@@ -73,7 +73,7 @@ class View {
     }
 
     public function sort(){
-       return Helper::requireHtml('utils', 'sort', ['main_link' => $this->main_link, 'sort' => Controller::$sort]);
+       return Helper::requireHtml('utils', 'sort', ['main_link' => Router::instance()->getLink($this->main_link), 'sort' => Controller::$sort]);
     }
 
     protected function content($folder, $tpl, $data = []){

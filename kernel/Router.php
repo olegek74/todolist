@@ -15,8 +15,8 @@ class Router {
         $main = Main::instance();
         $uri = $main->uri();
         if(preg_match_all('/\/([a-z_\-]+)/', $uri, $matches) && $matches[1][0] != 'index'){
-            $ctrl = $matches[1][0];
-            $task = $matches[1][1];
+            $ctrl = isset($matches[1][0]) ? $matches[1][0] : false;
+            $task = isset($matches[1][1]) ? $matches[1][1] : false;
             self::$main_link = $ctrl.'/'.$task;
             self::$sef = true;
         }
