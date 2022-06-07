@@ -71,6 +71,7 @@ class Router {
         if($name == 'task') return $this->task;
         if($name == 'main_link') return self::$main_link;
     }
+
     public static function instance(){
         if(!self::$object){
             self::$object = new self;
