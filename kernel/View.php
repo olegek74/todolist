@@ -55,12 +55,12 @@ class View {
 
     public function pagination(){
         return Helper::requireHtml('utils', 'paginator', [
-            'list_start' => Controller::$list_start,
             'curr_list_opt' => Controller::$curr_list_opt,
             'sort' => Controller::$sort,
             'count' => $this->count,
             'main_link' => $this->main_link,
-            'router' => Router::instance()
+            'router' => Router::instance(),
+            'current_page' => Controller::$page
         ]);
     }
 

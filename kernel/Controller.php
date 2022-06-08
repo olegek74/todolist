@@ -14,13 +14,17 @@ class Controller extends Objects {
 
     public static $list_start;
 
+    public static $page;
+
     protected $main;
 
     public function __construct(){
         $this->main = Main::instance();
         self::$curr_list_opt = intval($this->main->getCookie('curr_list_opt', 50));
         self::$sort = $this->main->get('sort', false);
-        self::$list_start = $this->main->getInt('list_start', 0);
+        self::$page = $this->main->getInt('page', 0);
+        if(self::$page < 1) self::$page = 1;
+        self::$list_start = self::$curr_list_opt * (self::$page - 1);
         self::$messages[] = $this->main->getSess('message', null);
         $this->main->setSess('message', null);
     }
