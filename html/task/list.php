@@ -13,18 +13,21 @@ if(!empty($view->list)){ ?>
         <?php echo $view->messages(); ?>
         <table id="sort_table" class="table table-bordered" data-sort="<?php echo htmlspecialchars($view->sort());?>">
             <tr>
-                <td style="width:5%">
+                <td style="width:3%">
                     <?php echo $view->buidSortLink('t.id', 'ID'); ?>
                 </td>
-                <td style="width:55%">DESCRIPTION</td>
-                <td style="width:10%">
+                <td style="width:53%">DESCRIPTION</td>
+                <td style="width:6%">
                     <?php echo $view->buidSortLink('t.status', 'STATUS'); ?>
                 </td>
-                <td style="width:12%">
+                <td style="width:10%">
                     <?php echo $view->buidSortLink('u.email', 'USER EMAIL'); ?>
                 </td>
                 <td style="width:8%">
                     <?php echo $view->buidSortLink('c.name', 'CATEGORY'); ?>
+                </td>
+                <td style="width:10%">
+                    <?php echo $view->buidSortLink('t.create_date', 'CREATE'); ?>
                 </td>
                 <td style="width:10%"><div style="margin:8px;"><b>Edit&nbsp;/&nbsp;Del</b></div></td>
             </tr>
@@ -36,6 +39,7 @@ if(!empty($view->list)){ ?>
                     <td><?php echo $row['status'];?></td>
                     <td><?php echo $row['email'];?></td>
                     <td><?php echo isset($row['category_name']) ? $row['category_name'] : '';?></td>
+                    <td><?php echo isset($row['create_date']) ? date('Y-m-d H:i', $row['create_date']) : '';?></td>
                     <td>
                     <?php if($allow_edit){ ?>
                         <a class="btn btn-success btn-sm" href="<?php echo $router->getLink('/?ctrl=task&task=view_edit&id='.$row['id']);?>">Edit</a>

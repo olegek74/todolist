@@ -26,13 +26,14 @@ class TaskModel extends Model
     public function create($data) {
 
         $insert = parent::$queryFactory->newInsert();
-        $insert->into('tasks')->cols(['id','description','user_id','status', 'category_id'])
+        $insert->into('tasks')->cols(['id','description','user_id','status', 'category_id', 'create_date'])
             ->bindValues([
                 'id' => NULL,
                 'description' => $data['description'],
                 'user_id' => $data['user_id'],
                 'status' => $data['status'],
-                'category_id' => $data['cat_id']
+                'category_id' => $data['cat_id'],
+                'create_date' => $data['create_date']
             ]);
 
         $sth = DB::execute($insert);

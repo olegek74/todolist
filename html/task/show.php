@@ -10,6 +10,10 @@ $view = Helper::getView();
             <div class="form-control" id="status"><?php echo $view->status;?></div>
         </div>
         <div class="mb-3">
+            <label for="create_date" class="form-label">Create</label>
+            <div class="form-control" id="create_date"><?php echo date('Y-m-d H:i', $view->create_date);?></div>
+        </div>
+        <div class="mb-3">
             <label for="user_id" class="form-label">User name</label>
             <div id="user_id" class="form-control"><?php echo $view->name;?></div>
         </div>

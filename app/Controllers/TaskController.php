@@ -79,6 +79,8 @@ class TaskController extends Controller{
                 $err[] = 'Description is empty';
             }
 
+            $data['create_date'] = time();
+
             $data['status'] = $this->main->getInt('status', 0);
             $data['cat_id'] = $this->main->getInt('cat_id', null);
 
