@@ -21,8 +21,7 @@ class Tasks extends View{
         $this->page_title = 'List of task';
         $this->content('task', 'list', [
             'allow_delete' => TaskController::instance()->allow('delete'),
-            'allow_edit' => TaskController::instance()->allow('edit'),
-            'curr_list_opt' => TaskController::$curr_list_opt
+            'allow_edit' => TaskController::instance()->allow('edit')
         ]);
     }
 }

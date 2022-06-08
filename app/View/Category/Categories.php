@@ -20,8 +20,7 @@ class Categories extends View{
         $this->page_title = 'List of Category';
         $this->content('category', 'list', [
             'allow_delete' => CategoryController::instance()->allow('delete'),
-            'allow_edit' => CategoryController::instance()->allow('edit'),
-            'curr_list_opt' => CategoryController::$curr_list_opt
+            'allow_edit' => CategoryController::instance()->allow('edit')
         ]);
     }
 }

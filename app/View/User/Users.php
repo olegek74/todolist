@@ -19,7 +19,6 @@ class Users extends View {
     public function user_list(){
         $this->page_title = 'List of Users';
         $this->content('user', 'list', [
-            'curr_list_opt' => UserController::$curr_list_opt,
             'allow_delete' => UserController::instance()->allow('delete'),
             'allow_edit' => UserController::instance()->allow('edit')
         ]);
