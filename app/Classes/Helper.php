@@ -5,7 +5,7 @@ use Kernel\View;
 
 class Helper {
 
-    public static function getObj(){
+    public static function getView(){
         return View::instance();
     }
 

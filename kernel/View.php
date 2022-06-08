@@ -40,7 +40,7 @@ class View {
     }
 
     protected function head(){
-        self::$tpl['head'] .= Helper::requireHtml('common', 'head', ['meta' => self::$meta]);
+        self::$tpl['head'] .= Helper::requireHtml('common', 'head', ['meta' => self::$meta, 'page' => Controller::$page]);
     }
 
     protected function footer(){

@@ -1,5 +1,5 @@
 <?php use App\Classes\Helper;
-$view = Helper::getObj();
+$view = Helper::getView();
 ?>
 <div class="row">
     <div class="col-12 col-md-6">

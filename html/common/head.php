@@ -1,8 +1,8 @@
 <?php use App\Classes\Helper;
-$view = Helper::getObj();
+$view = Helper::getView();
 ?>
 <head>
-    <title><?php echo $view->page_title; ?></title>
+    <title><?php echo $view->page_title; ?><?php ?><?php echo ($page > 1) ? ' page'.$page : ''; ?></title>
     <meta name="description" content="<?php echo $meta['description']; ?>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="/css/style.css" rel="stylesheet">

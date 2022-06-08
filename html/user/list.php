@@ -1,7 +1,7 @@
 <?php
 use App\Classes\Helper;
 use Kernel\Router;
-$view = Helper::getObj();
+$view = Helper::getView();
 $router = Router::instance();
 ?>
 <h1 class="display-6">List of Users</h1>
