@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Июн 02 2022 г., 21:38
+-- Время создания: Июн 08 2022 г., 19:17
 -- Версия сервера: 5.7.25-0ubuntu0.18.04.2
 -- Версия PHP: 7.2.15-0ubuntu0.18.04.2
 
@@ -35,6 +35,15 @@ CREATE TABLE `categories` (
   `parent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `description`, `parent_id`) VALUES
+(1, 'Привязывание', 'привязывание веток к палкам', 3),
+(2, 'Обработка', 'После привязывания', 1),
+(3, 'Управляющий', 'Руководит всеми сотрудниками', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -53,12 +62,12 @@ CREATE TABLE `managers` (
 --
 
 INSERT INTO `managers` (`user_id`, `login`, `password`, `role`) VALUES
-(1, 'admin', '202cb962ac59075b964b07152d234b70', 2),
-(2, 'adgj1', 'e10adc3949ba59abbe56e057f20f883e', 0),
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 2),
 (8, 'oleg', 'e10adc3949ba59abbe56e057f20f883e', 0),
 (9, 'snegokop', 'e10adc3949ba59abbe56e057f20f883e', 0),
-(3, 'fedotdanetot', 'e10adc3949ba59abbe56e057f20f883e', 0),
-(10, 'babenko', 'e10adc3949ba59abbe56e057f20f883e', 1);
+(3, 'fedot_da_ne_tot', 'e10adc3949ba59abbe56e057f20f883e', 0),
+(10, 'babenko', 'e10adc3949ba59abbe56e057f20f883e', 1),
+(12, 'oleg_shop', 'e10adc3949ba59abbe56e057f20f883e', 0);
 
 -- --------------------------------------------------------
 
@@ -71,35 +80,23 @@ CREATE TABLE `tasks` (
   `description` text CHARACTER SET utf8mb4 NOT NULL,
   `status` int(2) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  `create_date` int(10) NOT NULL DEFAULT '1600000000'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `description`, `status`, `user_id`, `category_id`) VALUES
-(1, 'edited 123 ttt', 400, 2, NULL),
-(2, 'это могу редактировать не будучи админом', 2, 34, NULL),
-(4, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав', 0, 3, NULL),
-(5, 'абракадабра ужик сьел жабу !!!', 1, 34, NULL),
-(6, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(7, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(8, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(9, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(11, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(12, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа', 0, 34, NULL),
-(13, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав нт8 е5чтв оа tt', 0, 34, NULL),
-(14, 'asdf asdf asdf 567', 0, 2, NULL),
-(15, 'zxzxzxzx fgfggf', 0, 3, NULL),
-(16, 'zxzxzxzx', 0, 3, NULL),
-(17, 'asaadsdfg', 0, 1, NULL),
-(18, 'отредактировано админом', 0, 3, NULL),
-(19, 'bbbbbbbbbbbbbbbb', 0, 3, NULL),
-(22, 'qqwqeqe 0202', 1, 2, NULL),
-(23, 'добавила задачу админом', 0, 1, NULL),
-(24, 'Alek testtest', 0, 1, NULL),
-(26, 'Чаще же всего заметно было потемневших двуглавых государственных орлов, которые теперь.', 1, 1, NULL);
+INSERT INTO `tasks` (`id`, `description`, `status`, `user_id`, `category_id`, `create_date`) VALUES
+(1, 'edited 123 ttt', 400, 1, 2, 1600010000),
+(2, 'это могу редактировать не будучи админом', 2, 3, 0, 1600020000),
+(4, 'овпг пн псьтпоп6т марнап3лвт анвтч8а швн ас и ваван в6в8чтв сав', 0, 3, 1, 1600030000),
+(15, 'zxzxzxzx fgfggf', 0, 3, NULL, 1600040000),
+(18, 'отредактировано админом', 0, 3, NULL, 1600050000),
+(23, 'добавила задачу админом', 0, 1, NULL, 1600060000),
+(24, 'Alek testtest', 0, 1, NULL, 1600070000),
+(26, 'Чаще же всего заметно было потемневших двуглавых государственных орлов, которые теперь.', 1, 1, NULL, 1600080000);
 
 -- --------------------------------------------------------
 
@@ -119,11 +116,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`) VALUES
 (1, 'admin', 'admin@i.ua'),
-(2, 'adgjl', 'adgj@i.ua'),
 (3, 'Федот да не тот', 'fedot-da-ne-tot@gmail.com'),
 (8, 'OlegShop', 'oleg@i.ua'),
 (9, 'Иннокентий', 'snegokop@i.ue'),
-(10, 'Марина Gt', 'babenko@ukr.ua');
+(10, 'Марина Gt', 'babenko@i.ua'),
+(12, 'Oleg_Shop', 'oleg_shop@i.ua');
 
 --
 -- Индексы сохранённых таблиц
@@ -161,19 +158,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
