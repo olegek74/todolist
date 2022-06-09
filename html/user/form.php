@@ -32,9 +32,9 @@ $view = Helper::getView();
             <?php if($view->id){ ?>
             <input type="hidden" name="id" value="<?php echo $view->id;?>" />
                 <?php if($view->is_self) { ?>
-                <input type="hidden" name="task" value="self_update" />
+                <input type="hidden" name="task" value="self_edit" />
                 <?php } else { ?>
-                <input type="hidden" name="task" value="update" />
+                <input type="hidden" name="task" value="edit" />
                 <?php } ?>
             <?php } else { ?>
             <input type="hidden" name="task" value="add" />

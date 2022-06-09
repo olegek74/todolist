@@ -118,7 +118,7 @@ class UserController extends Controller{
         $this->redirect($this->router->getLink('index.php?ctrl=user&task=view_list'));
     }
 
-    public function update(){
+    public function edit(){
         if($this->allow('edit')){
             if($this->save($id)){
                 $this->main->setSess('message', 'success|User edit successfully');
@@ -134,7 +134,7 @@ class UserController extends Controller{
         if(isset($data['role'])) $this->main->setSess('role', $data['role']);
     }
 
-    public function self_update(){
+    public function self_edit(){
         $user_id = $this->main->getSess('user_id', false);
         $id = $this->main->getInt('id', false);
         if($user_id && $id == $user_id){
