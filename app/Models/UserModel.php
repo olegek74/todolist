@@ -71,6 +71,10 @@ class UserModel extends Model
         return parent::getTotal($table);
     }
 
+    public function getAll($table = 'users'){
+        return parent::getAll($table);
+    }
+
     public function getList($list_start = 0, $sort = false, $curr_list_opt = 3){
 
         $select = parent::$queryFactory->newSelect();

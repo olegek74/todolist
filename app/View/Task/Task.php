@@ -13,11 +13,11 @@ class Task extends View{
     public $data;
 
     private function getCategoryList(){
-        return CategoryModel::instance()->getList(0, false, 20);
+        return CategoryModel::instance()->getAll();
     }
 
     private function getUserList(){
-        return UserModel::instance()->getList(0, false, 20);
+        return UserModel::instance()->getAll();
     }
 
     private function getCategory($id){

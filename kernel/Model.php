@@ -27,6 +27,13 @@ class Model extends Objects {
         return $result['cnt'];
     }
 
+    public function getAll($table){
+        $select = self::$queryFactory->newSelect();
+        $select->cols(['*'])->from($table);
+        $sth = DB::execute($select);
+        return $this->get_list($sth);
+    }
+
     public function get_list($sth){
         $list = [];
         while($result = $sth->fetch(\PDO::FETCH_ASSOC)){
