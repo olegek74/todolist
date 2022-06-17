@@ -65,7 +65,7 @@ class View {
     }
 
     public function selector(){
-        return Helper::requireHtml('utils', 'selector', ['curr_list_opt' => Controller::$curr_list_opt]);
+        return Helper::requireHtml('utils', 'selector', ['curr_list_opt' => Controller::$curr_list_opt, 'main_link' => Router::instance()->getLink($this->main_link), 'sort' => Controller::$sort]);
     }
 
     public function messages(){
