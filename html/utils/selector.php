@@ -1,6 +1,6 @@
 <div class="col-auto">
-    <form method="get" action="<?php echo rtrim($main_link, '&');?>">
-        <input type="hidden" name="sort" value="<?php echo $sort;?>" />
+    <form method="get" action="<?php echo rtrim($main_link, '&?');?>">
+        <?php if($sort){ ?> <input type="hidden" name="sort" value="<?php echo $sort;?>" /><?php } ?>
         <select class="form-select" id="curr_list_opt">
             <?php foreach([3, 6, 12, 25, 50] as $opt){
                 $selected = ($curr_list_opt == $opt) ? ' selected' : '';

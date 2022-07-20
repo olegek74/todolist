@@ -3,8 +3,10 @@ jQuery(document).ready(function($){
     var curr_list_opt = $('#curr_list_opt');
     if(curr_list_opt.length){
         curr_list_opt.change(function(){
-            document.cookie = 'curr_list_opt = ' + $(this).val() + '; path=/';
-            $(this).closest('form').submit();
+            var form = $(this).closest('form');
+            var path = '/' + form.attr('action').split('/')[1];
+            document.cookie = 'curr_list_opt = ' + $(this).val() + '; path=' + path;
+            form.submit();
         });
     }
 
